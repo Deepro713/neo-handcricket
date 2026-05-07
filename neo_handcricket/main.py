@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import random
 import sys
+import time
 from dataclasses import asdict
 from typing import Literal
 
@@ -13,7 +14,16 @@ from rich.text import Text
 from .bots import captain as cap_ai
 from .bots import strategy
 from .commentary.engine import CommentaryEngine
-from .config import EXTRAS_BASE_PCT, TIMER_SECONDS
+from .config import (
+    EXTRAS_BASE_PCT,
+    INTER_BALL_GAP_SECONDS,
+    COMMENTARY_LINE_GAP_SECONDS,
+    TEST_BALL_CAP,
+    TEST_BOT_DECLARE_LEAD,
+    TEST_BOT_FOLLOW_ON_LEAD,
+    TEST_FOLLOW_ON_THRESHOLD,
+    TIMER_SECONDS,
+)
 from .formats import Format, custom as custom_fmt
 from .innings import Innings
 from .match import Match, TeamMeta
@@ -273,6 +283,65 @@ def _outcome_from_timeout_user(outcome: str) -> dict:
     return {"runs": 0, "extras": 0, "wicket": None, "extra_kind": None, "timed_out": True}
 
 
+def _check_declaration(console: Console, match: Match, inn: Innings, *, user_is_batting: bool) -> bool:
+    """At end of an over in Test, decide whether the batting side declares."""
+    # Heuristic — only meaningful in innings 3 (extending lead). Or innings 1 if very late.
+    innings_idx = len(match.innings_list)  # 1-indexed: 1, 2, 3, 4
+    if innings_idx == 4:
+        return False  # 4th innings is a chase / follow-on — never declare
+    if user_is_batting:
+        # Prompt user if not in 4th innings
+        if innings_idx in (1, 2, 3):
+            console.print(Text("  Press [bold]d[/bold] to declare, any other key to continue.", style="dim italic"))
+            ch = read_key().lower()
+            return ch == "d"
+        return False
+    # Bot batting: heuristic based on innings + lead
+    if innings_idx == 3:
+        # Lead = current_innings.runs + (innings_1 - innings_2) [for the side that batted first]
+        # Compute lead simply: total bot runs - total opponent runs across all innings
+        bot_country = inn.batting_country
+        runs_for_bot = sum(i.runs for i in match.innings_list if i.batting_country == bot_country)
+        runs_against = sum(i.runs for i in match.innings_list if i.batting_country != bot_country)
+        if runs_for_bot - runs_against >= TEST_BOT_DECLARE_LEAD:
+            return True
+    return False
+
+
+def _deliver_commentary_paced(
+    console: Console,
+    engine: CommentaryEngine,
+    *,
+    situation: str,
+    ctx: dict,
+    antarctica_on_field: bool,
+    min_total_seconds: float = INTER_BALL_GAP_SECONDS,
+    line_gap: float = COMMENTARY_LINE_GAP_SECONDS,
+) -> None:
+    """Generate the multi-line conversational commentary for this event,
+    print each line incrementally with a pause between, and ensure at least
+    `min_total_seconds` elapses before returning. User can press any key to
+    skip the wait at any point."""
+    start = time.monotonic()
+    entries = engine.commentate(situation=situation, ctx=ctx, antarctica_on_field=antarctica_on_field)
+    skipped = False
+    for i, entry in enumerate(entries):
+        console.print(f"  ▸ {entry.line}  [dim]({entry.commentator})[/dim]")
+        if skipped:
+            continue
+        if i < len(entries) - 1:
+            ch = read_key_with_timer(line_gap)
+            if ch is not None:
+                # Skip the rest of the line gaps — but still print remaining lines instantly
+                skipped = True
+    if skipped:
+        return
+    elapsed = time.monotonic() - start
+    remaining = max(0.0, min_total_seconds - elapsed)
+    if remaining > 0:
+        read_key_with_timer(remaining)
+
+
 def _commentary_ctx(*, match: Match, inn: Innings, runs: int, wicket: str | None, extras: int, extra_kind: str | None, batter_name: str, bowler_name: str) -> dict:
     return {
         "batter": batter_name,
@@ -489,15 +558,25 @@ def _run_innings(
                 batter_name=batter_name,
                 bowler_name=bowler_name,
             )
-            engine.maybe_rotate_pair(inn.overs_completed)
-            engine.commentate(situation=situation, ctx=ctx, antarctica_on_field=antarctica_on_field)
+            _deliver_commentary_paced(
+                console, engine,
+                situation=situation, ctx=ctx, antarctica_on_field=antarctica_on_field,
+            )
 
-            # Milestones
+            # Milestones (no extra wait — they overlap with the inter-ball gap)
             striker_card = inn.batter_cards.get(event.striker_id)
             if striker_card and striker_card.runs >= 50 and (striker_card.runs - outcome["runs"]) < 50:
-                engine.commentate(situation="milestone_50", ctx=ctx, antarctica_on_field=antarctica_on_field)
+                _deliver_commentary_paced(
+                    console, engine,
+                    situation="milestone_50", ctx=ctx, antarctica_on_field=antarctica_on_field,
+                    min_total_seconds=0.0,
+                )
             elif striker_card and striker_card.runs >= 100 and (striker_card.runs - outcome["runs"]) < 100:
-                engine.commentate(situation="milestone_100", ctx=ctx, antarctica_on_field=antarctica_on_field)
+                _deliver_commentary_paced(
+                    console, engine,
+                    situation="milestone_100", ctx=ctx, antarctica_on_field=antarctica_on_field,
+                    min_total_seconds=0.0,
+                )
 
         # End of over
         inn.end_over()
@@ -509,6 +588,22 @@ def _run_innings(
             save_io.save_match(match, name="auto")
         except Exception:
             pass
+
+        # Test cricket: total-overs cap (force draw if reached)
+        if match.fmt.name == "Test":
+            total_balls_bowled = sum(i.balls for i in match.innings_list)
+            if total_balls_bowled >= TEST_BALL_CAP:
+                inn.declared = True  # signal innings end via declared flag (treated like end)
+                console.print(Text("  ⏰ 5 days exhausted — match heading to a draw.", style="yellow bold"))
+                break
+
+        # Test cricket: declaration check at end of over
+        if match.fmt.name == "Test" and not inn.is_complete:
+            declared = _check_declaration(console, match, inn, user_is_batting=user_is_batting)
+            if declared:
+                inn.declared = True
+                console.print(Text(f"  📣 {inn.batting_country} declares at {inn.runs}/{inn.wickets}.", style="bold magenta"))
+                break
 
         if inn.is_complete:
             break
@@ -612,6 +707,11 @@ def _play_match(console: Console, match: Match) -> None:
 def _play_match_innings(console: Console, match: Match, engine: CommentaryEngine) -> None:
     fmt = match.fmt
 
+    # Test cricket has its own 4-innings flow with follow-on / declarations / draw
+    if fmt.name == "Test":
+        _play_test_match(console, match, engine)
+        return
+
     user_country_obj = _country_obj_from_meta(match.user_team)
     opp_country_obj = _country_obj_from_meta(match.opponent)
 
@@ -693,6 +793,219 @@ def _play_match_innings(console: Console, match: Match, engine: CommentaryEngine
     read_key()
 
 
+def _play_test_match(console: Console, match: Match, engine: CommentaryEngine) -> None:
+    """Orchestrate a Test match — 4 innings, ≤ 450 overs total, follow-on, declarations, draw possible.
+
+    Innings order:
+        1: Team A bats
+        2: Team B bats
+        After 2: A leads by ≥ TEST_FOLLOW_ON_THRESHOLD → A captain decides on follow-on.
+        3: Team B (if follow-on) or Team A bats
+        4: The other team bats, chasing if necessary.
+    """
+    def total_balls_bowled() -> int:
+        return sum(i.balls for i in match.innings_list)
+
+    def cap_reached() -> bool:
+        return total_balls_bowled() >= TEST_BALL_CAP
+
+    user_first = match.user_batting_first
+    teams_first_to_second = [
+        (match.user_team, match.opponent, match.user_xi, match.opponent_xi, match.opponent_bowling_pool, True),
+        (match.opponent, match.user_team, match.opponent_xi, match.user_xi, match.user_bowling_pool, False),
+    ] if user_first else [
+        (match.opponent, match.user_team, match.opponent_xi, match.user_xi, match.user_bowling_pool, False),
+        (match.user_team, match.opponent, match.user_xi, match.opponent_xi, match.opponent_bowling_pool, True),
+    ]
+
+    def end_of_innings_pause(label: str) -> None:
+        ui_scoreboard.render_detailed(console, match, match.innings_list[-1])
+        console.print(Text(f"  Press any key to begin {label}...", style="dim italic"))
+        read_key()
+
+    # --- Innings 1 ---
+    bat, bowl, bat_xi, bowl_xi, bowl_pool, user_is_batting = teams_first_to_second[0]
+    inn1 = _build_innings(match=match, batting_country=bat, bowling_country=bowl,
+                          batting_xi=bat_xi, bowling_xi=bowl_xi, bowling_pool=bowl_pool)
+    match.add_innings(inn1)
+    _run_innings(console, match, engine, inn1, user_is_batting=user_is_batting)
+    if cap_reached():
+        match.winner = "draw"
+        match.result_summary = "Match drawn — 5 days exhausted"
+        match.phase = "complete"
+        _finalise_test(console, match, engine)
+        return
+    end_of_innings_pause("the second innings")
+
+    # --- Innings 2 ---
+    bat, bowl, bat_xi, bowl_xi, bowl_pool, user_is_batting = teams_first_to_second[1]
+    inn2 = _build_innings(match=match, batting_country=bat, bowling_country=bowl,
+                          batting_xi=bat_xi, bowling_xi=bowl_xi, bowling_pool=bowl_pool)
+    match.add_innings(inn2)
+    _run_innings(console, match, engine, inn2, user_is_batting=user_is_batting)
+    if cap_reached():
+        match.winner = "draw"
+        match.result_summary = "Match drawn — 5 days exhausted"
+        match.phase = "complete"
+        _finalise_test(console, match, engine)
+        return
+
+    # --- Follow-on decision ---
+    inn1_runs = match.innings_list[0].runs
+    inn2_runs = match.innings_list[1].runs
+    lead_after_2 = inn1_runs - inn2_runs   # positive = team A (batted first) leads
+
+    follow_on = False
+    if lead_after_2 >= TEST_FOLLOW_ON_THRESHOLD:
+        # Team A (batted first) has the option
+        team_a_country = match.innings_list[0].batting_country
+        team_a_is_user = (team_a_country == match.user_team.country)
+        if team_a_is_user:
+            console.print(Panel(
+                Text(f"You lead by {lead_after_2}. Enforce follow-on? [y]es / [n]o", style="bold cyan"),
+                border_style="cyan",
+            ))
+            ch = read_key().lower()
+            follow_on = (ch == "y")
+        else:
+            # Bot heuristic
+            follow_on = lead_after_2 >= TEST_BOT_FOLLOW_ON_LEAD
+            if follow_on:
+                console.print(Panel(Text(f"  {team_a_country} has enforced the follow-on (lead: {lead_after_2}).", style="bold yellow"), border_style="yellow"))
+            else:
+                console.print(Panel(Text(f"  {team_a_country} declined the follow-on (lead: {lead_after_2}).", style="bold yellow"), border_style="yellow"))
+
+    end_of_innings_pause("the third innings")
+
+    # --- Innings 3 ---
+    if follow_on:
+        # Team B bats again (same xi/pool as inn2)
+        bat = match.innings_list[1].batting_country
+        b3_meta = match.opponent if bat == match.opponent.country else match.user_team
+        bowl_meta = match.user_team if bat == match.opponent.country else match.opponent
+        bat_xi = match.opponent_xi if bat == match.opponent.country else match.user_xi
+        bowl_xi = match.user_xi if bat == match.opponent.country else match.opponent_xi
+        bowl_pool = match.user_bowling_pool if bat == match.opponent.country else match.opponent_bowling_pool
+        user_is_batting = (bat == match.user_team.country)
+    else:
+        # Normal: Team A bats again (same xi/pool as inn1)
+        bat = match.innings_list[0].batting_country
+        b3_meta = match.user_team if bat == match.user_team.country else match.opponent
+        bowl_meta = match.opponent if bat == match.user_team.country else match.user_team
+        bat_xi = match.user_xi if bat == match.user_team.country else match.opponent_xi
+        bowl_xi = match.opponent_xi if bat == match.user_team.country else match.user_xi
+        bowl_pool = match.opponent_bowling_pool if bat == match.user_team.country else match.user_bowling_pool
+        user_is_batting = (bat == match.user_team.country)
+
+    inn3 = _build_innings(match=match, batting_country=b3_meta, bowling_country=bowl_meta,
+                          batting_xi=bat_xi, bowling_xi=bowl_xi, bowling_pool=bowl_pool)
+    match.add_innings(inn3)
+    _run_innings(console, match, engine, inn3, user_is_batting=user_is_batting)
+
+    # Check innings victory between 3 and 4 (only meaningful in follow-on path)
+    if follow_on:
+        # Team B has now batted twice. If their combined < Team A's first innings, A wins by innings.
+        team_a_country = match.innings_list[0].batting_country
+        team_b_country = match.innings_list[1].batting_country
+        a_runs = match.innings_list[0].runs
+        b_total = match.innings_list[1].runs + match.innings_list[2].runs
+        if b_total < a_runs:
+            margin = a_runs - b_total
+            match.winner = "user" if team_a_country == match.user_team.country else "opponent"
+            match.result_summary = f"{team_a_country} won by an innings and {margin} runs"
+            match.phase = "complete"
+            _finalise_test(console, match, engine)
+            return
+        # B took the lead — A bats 4th to chase
+        target = b_total - a_runs + 1  # runs A needs in 4th innings
+        if cap_reached():
+            match.winner = "draw"
+            match.result_summary = "Match drawn — 5 days exhausted"
+            match.phase = "complete"
+            _finalise_test(console, match, engine)
+            return
+        end_of_innings_pause("the fourth innings (chase)")
+
+        # --- Innings 4 (A chases) ---
+        bat_country = team_a_country
+        b4_meta = match.user_team if bat_country == match.user_team.country else match.opponent
+        bowl_meta4 = match.opponent if bat_country == match.user_team.country else match.user_team
+        bat_xi4 = match.user_xi if bat_country == match.user_team.country else match.opponent_xi
+        bowl_xi4 = match.opponent_xi if bat_country == match.user_team.country else match.user_xi
+        bowl_pool4 = match.opponent_bowling_pool if bat_country == match.user_team.country else match.user_bowling_pool
+        user_batting4 = (bat_country == match.user_team.country)
+        inn4 = _build_innings(match=match, batting_country=b4_meta, bowling_country=bowl_meta4,
+                              batting_xi=bat_xi4, bowling_xi=bowl_xi4, bowling_pool=bowl_pool4,
+                              target=target)
+        match.add_innings(inn4)
+        _run_innings(console, match, engine, inn4, user_is_batting=user_batting4)
+        _resolve_test_result(match)
+    else:
+        # Normal path: A bats 3rd and sets a target. B bats 4th.
+        if cap_reached():
+            match.winner = "draw"
+            match.result_summary = "Match drawn — 5 days exhausted"
+            match.phase = "complete"
+            _finalise_test(console, match, engine)
+            return
+        team_a_country = match.innings_list[0].batting_country
+        team_b_country = match.innings_list[1].batting_country
+        a_total = match.innings_list[0].runs + match.innings_list[2].runs
+        b_so_far = match.innings_list[1].runs
+        target = a_total - b_so_far + 1
+        end_of_innings_pause("the fourth innings (chase)")
+
+        # --- Innings 4 (B chases) ---
+        bat_country = team_b_country
+        b4_meta = match.opponent if bat_country == match.opponent.country else match.user_team
+        bowl_meta4 = match.user_team if bat_country == match.opponent.country else match.opponent
+        bat_xi4 = match.opponent_xi if bat_country == match.opponent.country else match.user_xi
+        bowl_xi4 = match.user_xi if bat_country == match.opponent.country else match.opponent_xi
+        bowl_pool4 = match.user_bowling_pool if bat_country == match.opponent.country else match.opponent_bowling_pool
+        user_batting4 = (bat_country == match.user_team.country)
+        inn4 = _build_innings(match=match, batting_country=b4_meta, bowling_country=bowl_meta4,
+                              batting_xi=bat_xi4, bowling_xi=bowl_xi4, bowling_pool=bowl_pool4,
+                              target=target)
+        match.add_innings(inn4)
+        _run_innings(console, match, engine, inn4, user_is_batting=user_batting4)
+        _resolve_test_result(match)
+
+    _finalise_test(console, match, engine)
+
+
+def _resolve_test_result(match: Match) -> None:
+    """Determine Test result after innings 4 completes (chase / bowl out / draw)."""
+    inn4 = match.innings_list[-1]
+    target = inn4.target or 0
+    if inn4.runs >= target:
+        # Chase complete
+        wickets_left = inn4.wickets_limit - inn4.wickets
+        match.winner = "user" if inn4.batting_country == match.user_team.country else "opponent"
+        match.result_summary = f"{inn4.batting_country} won by {wickets_left} wickets"
+    elif inn4.wickets >= inn4.wickets_limit:
+        # Bowled out short
+        margin = target - 1 - inn4.runs
+        match.winner = "user" if inn4.bowling_country == match.user_team.country else "opponent"
+        match.result_summary = f"{inn4.bowling_country} won by {margin} runs"
+    else:
+        # Time/balls exhausted
+        match.winner = "draw"
+        match.result_summary = "Match drawn"
+    match.phase = "complete"
+
+
+def _finalise_test(console: Console, match: Match, engine: CommentaryEngine) -> None:
+    _award_pom(match)
+    ui_cli.render_frame(console, match, engine)
+    ui_scoreboard.render_match_summary(console, match)
+    for inn in match.innings_list:
+        ui_scoreboard.render_detailed(console, match, inn)
+    stats_io.record_match(match)
+    save_io.save_match(match, name="auto")
+    console.print(Text("  Press any key to return to menu...", style="dim italic"))
+    read_key()
+
+
 def _run_super_over(console: Console, match: Match, engine: CommentaryEngine) -> None:
     """1-over super over. User bats first by default."""
     console.print(Panel(Text("⚡ SUPER OVER ⚡", style="bold magenta"), border_style="magenta"))
@@ -738,9 +1051,45 @@ def _show_stats(console: Console) -> None:
         console.print("[dim]  No matches recorded yet.[/dim]")
         ui_prompts.confirm_continue(console)
         return
-    console.print(Panel(Text(f"Career stats — {len(matches)} matches", style="bold"), border_style="cyan"))
-    for m in matches[-20:]:
-        console.print(f"  {m.get('completed_at', '?')}  {m.get('format')}  {m.get('user_team')} vs {m.get('opponent')}  →  [bold]{m.get('result')}[/bold]")
+    agg = stats_io.aggregate()
+    console.print(Panel(Text(f"Career stats — {agg['total_matches']} matches", style="bold cyan"), border_style="cyan"))
+    console.print(f"  W [green]{agg['wins']}[/green]  ·  L [red]{agg['losses']}[/red]  ·  T {agg['ties']}  ·  Draw {agg['draws']}  ·  PoTM × {agg['pom_count']}  ·  Best streak: {agg['longest_winning_streak']}")
+
+    if agg["by_format"]:
+        console.print()
+        console.print(Text("By format:", style="bold"))
+        for fmt, row in agg["by_format"].items():
+            console.print(f"  [yellow]{fmt:6}[/yellow]  {row['played']} pld   {row['wins']}w  {row['losses']}l  {row['draws']}d  {row['ties']}t")
+
+    if agg["highest_team_total"]:
+        runs, country, fmt = agg["highest_team_total"]
+        console.print()
+        console.print(f"  Highest team total: [bold]{runs}[/bold] by {country} ({fmt})")
+    if agg["highest_individual"]:
+        runs, pid, country, fmt = agg["highest_individual"]
+        console.print(f"  Highest individual: [bold]{runs}[/bold] by player #{pid} ({country}, {fmt})")
+
+    if agg["head_to_head"]:
+        console.print()
+        console.print(Text("Head-to-head (top 10):", style="bold"))
+        h2h_sorted = sorted(agg["head_to_head"].items(), key=lambda kv: -(kv[1]["wins"] + kv[1]["losses"]))[:10]
+        for opp, row in h2h_sorted:
+            console.print(f"  vs {opp:24} {row['wins']}w  {row['losses']}l  {row['draws']}d  {row['ties']}t")
+
+    if agg["top_run_scorers"]:
+        console.print()
+        console.print(Text("Top run-scorers (your team):", style="bold"))
+        for entry in agg["top_run_scorers"][:5]:
+            console.print(f"  player #{entry['player_id']} ({entry['country']}) — {entry['runs']} runs in {entry['matches']} matches")
+    if agg["top_wicket_takers"]:
+        console.print(Text("Top wicket-takers (your team):", style="bold"))
+        for entry in agg["top_wicket_takers"][:5]:
+            console.print(f"  player #{entry['player_id']} ({entry['country']}) — {entry['wickets']} wickets in {entry['matches']} matches")
+
+    console.print()
+    console.print(Text("Recent matches:", style="bold"))
+    for m in matches[-10:]:
+        console.print(f"  {m.get('completed_at', '?')}  [yellow]{m.get('format'):6}[/yellow]  {m.get('user_team')} vs {m.get('opponent')}  →  [bold]{m.get('result')}[/bold]")
     ui_prompts.confirm_continue(console)
 
 

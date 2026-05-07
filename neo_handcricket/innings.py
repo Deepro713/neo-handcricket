@@ -88,6 +88,8 @@ class Innings:
     nonstriker_idx: int = 1
     next_batter_idx: int = 2
 
+    declared: bool = False              # captain declared (Test only)
+
     current_bowler_id: int | None = None
     current_over_balls: int = 0         # legal balls bowled in current over
     current_over_runs: int = 0
@@ -121,6 +123,8 @@ class Innings:
 
     @property
     def is_complete(self) -> bool:
+        if self.declared:
+            return True
         if self.wickets >= self.wickets_limit:
             return True
         if self.overs_limit is not None and self.balls >= self.overs_limit * 6:

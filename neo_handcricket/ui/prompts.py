@@ -112,8 +112,7 @@ def select_format(console: Console) -> Format:
         if ch == "3":
             return PRESETS["ODI"]
         if ch == "4":
-            console.print("[yellow]  Test mode is scaffolded only in v1. Falling back to ODI for the playable engine.[/yellow]")
-            return PRESETS["ODI"]
+            return PRESETS["Test"]
         if ch == "5":
             return custom_mode_wizard(console)
 

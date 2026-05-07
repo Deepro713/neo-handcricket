@@ -1,148 +1,444 @@
-"""Commentary line templates keyed by situation, tagged by traits.
+"""Commentary line templates — keyed by situation × turn.
+
+Each ball produces 2-3 lines that flow as a conversation across commentators.
+Lines are split into "turns":
+  - opener   : initial reaction to the ball
+  - analysis : what just happened, technical / contextual
+  - quip     : optional lighter response, callback, or aside
+
+Each turn has its own template pool, with trait tags for commentator-personality
+matching. The engine picks lines turn-by-turn, ensuring different commentators
+deliver successive turns when possible.
 
 Placeholders: {batter} {bowler} {runs} {score} {wickets} {over} {target}
               {country} {opponent} {bowling_country} {batting_country}
-              {extras} {extra_kind} {wicket_kind}
+              {extras} {extra_kind} {wicket_kind} {batter_runs} {result_summary}
 """
 from __future__ import annotations
 
-LINES: dict[str, list[dict]] = {
-    # --- normal balls ---
-    "ball_dot": [
-        {"text": "Dot ball. {batter} keeps it out.", "tags": ["serious", "dry"]},
-        {"text": "Watchful from {batter}. Nothing happening there.", "tags": ["serious", "technical"]},
-        {"text": "{batter} blocks that one like it owed him money.", "tags": ["hilarious", "casual"]},
-        {"text": "A dot. The bowler's pleased. {batter}, less so.", "tags": ["dry"]},
-        {"text": "Solid defence. The kind your dad would approve of.", "tags": ["hilarious", "casual"]},
-        {"text": "{bowler} on the money. {batter} sees it through.", "tags": ["technical"]},
-    ],
-    "ball_run_1": [
-        {"text": "Single. {runs} run, easy as you like.", "tags": ["casual"]},
-        {"text": "Worked away for one. Strike rotated.", "tags": ["technical"]},
-        {"text": "Just a single — but in cricket that's a small victory.", "tags": ["serious", "traditional"]},
-        {"text": "Nudged for one. {batter} on {batter_runs}.", "tags": ["technical"]},
-    ],
-    "ball_run_2": [
-        {"text": "Two runs! Sharp running.", "tags": ["extrovert", "casual"]},
-        {"text": "Pushed into the gap, comes back for a comfortable two.", "tags": ["technical"]},
-        {"text": "Couple of runs. Every one counts.", "tags": ["dry"]},
-    ],
-    "ball_run_3": [
-        {"text": "Three! Now THAT was a run.", "tags": ["extrovert", "theatrical"]},
-        {"text": "Three runs — the rare and majestic three.", "tags": ["hilarious", "dry"]},
-        {"text": "Drilled into the gap, three completed.", "tags": ["technical"]},
-    ],
-    "ball_run_4": [
-        {"text": "FOUR! Cracking shot from {batter}!", "tags": ["extrovert", "theatrical"]},
-        {"text": "That's a boundary. Four runs to {batting_country}.", "tags": ["serious", "technical"]},
-        {"text": "Beautifully timed — that's racing away for four.", "tags": ["technical", "traditional"]},
-        {"text": "FOUR! {batter} just told the bowler to sit down.", "tags": ["hilarious", "extrovert"]},
-        {"text": "Pinged through the covers. Bowler not happy.", "tags": ["casual"]},
-    ],
-    "ball_run_5": [
-        {"text": "Five runs from that one — unusual.", "tags": ["dry"]},
-        {"text": "Five! The kind of running you'd see in a relay.", "tags": ["hilarious"]},
-    ],
-    "ball_run_6": [
-        {"text": "SIX! Out of the ground!", "tags": ["extrovert", "theatrical"]},
-        {"text": "MAXIMUM! {batter} has gone enormous!", "tags": ["extrovert", "theatrical"]},
-        {"text": "Six runs. {batter} swung — and connected.", "tags": ["technical"]},
-        {"text": "He's hit it into the next post code!", "tags": ["hilarious", "extrovert"]},
-        {"text": "OH. MY. WORD. That's a six and a half.", "tags": ["theatrical"]},
-        {"text": "Towering hit. {batter} now on {batter_runs}.", "tags": ["serious", "technical"]},
-    ],
+# Each situation maps to a dict of turn -> list of templates.
+# A "template" is {"text": ..., "tags": [...]}
 
-    # --- wickets ---
-    "wicket_match": [
-        {"text": "MATCH! Same number from both — {batter} is GONE!", "tags": ["extrovert", "theatrical"]},
-        {"text": "Wicket! Number-match dismissal. {batter} departs for {batter_runs}.", "tags": ["serious", "technical"]},
-        {"text": "Read the bowler perfectly — sadly, the bowler also read him.", "tags": ["hilarious", "dry"]},
-        {"text": "OUT! {bowler} pulls one out of the bag. {batter} walks back.", "tags": ["theatrical"]},
-        {"text": "And that, friends, is what they call a hand-cricket dismissal.", "tags": ["hilarious", "casual"]},
-    ],
-    "wicket_bowled": [
-        {"text": "BOWLED HIM! Stumps everywhere!", "tags": ["extrovert", "theatrical"]},
-        {"text": "Castled. {batter} timed out and {bowler} cleaned him up.", "tags": ["technical"]},
-        {"text": "BOWLED! Wood splintered, dignity bruised.", "tags": ["hilarious", "theatrical"]},
-    ],
-    "wicket_lbw": [
-        {"text": "LBW! Plumb in front!", "tags": ["extrovert", "theatrical"]},
-        {"text": "Adjudged LBW. The umpire didn't even need a second look.", "tags": ["serious", "technical"]},
-        {"text": "Trapped! {batter} dozed off and the ball didn't.", "tags": ["hilarious", "dry"]},
-    ],
+LINES: dict[str, dict[str, list[dict]]] = {
 
-    # --- extras ---
-    "wide": [
-        {"text": "Wide. {extras} extra to {batting_country}.", "tags": ["technical"]},
-        {"text": "That was a country mile away from the stumps.", "tags": ["hilarious", "casual"]},
-        {"text": "Sprayed wide. {bowler} wants that one back.", "tags": ["dry"]},
-    ],
-    "no_ball": [
-        {"text": "No-ball! Free hit coming.", "tags": ["extrovert", "technical"]},
-        {"text": "Overstepped. {bowler} owes the team an apology.", "tags": ["hilarious", "dry"]},
-    ],
-    "dead_ball": [
-        {"text": "Dead ball. We'll go again.", "tags": ["technical"]},
-        {"text": "Umpire calls dead ball. Take a breath, everyone.", "tags": ["dry"]},
-        {"text": "Dead ball. Don't ask why. The umpire said so.", "tags": ["hilarious", "dry"]},
-    ],
-    "byes": [
-        {"text": "Byes! {extras} runs sneak through.", "tags": ["casual"]},
-        {"text": "The keeper waves at it as it goes past.", "tags": ["hilarious"]},
-    ],
-    "leg_byes": [
-        {"text": "Leg byes — {extras} away.", "tags": ["technical"]},
-    ],
+    # =========================================================================
+    # ball_dot — defended / left alone / no run
+    # =========================================================================
+    "ball_dot": {
+        "opener": [
+            {"text": "Dot ball.", "tags": ["dry"]},
+            {"text": "And blocked.", "tags": ["dry"]},
+            {"text": "Defended into the pitch.", "tags": ["technical"]},
+            {"text": "Watchful from {batter}.", "tags": ["serious", "technical"]},
+            {"text": "{batter} blocks one out.", "tags": ["casual"]},
+            {"text": "No run.", "tags": ["dry", "minimal"]},
+            {"text": "Plays it back gently.", "tags": ["technical"]},
+            {"text": "{bowler} draws him forward — defended.", "tags": ["technical"]},
+        ],
+        "analysis": [
+            {"text": "{batter} just wanted to see one through there. Sensible cricket.", "tags": ["serious", "traditional"]},
+            {"text": "That's the kind of ball you get out trying to hit.", "tags": ["technical"]},
+            {"text": "Good length, on the stumps — not a bad ball at all.", "tags": ["technical"]},
+            {"text": "He's keeping things simple. Score is {score}, can't take risks here.", "tags": ["serious", "technical"]},
+            {"text": "{bowler} probing, {batter} respecting it.", "tags": ["technical"]},
+            {"text": "Tidy from {bowler}. Building pressure ball-by-ball.", "tags": ["technical"]},
+            {"text": "Patient. The fielding side will take that all day.", "tags": ["serious"]},
+            {"text": "It's a chess match in the middle right now.", "tags": ["theatrical"]},
+        ],
+        "quip": [
+            {"text": "Riveting stuff.", "tags": ["dry", "hilarious"]},
+            {"text": "I've seen more excitement in a tax form, but cricket's a long game.", "tags": ["hilarious", "dry"]},
+            {"text": "Solid defence. Your dad would approve.", "tags": ["hilarious", "casual"]},
+            {"text": "If only someone had told the bowler that's not a plan.", "tags": ["hilarious", "dry"]},
+            {"text": "{batter} treating that like a precious heirloom.", "tags": ["hilarious"]},
+            {"text": "Both teams are playing as though they've forgotten who's batting.", "tags": ["hilarious", "dry"]},
+        ],
+    },
 
-    # --- transitions ---
-    "over_start": [
-        {"text": "Start of over {over_num}. {bowler} into his run-up.", "tags": ["technical"]},
-        {"text": "New over. {bowler} marks his run.", "tags": ["dry"]},
-        {"text": "Over {over_num}. Let's see what {bowler} has cooked up.", "tags": ["hilarious"]},
-    ],
-    "over_end": [
-        {"text": "End of the over. {batting_country} {score}.", "tags": ["technical"]},
-        {"text": "And that's drinks on the over. {batting_country} {score}.", "tags": ["traditional"]},
-    ],
-    "milestone_50": [
-        {"text": "FIFTY! {batter} brings up the half-century.", "tags": ["extrovert", "theatrical"]},
-        {"text": "Fifty for {batter} — quietly compiled.", "tags": ["serious", "technical"]},
-        {"text": "Half-century! {batter} has not been having a normal one.", "tags": ["hilarious"]},
-    ],
-    "milestone_100": [
-        {"text": "HUNDRED! {batter} reaches three figures!", "tags": ["extrovert", "theatrical"]},
-        {"text": "A century. Hat off to {batter}.", "tags": ["serious", "traditional"]},
-    ],
-    "innings_end": [
-        {"text": "End of innings. {batting_country} all out / overs done at {score}.", "tags": ["technical"]},
-        {"text": "And that's that. {batting_country} sign off at {score}.", "tags": ["dry"]},
-    ],
-    "match_end": [
-        {"text": "{result_summary}. Tip of the cap to both sides.", "tags": ["traditional", "serious"]},
-        {"text": "{result_summary}. What a contest!", "tags": ["extrovert"]},
-        {"text": "{result_summary}. I, for one, need a lie down.", "tags": ["hilarious", "dry"]},
-    ],
+    # =========================================================================
+    # ball_run_1 — single
+    # =========================================================================
+    "ball_run_1": {
+        "opener": [
+            {"text": "Single. {runs} run.", "tags": ["casual"]},
+            {"text": "Nudged for one.", "tags": ["technical"]},
+            {"text": "Worked away — single.", "tags": ["technical"]},
+            {"text": "Pushed into the gap, easy single.", "tags": ["casual"]},
+            {"text": "Just a single, but they'll take it.", "tags": ["dry"]},
+        ],
+        "analysis": [
+            {"text": "Strike rotated. {batter} now on {batter_runs}.", "tags": ["technical"]},
+            {"text": "Singles like this build innings. {batting_country} {score}.", "tags": ["serious", "traditional"]},
+            {"text": "Smart cricket. Get off strike, give the partner a look.", "tags": ["technical"]},
+            {"text": "Quick between the wickets — a single off a defensive shot.", "tags": ["technical"]},
+            {"text": "{bowler} happy enough conceding singles.", "tags": ["technical"]},
+        ],
+        "quip": [
+            {"text": "The most unsung run in cricket — and yet, the most cherished.", "tags": ["theatrical"]},
+            {"text": "If you can't hit a six, run a single. {batter} agrees.", "tags": ["hilarious", "casual"]},
+            {"text": "One run. The romantic in me thrills.", "tags": ["hilarious", "dry"]},
+        ],
+    },
 
-    # --- Antarctica special (kicks in when penguins are on the field) ---
-    "antarctica_special": [
-        {"text": "{batter} waddles to the crease. There is a great deal of dignity in the wobble.", "tags": ["hilarious", "theatrical"]},
-        {"text": "{bowler} into the run-up — really more of a slide, technically.", "tags": ["hilarious", "casual"]},
-        {"text": "The Antarctica skipper calls a quick fielding meeting. Many penguins. Few decisions.", "tags": ["hilarious", "extrovert"]},
-        {"text": "I have been told that the Antarctica players prefer their pitches at minus six.", "tags": ["hilarious", "dry"]},
-        {"text": "And there's a herring on the field. We'll wait while it's removed.", "tags": ["hilarious", "theatrical"]},
-        {"text": "{batter} just stared at the ball as it went past. To be fair, he's a penguin.", "tags": ["hilarious", "dry"]},
-        {"text": "The Antarctica wicketkeeper is currently lying on his belly. Tactical, apparently.", "tags": ["hilarious"]},
-        {"text": "{batter} attempts a single — slips, slides, and ends up safely back in the crease.", "tags": ["hilarious", "theatrical"]},
-        {"text": "Tremendous form from the Antarctican tail. They've fallen over four times already.", "tags": ["hilarious", "dry"]},
-        {"text": "{bowler} bowls. The ball lands. The penguin claps. We move on.", "tags": ["hilarious", "casual"]},
-    ],
+    # =========================================================================
+    # ball_run_2 — twos
+    # =========================================================================
+    "ball_run_2": {
+        "opener": [
+            {"text": "Two runs!", "tags": ["extrovert"]},
+            {"text": "Comfortable couple.", "tags": ["technical"]},
+            {"text": "Pushed into the gap, comes back for two.", "tags": ["technical"]},
+            {"text": "Two!", "tags": ["casual"]},
+        ],
+        "analysis": [
+            {"text": "Sharp running between the wickets there.", "tags": ["technical"]},
+            {"text": "Couple of runs. {batting_country} {score}.", "tags": ["technical"]},
+            {"text": "Found the gap perfectly. The fielder had no chance.", "tags": ["theatrical", "technical"]},
+        ],
+        "quip": [
+            {"text": "Two! Like a one, but doubled.", "tags": ["hilarious", "dry"]},
+            {"text": "More than a single, less than a three. They'll take it.", "tags": ["hilarious", "dry"]},
+        ],
+    },
 
-    # --- callbacks (filled by engine) ---
-    "callback": [
-        {"text": "And remember earlier in over {prev_over} when {prev_batter} did exactly the same? Pattern emerging.", "tags": ["technical", "serious"]},
-        {"text": "Reminds me of {prev_event_short} a few overs back.", "tags": ["dry", "casual"]},
-        {"text": "As I was saying about {prev_batter} earlier — they really do love that shot.", "tags": ["hilarious", "casual"]},
-    ],
+    # =========================================================================
+    # ball_run_3 — threes
+    # =========================================================================
+    "ball_run_3": {
+        "opener": [
+            {"text": "Three runs! Now THAT was a run.", "tags": ["extrovert", "theatrical"]},
+            {"text": "Three! Hard running.", "tags": ["extrovert"]},
+            {"text": "Drilled into the gap, three completed.", "tags": ["technical"]},
+        ],
+        "analysis": [
+            {"text": "Beat the fielder to the rope by an inch.", "tags": ["theatrical"]},
+            {"text": "Three runs and they're knackered.", "tags": ["hilarious", "casual"]},
+            {"text": "{batter} on {batter_runs} now. Building.", "tags": ["technical"]},
+        ],
+        "quip": [
+            {"text": "The rare and majestic three. Always satisfying.", "tags": ["hilarious", "dry"]},
+            {"text": "I haven't seen running like that since the 90s.", "tags": ["hilarious", "traditional"]},
+        ],
+    },
+
+    # =========================================================================
+    # ball_run_4 — boundary four
+    # =========================================================================
+    "ball_run_4": {
+        "opener": [
+            {"text": "FOUR! Cracking shot from {batter}!", "tags": ["extrovert", "theatrical"]},
+            {"text": "Boundary! Four runs!", "tags": ["extrovert"]},
+            {"text": "PINGED through the covers!", "tags": ["extrovert", "theatrical"]},
+            {"text": "FOUR! That's racing away!", "tags": ["extrovert"]},
+            {"text": "Beautifully timed — that's four.", "tags": ["technical", "traditional"]},
+            {"text": "Four runs to {batting_country}.", "tags": ["serious", "technical"]},
+        ],
+        "analysis": [
+            {"text": "Picked the gap, beat the fielder, all class.", "tags": ["technical"]},
+            {"text": "{bowler} gave him room and {batter} didn't miss out.", "tags": ["technical"]},
+            {"text": "The best shot of the over. {batter} on {batter_runs}.", "tags": ["technical"]},
+            {"text": "Right out of the middle. Always going.", "tags": ["theatrical", "technical"]},
+            {"text": "{batting_country} {score} — and the game is shifting.", "tags": ["serious", "technical"]},
+        ],
+        "quip": [
+            {"text": "{batter} just told the bowler to sit down.", "tags": ["hilarious", "extrovert"]},
+            {"text": "{bowler} did not enjoy that. Not one bit.", "tags": ["hilarious", "dry"]},
+            {"text": "If the boundary rope was a person, it would have got out of the way.", "tags": ["hilarious", "theatrical"]},
+            {"text": "That's the kind of shot you put on a postcard.", "tags": ["hilarious"]},
+        ],
+    },
+
+    # =========================================================================
+    # ball_run_5 — fives (rare in real cricket; possible in hand cricket)
+    # =========================================================================
+    "ball_run_5": {
+        "opener": [
+            {"text": "Five runs from that one — unusual!", "tags": ["dry"]},
+            {"text": "Five! Where did they come from?", "tags": ["extrovert"]},
+        ],
+        "analysis": [
+            {"text": "Five — overthrows, presumably. Or a generous umpire.", "tags": ["hilarious", "dry"]},
+            {"text": "{batter} on {batter_runs}. The five is rarer than the unicorn.", "tags": ["hilarious"]},
+        ],
+        "quip": [
+            {"text": "I've covered a thousand matches and seen maybe four fives.", "tags": ["hilarious", "dry"]},
+            {"text": "Cricket gives, cricket takes. Today it gave a five.", "tags": ["theatrical"]},
+        ],
+    },
+
+    # =========================================================================
+    # ball_run_6 — six
+    # =========================================================================
+    "ball_run_6": {
+        "opener": [
+            {"text": "SIX! Out of the ground!", "tags": ["extrovert", "theatrical"]},
+            {"text": "MAXIMUM! {batter} has gone enormous!", "tags": ["extrovert", "theatrical"]},
+            {"text": "OH. MY. WORD!", "tags": ["theatrical"]},
+            {"text": "SIX RUNS! That is huge!", "tags": ["extrovert"]},
+            {"text": "Towering hit. Six runs.", "tags": ["serious", "technical"]},
+        ],
+        "analysis": [
+            {"text": "He swung from the hips and connected sweetly.", "tags": ["technical"]},
+            {"text": "{batter} now on {batter_runs}. Foot to floor here.", "tags": ["technical"]},
+            {"text": "Right out of the screws. Long handle, full flow.", "tags": ["technical", "theatrical"]},
+            {"text": "{bowler} pitched it up and got punished.", "tags": ["technical"]},
+            {"text": "{batting_country} {score} — the momentum is shifting decisively.", "tags": ["serious"]},
+        ],
+        "quip": [
+            {"text": "He's hit it into the next post code!", "tags": ["hilarious", "extrovert"]},
+            {"text": "Find that ball, send it to the museum.", "tags": ["hilarious", "theatrical"]},
+            {"text": "If that hits anything taller than a fence post, it's still going up.", "tags": ["hilarious", "extrovert"]},
+            {"text": "{bowler} should send the ball a postcard from wherever it lands.", "tags": ["hilarious"]},
+            {"text": "That ball has plans. Big plans.", "tags": ["hilarious"]},
+        ],
+    },
+
+    # =========================================================================
+    # wicket_match — number-match dismissal (most common in hand cricket)
+    # =========================================================================
+    "wicket_match": {
+        "opener": [
+            {"text": "MATCH! Same number from both — {batter} is GONE!", "tags": ["extrovert", "theatrical"]},
+            {"text": "WICKET! Hand-cricket classic — they read each other!", "tags": ["extrovert"]},
+            {"text": "OUT! Bowler and batter tie — {batter} departs.", "tags": ["technical"]},
+            {"text": "GONE! {batter} dismissed for {batter_runs}.", "tags": ["extrovert"]},
+            {"text": "And that's the wicket {bowler} has been hunting.", "tags": ["serious", "technical"]},
+        ],
+        "analysis": [
+            {"text": "Both showed the same number. {batter} walks back for {batter_runs}.", "tags": ["technical"]},
+            {"text": "{bowler} read him. Or {batter} read the bowler. Either way — out.", "tags": ["technical"]},
+            {"text": "{batting_country} {score} — that's a sizeable hole in the innings.", "tags": ["serious"]},
+            {"text": "The wicket falls and {batting_country} need a steadier hand now.", "tags": ["serious", "traditional"]},
+            {"text": "Pressure builds. {bowler} grins.", "tags": ["theatrical"]},
+        ],
+        "quip": [
+            {"text": "Two minds, one number. That's how it always ends.", "tags": ["hilarious", "dry"]},
+            {"text": "Read the bowler perfectly — sadly, the bowler also read him.", "tags": ["hilarious", "dry"]},
+            {"text": "And that, friends, is what they call a hand-cricket dismissal.", "tags": ["hilarious", "casual"]},
+            {"text": "Cruel game, hand cricket. Nowhere to hide.", "tags": ["hilarious", "dry"]},
+        ],
+    },
+
+    # =========================================================================
+    # wicket_bowled — timeout outcome bowled
+    # =========================================================================
+    "wicket_bowled": {
+        "opener": [
+            {"text": "BOWLED HIM! Stumps everywhere!", "tags": ["extrovert", "theatrical"]},
+            {"text": "CASTLED!", "tags": ["extrovert"]},
+            {"text": "BOWLED! Wood splintered.", "tags": ["theatrical"]},
+            {"text": "Beat him all ends up. BOWLED.", "tags": ["technical"]},
+        ],
+        "analysis": [
+            {"text": "{batter} timed out and {bowler} cleaned him up.", "tags": ["technical"]},
+            {"text": "He never picked it. Stone dead.", "tags": ["technical"]},
+            {"text": "{batter} departs for {batter_runs}. Big one for {bowling_country}.", "tags": ["serious"]},
+        ],
+        "quip": [
+            {"text": "Wood splintered. Dignity bruised. Everything as it should be.", "tags": ["hilarious", "theatrical"]},
+            {"text": "{batter} just heard the death rattle and felt every bit of it.", "tags": ["hilarious"]},
+        ],
+    },
+
+    # =========================================================================
+    # wicket_lbw
+    # =========================================================================
+    "wicket_lbw": {
+        "opener": [
+            {"text": "LBW! Plumb in front!", "tags": ["extrovert", "theatrical"]},
+            {"text": "GIVEN! Leg before!", "tags": ["extrovert"]},
+            {"text": "Adjudged LBW. The umpire didn't even need a second look.", "tags": ["serious", "technical"]},
+        ],
+        "analysis": [
+            {"text": "Hit him on the pad in line, going on with the arm.", "tags": ["technical"]},
+            {"text": "{batter} dozed off and the ball didn't.", "tags": ["hilarious", "dry"]},
+            {"text": "Trapped. Big shout, finger up. Done.", "tags": ["technical"]},
+        ],
+        "quip": [
+            {"text": "There are old bowlers and there are bold bowlers — but only some old, bold bowlers get LBW.", "tags": ["hilarious", "traditional"]},
+            {"text": "I'm not sure {batter} even saw it. The umpire certainly did.", "tags": ["hilarious", "dry"]},
+        ],
+    },
+
+    # =========================================================================
+    # wide
+    # =========================================================================
+    "wide": {
+        "opener": [
+            {"text": "Wide. {extras} extra to {batting_country}.", "tags": ["technical"]},
+            {"text": "Sprayed wide.", "tags": ["dry"]},
+            {"text": "Wide called.", "tags": ["technical", "minimal"]},
+        ],
+        "analysis": [
+            {"text": "{bowler} wants that one back.", "tags": ["dry"]},
+            {"text": "Free run for the batting side. Pressure released.", "tags": ["technical"]},
+        ],
+        "quip": [
+            {"text": "That was a country mile away from the stumps.", "tags": ["hilarious", "casual"]},
+            {"text": "{bowler} aimed at the cones and missed the practice ground.", "tags": ["hilarious"]},
+        ],
+    },
+
+    # =========================================================================
+    # no_ball
+    # =========================================================================
+    "no_ball": {
+        "opener": [
+            {"text": "No-ball! Free hit coming.", "tags": ["extrovert", "technical"]},
+            {"text": "Overstepped — no-ball!", "tags": ["technical"]},
+        ],
+        "analysis": [
+            {"text": "{bowler} owes the team an apology.", "tags": ["hilarious", "dry"]},
+            {"text": "And {batter} gets a freebie next ball.", "tags": ["technical"]},
+        ],
+        "quip": [
+            {"text": "I once met a fast bowler who couldn't tell me where the line was. {bowler} would relate.", "tags": ["hilarious", "traditional"]},
+        ],
+    },
+
+    # =========================================================================
+    # dead_ball
+    # =========================================================================
+    "dead_ball": {
+        "opener": [
+            {"text": "Dead ball. We'll go again.", "tags": ["technical"]},
+            {"text": "Umpire calls dead ball.", "tags": ["dry"]},
+        ],
+        "analysis": [
+            {"text": "Take a breath, everyone.", "tags": ["dry"]},
+            {"text": "Reset. Replay. Cricket continues.", "tags": ["traditional"]},
+        ],
+        "quip": [
+            {"text": "Dead ball. Don't ask why. The umpire said so.", "tags": ["hilarious", "dry"]},
+        ],
+    },
+
+    # =========================================================================
+    # byes / leg-byes
+    # =========================================================================
+    "byes": {
+        "opener": [
+            {"text": "Byes! {extras} runs sneak through.", "tags": ["casual"]},
+            {"text": "Through the keeper for {extras}.", "tags": ["technical"]},
+        ],
+        "analysis": [{"text": "The keeper waves at it as it goes past.", "tags": ["hilarious"]}],
+        "quip":     [{"text": "If you're going to miss, miss decisively.", "tags": ["hilarious", "dry"]}],
+    },
+    "leg_byes": {
+        "opener":   [{"text": "Leg byes — {extras} away.", "tags": ["technical"]}],
+        "analysis": [{"text": "Off the pad and they run.", "tags": ["technical"]}],
+        "quip":     [{"text": "Cricket's most polite form of run.", "tags": ["hilarious", "dry"]}],
+    },
+
+    # =========================================================================
+    # over transitions
+    # =========================================================================
+    "over_start": {
+        "opener": [
+            {"text": "Start of over {over_num}. {bowler} into his run-up.", "tags": ["technical"]},
+            {"text": "New over — {bowler} marks his run.", "tags": ["dry"]},
+            {"text": "Over {over_num}. Let's see what {bowler} has cooked up.", "tags": ["hilarious"]},
+        ],
+        "analysis": [],
+        "quip": [],
+    },
+    "over_end": {
+        "opener": [
+            {"text": "End of the over. {batting_country} {score}.", "tags": ["technical"]},
+            {"text": "And that's drinks on the over.", "tags": ["traditional"]},
+        ],
+        "analysis": [],
+        "quip": [],
+    },
+
+    # =========================================================================
+    # milestones
+    # =========================================================================
+    "milestone_50": {
+        "opener": [
+            {"text": "FIFTY! {batter} brings up the half-century!", "tags": ["extrovert", "theatrical"]},
+            {"text": "Fifty for {batter} — quietly compiled.", "tags": ["serious", "technical"]},
+        ],
+        "analysis": [
+            {"text": "A serious knock from {batter}, exactly when {batting_country} needed it.", "tags": ["serious"]},
+            {"text": "Half-century. {batter} acknowledges the dressing room.", "tags": ["traditional"]},
+        ],
+        "quip": [
+            {"text": "{batter} has not been having a normal one.", "tags": ["hilarious"]},
+            {"text": "Bat raised. Helmet off. The classics endure.", "tags": ["traditional", "theatrical"]},
+        ],
+    },
+    "milestone_100": {
+        "opener": [
+            {"text": "HUNDRED! {batter} reaches three figures!", "tags": ["extrovert", "theatrical"]},
+            {"text": "A century. Hat off to {batter}.", "tags": ["serious", "traditional"]},
+        ],
+        "analysis": [
+            {"text": "An innings of true class. {batter} on {batter_runs} — and counting.", "tags": ["serious", "traditional"]},
+        ],
+        "quip": [
+            {"text": "I'd buy a print of that knock.", "tags": ["hilarious"]},
+        ],
+    },
+
+    # =========================================================================
+    # match end
+    # =========================================================================
+    "innings_end": {
+        "opener": [
+            {"text": "End of innings. {batting_country} sign off at {score}.", "tags": ["technical"]},
+            {"text": "And that's that. Innings closes at {score}.", "tags": ["dry"]},
+        ],
+        "analysis": [],
+        "quip": [],
+    },
+    "match_end": {
+        "opener": [
+            {"text": "{result_summary}. Tip of the cap to both sides.", "tags": ["traditional", "serious"]},
+            {"text": "{result_summary}. What a contest!", "tags": ["extrovert"]},
+            {"text": "{result_summary}. I, for one, need a lie down.", "tags": ["hilarious", "dry"]},
+        ],
+        "analysis": [],
+        "quip": [],
+    },
+
+    # =========================================================================
+    # Antarctica special — the penguins!
+    # =========================================================================
+    "antarctica_special": {
+        "opener": [
+            {"text": "{batter} waddles to the crease. There is great dignity in the wobble.", "tags": ["hilarious", "theatrical"]},
+            {"text": "{bowler} into the run-up — really more of a slide, technically.", "tags": ["hilarious", "casual"]},
+            {"text": "And there's a herring on the field. We'll wait.", "tags": ["hilarious", "theatrical"]},
+            {"text": "{batter} just stared at the ball. To be fair, he's a penguin.", "tags": ["hilarious", "dry"]},
+            {"text": "{bowler} bowls. The ball lands. The penguin claps. We move on.", "tags": ["hilarious", "casual"]},
+        ],
+        "analysis": [
+            {"text": "Tactical lying-down from the keeper. Very Antarctica.", "tags": ["hilarious"]},
+            {"text": "The Antarctica skipper called a meeting at gully. Many penguins. Few decisions.", "tags": ["hilarious", "extrovert"]},
+            {"text": "I'm told the Antarctica side prefers the pitch at minus six.", "tags": ["hilarious", "dry"]},
+        ],
+        "quip": [
+            {"text": "Tremendous form from the Antarctican tail. Four falls already.", "tags": ["hilarious", "dry"]},
+            {"text": "The crowd is mostly krill, but they're loving it.", "tags": ["hilarious"]},
+            {"text": "If I am being fair, the penguins have better fielding chemistry than half the Test sides.", "tags": ["hilarious", "casual"]},
+        ],
+    },
+
+    # =========================================================================
+    # callbacks (engine slots these into commentary occasionally)
+    # =========================================================================
+    "callback": {
+        "opener": [],
+        "analysis": [
+            {"text": "Remember earlier in over {prev_over} when {prev_batter} did exactly the same? Pattern emerging.", "tags": ["technical", "serious"]},
+            {"text": "As I mentioned in over {prev_over}, {prev_batter} loves that area.", "tags": ["technical", "casual"]},
+        ],
+        "quip": [
+            {"text": "Reminds me of {prev_event_short} a few overs back.", "tags": ["dry", "casual"]},
+            {"text": "If you missed the highlight reel from over {prev_over}, this is essentially that.", "tags": ["hilarious"]},
+        ],
+    },
 }
 
 
