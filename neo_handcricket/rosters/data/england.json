@@ -1,0 +1,314 @@
+{
+  "country": "England",
+  "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  "naming_convention": "given-family",
+  "players": [
+    {
+      "id": 1,
+      "name": "James Holloway",
+      "role": "captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 2,
+      "name": "Edward Whitfield",
+      "role": "vice-captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 3,
+      "name": "Charlie Marston",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 4,
+      "name": "Oliver Pendleton",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 5,
+      "name": "Henry Carrington",
+      "role": "keeper-reserve",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 6,
+      "name": "William Ashford",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 7,
+      "name": "Thomas Brierley",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 8,
+      "name": "George Hartwell",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 9,
+      "name": "Daniel Wakefield",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 10,
+      "name": "Joshua Stretton",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 11,
+      "name": "Samuel Pemberton",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 12,
+      "name": "Alfie Crowhurst",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 13,
+      "name": "Isaac Loxley",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 14,
+      "name": "Theo Pendlebury",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 15,
+      "name": "Matthew Linwood",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA swing",
+      "batting_archetype": null,
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 16,
+      "name": "Benjamin Truscott",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "RA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 17,
+      "name": "Harry Gainsborough",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 18,
+      "name": "Jacob Foulsham",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 19,
+      "name": "Ethan Marlborough",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 20,
+      "name": "Lewis Penhaligon",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 21,
+      "name": "Frederick Stoneham",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 22,
+      "name": "Albert Hindmarsh",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 23,
+      "name": "Reuben Whitaker",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 24,
+      "name": "Joseph Aldington",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 25,
+      "name": "Toby Ainsworth",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 26,
+      "name": "Dominic Wrightson",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 27,
+      "name": "Felix Caldwell",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 28,
+      "name": "Adrian Belmore",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 29,
+      "name": "Owen Penfold",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 30,
+      "name": "Nathaniel Buxton",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 31,
+      "name": "Rufus Hemingway",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 32,
+      "name": "Stanley Bridgeman",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 33,
+      "name": "Cyrus Whittington",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    }
+  ],
+  "staff": [
+    {
+      "role": "coach",
+      "name": "Geoffrey Whitcombe"
+    },
+    {
+      "role": "assistant_coach",
+      "name": "Martin Truscott"
+    }
+  ]
+}

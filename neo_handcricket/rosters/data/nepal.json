@@ -1,0 +1,314 @@
+{
+  "country": "Nepal",
+  "flag": "🇳🇵",
+  "naming_convention": "given-family",
+  "players": [
+    {
+      "id": 1,
+      "name": "Sandeep Karki",
+      "role": "captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 2,
+      "name": "Aarif Sherchan",
+      "role": "vice-captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 3,
+      "name": "Bibek Bhandari",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 4,
+      "name": "Pratish Adhikari",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 5,
+      "name": "Manish Limbu",
+      "role": "keeper-reserve",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 6,
+      "name": "Rohit Paudel",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 7,
+      "name": "Aasif Malla",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 8,
+      "name": "Kushal Tamang",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 9,
+      "name": "Sushil Rai",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 10,
+      "name": "Gyanendra Bista",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 11,
+      "name": "Lalit Shrestha",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 12,
+      "name": "Sumit Gurung",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 13,
+      "name": "Anil Saud",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 14,
+      "name": "Tribhuvan Joshi",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 15,
+      "name": "Karan Khadka",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 16,
+      "name": "Subash Magar",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 17,
+      "name": "Dipendra Tharu",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 18,
+      "name": "Bikram Pandit",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 19,
+      "name": "Lokesh Pokharel",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 20,
+      "name": "Ashish Shahi",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 21,
+      "name": "Niraj Acharya",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 22,
+      "name": "Rabin Maharjan",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 23,
+      "name": "Sanjay Khatri",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 24,
+      "name": "Pradeep Lama",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 25,
+      "name": "Gunjan Pun",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 26,
+      "name": "Shankar Dahal",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 27,
+      "name": "Hemant Pradhan",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 28,
+      "name": "Bibesh Tuladhar",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 29,
+      "name": "Asish Regmi",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 30,
+      "name": "Mohit Subedi",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 31,
+      "name": "Tilak Yadav",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 32,
+      "name": "Sangam Tamrakar",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 33,
+      "name": "Riteshwar Bohara",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    }
+  ],
+  "staff": [
+    {
+      "role": "coach",
+      "name": "Bishal Manandhar"
+    },
+    {
+      "role": "assistant_coach",
+      "name": "Suresh Sapkota"
+    }
+  ]
+}

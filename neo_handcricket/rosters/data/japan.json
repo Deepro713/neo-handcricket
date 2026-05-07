@@ -1,0 +1,314 @@
+{
+  "country": "Japan",
+  "flag": "🇯🇵",
+  "naming_convention": "family-given",
+  "players": [
+    {
+      "id": 1,
+      "name": "Sato Kazuma",
+      "role": "captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 2,
+      "name": "Tanaka Hiroshi",
+      "role": "vice-captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 3,
+      "name": "Suzuki Yuto",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 4,
+      "name": "Takahashi Ren",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 5,
+      "name": "Watanabe Daiki",
+      "role": "keeper-reserve",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 6,
+      "name": "Ito Haruto",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 7,
+      "name": "Yamamoto Sora",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 8,
+      "name": "Nakamura Riku",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 9,
+      "name": "Kobayashi Itsuki",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 10,
+      "name": "Kato Yuma",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 11,
+      "name": "Yoshida Asahi",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 12,
+      "name": "Yamada Kaito",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 13,
+      "name": "Hasegawa Akito",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 14,
+      "name": "Kondo Renji",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 15,
+      "name": "Sasaki Hayato",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 16,
+      "name": "Yamaguchi Masaki",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 17,
+      "name": "Matsumoto Tatsuki",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 18,
+      "name": "Inoue Souta",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 19,
+      "name": "Kimura Ryusei",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 20,
+      "name": "Hayashi Akira",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 21,
+      "name": "Shimizu Naoki",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 22,
+      "name": "Yamazaki Kakeru",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 23,
+      "name": "Mori Ayumu",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 24,
+      "name": "Abe Touma",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 25,
+      "name": "Ikeda Shun",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 26,
+      "name": "Hashimoto Junpei",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 27,
+      "name": "Yamashita Eiji",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 28,
+      "name": "Ishikawa Riku",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 29,
+      "name": "Nakajima Hinata",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 30,
+      "name": "Maeda Kazuki",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 31,
+      "name": "Fujita Tsubasa",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 32,
+      "name": "Goto Mitsuki",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 33,
+      "name": "Okada Toshiki",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    }
+  ],
+  "staff": [
+    {
+      "role": "coach",
+      "name": "Saito Tetsuya"
+    },
+    {
+      "role": "assistant_coach",
+      "name": "Fujimoto Hideo"
+    }
+  ]
+}

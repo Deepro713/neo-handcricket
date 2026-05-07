@@ -1,0 +1,314 @@
+{
+  "country": "Netherlands",
+  "flag": "🇳🇱",
+  "naming_convention": "given-family",
+  "players": [
+    {
+      "id": 1,
+      "name": "Pieter de Vries",
+      "role": "captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 2,
+      "name": "Sander van der Berg",
+      "role": "vice-captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 3,
+      "name": "Daan van Eyck",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 4,
+      "name": "Jasper Mulder",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 5,
+      "name": "Bram de Jong",
+      "role": "keeper-reserve",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 6,
+      "name": "Lars Hendriks",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 7,
+      "name": "Sjoerd Bakker",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 8,
+      "name": "Wouter Kuiper",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 9,
+      "name": "Maarten Visser",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "power-hitter",
+      "bowling_archetype": null
+    },
+    {
+      "id": 10,
+      "name": "Niels Boomsma",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 11,
+      "name": "Joost van Hees",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 12,
+      "name": "Roan Lemmens",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 13,
+      "name": "Tijs van der Linden",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "opener",
+      "bowling_archetype": null
+    },
+    {
+      "id": 14,
+      "name": "Sietse Bouwman",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 15,
+      "name": "Ravi Persaud",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 16,
+      "name": "Mees Holtkamp",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 17,
+      "name": "Jelle Bosma",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 18,
+      "name": "Cees Vermeulen",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 19,
+      "name": "Ruben de Wit",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 20,
+      "name": "Boudewijn Smit",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 21,
+      "name": "Koen van Dijk",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 22,
+      "name": "Floris Heuvel",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 23,
+      "name": "Casper de Boer",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 24,
+      "name": "Diederik Maas",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 25,
+      "name": "Vinai Ramnarine",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 26,
+      "name": "Stefan Cornelisse",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 27,
+      "name": "Thijs Verhagen",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 28,
+      "name": "Erwin Klaver",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 29,
+      "name": "Hugo Schipper",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 30,
+      "name": "Bas Klein",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 31,
+      "name": "Anil Persad",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 32,
+      "name": "Tom Verburg",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 33,
+      "name": "Reinout Postma",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    }
+  ],
+  "staff": [
+    {
+      "role": "coach",
+      "name": "Henk Buitenhuis"
+    },
+    {
+      "role": "assistant_coach",
+      "name": "Marten Bos"
+    }
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "country": "Antarctica",
+  "flag": "🐧",
+  "naming_convention": "given-family",
+  "players": [
+    {
+      "id": 1,
+      "name": "Admiral Fishington Pengu",
+      "role": "captain",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "anchor",
+      "bowling_archetype": null
+    },
+    {
+      "id": 2,
+      "name": "Sir Cuthbert Coldnose Pingu",
+      "role": "vice-captain",
+      "batting_hand": "RH",
+      "bowling_style": "RA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 3,
+      "name": "Squeaky Pongu",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "finisher",
+      "bowling_archetype": null
+    },
+    {
+      "id": 4,
+      "name": "Tuxedo McNibblesworth Pangu",
+      "role": "keeper",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 5,
+      "name": "Wobble Penge",
+      "role": "keeper-reserve",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 6,
+      "name": "Lord Frostington Pinga",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 7,
+      "name": "Sir Iceberg of the Slide Pongoo",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 8,
+      "name": "Captain Slipsalot Pungu",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 9,
+      "name": "Major Belly-flop Penguu",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 10,
+      "name": "Snowball Pongi",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 11,
+      "name": "Flapjack Pongo",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 12,
+      "name": "Slidey Pinge",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 13,
+      "name": "Squawky Punga",
+      "role": "batsman",
+      "batting_hand": "RH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 14,
+      "name": "Brigadier Flap Pingo",
+      "role": "batsman",
+      "batting_hand": "LH",
+      "bowling_style": null,
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": null
+    },
+    {
+      "id": 15,
+      "name": "Sir Cholmondeley Wobble",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA mystery",
+      "batting_archetype": null,
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 16,
+      "name": "Wing Commander Wibble Pungo",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 17,
+      "name": "Baron Flippernose Penka",
+      "role": "all-rounder",
+      "batting_hand": "RH",
+      "bowling_style": "RA off-spin",
+      "batting_archetype": null,
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 18,
+      "name": "Dr. Whiskers Pingi",
+      "role": "all-rounder",
+      "batting_hand": "LH",
+      "bowling_style": "LA pace",
+      "batting_archetype": null,
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 19,
+      "name": "Bumble Pugga",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 20,
+      "name": "Lord Penguinshire Pingii",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 21,
+      "name": "Sir Reginald the Wobbler Slipsalot",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA swing",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "swing"
+    },
+    {
+      "id": 22,
+      "name": "Marquess of Tuxedoshire Squawk",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 23,
+      "name": "Captain Wibblesworth Pangay",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 24,
+      "name": "Field Marshal Frostpants Pengou",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 25,
+      "name": "Sir Bartholomew Slidington Frostbottom",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 26,
+      "name": "Brigadier Featherbottom Pongei",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 27,
+      "name": "Lord Iceshire Pingoy",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 28,
+      "name": "Plopper Punka",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 29,
+      "name": "Splash Panka",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA leg-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "leg-spin"
+    },
+    {
+      "id": 30,
+      "name": "Major Fluffington Pigga",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    },
+    {
+      "id": 31,
+      "name": "Sir Iceberg McGlaciers Pongaa",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "LA mystery",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "mystery"
+    },
+    {
+      "id": 32,
+      "name": "Wibbly Pungii",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA pace",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "pace"
+    },
+    {
+      "id": 33,
+      "name": "Lord Snowflake Pungai",
+      "role": "bowler",
+      "batting_hand": null,
+      "bowling_style": "RA off-spin",
+      "batting_archetype": "tail-ender",
+      "bowling_archetype": "off-spin"
+    }
+  ],
+  "staff": [
+    {
+      "role": "coach",
+      "name": "Dr. Susan Holloway"
+    },
+    {
+      "role": "assistant_coach",
+      "name": "Prof. Maxwell McMurdo"
+    }
+  ]
+}

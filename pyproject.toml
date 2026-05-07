@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neo-handcricket"
+version = "0.1.0"
+description = "A single-player CLI hand cricket game with proper match formats."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Deepro Mallick"}]
+dependencies = ["rich>=13.0"]
+
+[project.scripts]
+neo-handcricket = "neo_handcricket.main:run"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["neo_handcricket*"]
