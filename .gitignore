@@ -12,9 +12,10 @@ dist/
 *.egg-info/
 .pytest_cache/
 
-# IDE
+# IDE / editor
 .idea/
 .vscode/
+.claude/
 *.swp
 
 # macOS
