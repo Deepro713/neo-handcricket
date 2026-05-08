@@ -1,30 +1,28 @@
-# neo-handcricket
+<div align="center">
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+# 🏏 neo-handcricket
+
+**Hand cricket — but make it a real fixture.**
+
+A single-player CLI hand cricket game with five formats, 200 country rosters, and a 20-commentator conversational engine.
+
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen.svg)](tests/test_smoke.py)
 [![Status: v0.2.0](https://img.shields.io/badge/status-v0.2.0-informational.svg)](CHANGELOG.md)
+[![Code style: PEP 8](https://img.shields.io/badge/code%20style-PEP%208-2C9F4A.svg)](https://peps.python.org/pep-0008/)
 
-A single-player CLI hand cricket game with proper match-format scaffolding.
+</div>
 
-Each ball, you and the computer simultaneously reveal a number 0–6: matching numbers = wicket, otherwise the batter scores their value. Pick a country, pick the opponent, pick a format, play.
+---
 
-> 200 country rosters · 5 match formats · 20-commentator conversational engine · the full Test cricket experience · and yes, the penguins.
+## What is this?
 
-## Highlights
+Hand cricket is the schoolyard game where two players simultaneously show a number on their fingers, and matching numbers means the batter is **out**. It's been played in classrooms and on the back of school buses for as long as anyone can remember.
 
-- **5 formats:** T10, T20, ODI (50 overs), Test (5 days, 90 ov/day cap, follow-on, declarations, draw possible), Custom (your overs / wickets / innings / playing-size — 1-vs-1 valid).
-- **200 country rosters** — every UN member + observers + Antarctica (the penguins). 18 hand-curated, 182 auto-generated from regional / linguistic name pools.
-- **Hidden 3-second timer** per ball with audible BEL beep. Miss the timer and one of five outcomes rolls at 20% each.
-- **Adaptive bot AI** with per-player archetype profiles. Tunable difficulty (easy / medium / hard).
-- **Conversational commentary** — every ball produces 2–3 lines as a flowing conversation across a per-match panel of 2 or 3 commentators (20 personalities total across 5 cricket nations × 2M+2F).
-- **10-second inter-ball pacing** so you can absorb each ball; skippable on any keypress.
-- **Toss with personality** — hidden 0–6 RNG, parity → heads/tails, rolling 0 triggers a randomly drawn ridiculous excuse and a retoss (cap: 3 consecutive 0s).
-- **Save / pause / quit** at any over boundary. Rolling auto-save + named manual saves. Career stats with aggregate dashboard.
+This is that game — but with **proper match formats** (T10 / T20 / ODI / Test / Custom), **named country teams** (200 of them), **adaptive bot AI** with archetype-based player profiles, and a **conversational commentary engine** so every ball feels like a real broadcast. It runs in your terminal with a 3-second hidden timer per ball, BEL beeps, Unicode scoreboards, and the kind of personality usually reserved for actual sports games.
 
-## Screenshots
-
-> _The CLI is best seen in motion — drop your captures into [`docs/`](docs/) and link them here._
+Pick a country, pick the opponent, pick a format, play.
 
 ```
 ┌─ T20  🇮🇳 India vs 🐧 Antarctica   Diff: medium ──────────┐
@@ -42,9 +40,19 @@ Each ball, you and the computer simultaneously reveal a number 0–6: matching n
   BAT — pick 0–6  (Aryan Bose)  [█████·······]  2.7s
 ```
 
-## Install
+## Highlights
 
-Requires Python 3.10+.
+- **🏟️ Five match formats** — T10, T20, ODI (50 ov), full **Test cricket** (5 days, 90 ov/day cap, follow-on, declarations, draws), and Custom (your overs / wickets / innings / playing-size — 1-vs-1 valid).
+- **🌍 200 country rosters** — every UN member + observers + **Antarctica** (yes, the penguins). 18 hand-curated, 182 auto-generated from regional / linguistic name pools.
+- **⏱️ Hidden 3-second timer** per ball with audible BEL beep. Miss it and one of five outcomes rolls at 20% each.
+- **🤖 Adaptive bot AI** with per-player archetype profiles (pace / swing / off-spin / leg-spin / mystery; opener / anchor / power-hitter / finisher / tail-ender). Tunable difficulty.
+- **🎙️ Conversational commentary** — every ball, 2–3 lines flow as a conversation across a randomly chosen panel of 2 or 3 commentators. 20 personalities total, each with trait tags and country.
+- **🪙 Toss with personality** — hidden 0–6 RNG with parity-based heads/tails, and a 100-line bank of ridiculous excuses for when the coin "rolls into the gutter".
+- **💾 Save / pause / quit** at any over boundary. Career stats with aggregate dashboard (W/L/D by format, head-to-head, top scorers, longest streak, PoTM count).
+
+## Install & run
+
+Requires Python 3.10+. Unix-only (macOS / Linux; WSL works on Windows).
 
 ```sh
 git clone https://github.com/Deepro713/neo-handcricket.git
@@ -52,27 +60,20 @@ cd neo-handcricket
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
 
-## Run
-
-```sh
-python -m neo_handcricket
-```
-
-Run the smoke tests:
-
-```sh
-python -m tests.test_smoke
+python -m neo_handcricket          # play a match
+python -m tests.test_smoke         # run the 12 smoke tests
 ```
 
 ## Controls
 
-- **Number entry:** single keystroke `0`–`6`. No Enter required.
-- **3-second timer:** starts when the bowler is announced (BEL beep + visual countdown).
-- **Pause menu:** press `p` between overs to save / resume / quit.
-- **Test declaration:** press `d` between overs while batting (innings 2 or 3).
-- **Skip commentary:** any keypress fast-forwards through the inter-ball pause.
+| Key | Action |
+|---|---|
+| `0`–`6` | Pick a number (single keystroke, no Enter) |
+| Any key | Skip the inter-ball commentary pause |
+| `p` | Pause menu (between overs) — save / resume / quit |
+| `d` | Declare innings (Test cricket, while batting) |
+| `h` / `t` | Call heads / tails at the toss |
 
 ## Project layout
 
@@ -121,7 +122,7 @@ stats/                 career.json (gitignored)
 ## FAQ
 
 **How do I add or improve a country roster?**
-Edit `neo_handcricket/rosters/data/<slug>.json` directly, or hand-curate a richer narrative in the maintainer's vault and round-trip via `python tools/convert_rosters.py`. Run the smoke tests after editing to confirm the JSON still parses (`python -m tests.test_smoke`).
+Edit `neo_handcricket/rosters/data/<slug>.json` directly. Run the smoke tests after editing to confirm the JSON still parses (`python -m tests.test_smoke`).
 
 **Why is the timer so short?**
 3 seconds is intentionally tight — it forces you to commit to a number rather than overthink it, which is closer to the schoolyard feel of real hand cricket. Tune via `TIMER_SECONDS` in `neo_handcricket/config.py` if you want more thinking time.
@@ -133,13 +134,13 @@ Because Antarctica doesn't have a national cricket team but the brief said "ever
 Not in v1. The game is single-player vs. computer. Multiplayer is on the roadmap.
 
 **Does this work on Windows?**
-The raw-input path uses Unix `termios` / `tty` / `select`. Windows isn't supported in v1 — WSL works fine. A `msvcrt`-based fallback for native Windows is doable; PRs welcome.
+The raw-input path uses Unix `termios` / `tty` / `select`. Native Windows isn't supported in v1 — WSL works fine. A `msvcrt`-based fallback is on the roadmap.
 
 **Why a CLI? Will there be a GUI?**
 CLI was the fastest path to a complete game. A GUI / web port is on the roadmap — `stats/career.json` and the save format are structured to support it.
 
-**Is this game legal? You used real-sounding cricket names.**
-Names are *fictional* — composed from common given/family name elements per culture. No real current or recent international cricketer's full name is used (deliberately — see `tools/generate_remaining_rosters.py`'s pool design and the hand-curated rosters' naming guidelines).
+**Are these real cricketer names?**
+No. Names are *fictional* — composed from common given/family name elements per culture. No real current or recent international cricketer's full name is used.
 
 **Where do save files live?**
 `saves/auto.json` (rolling, replaced each over) and `saves/<name>.json` (manual). Career stats are at `stats/career.json`. Both directories are gitignored.
@@ -148,12 +149,12 @@ Names are *fictional* — composed from common given/family name elements per cu
 
 Loose order, biggest impact first:
 
-- **GUI / web port** — Reuse the engine layer; render with React or Tauri. `career.json` already structured for this.
+- **GUI / web port** — Reuse the engine; render with React or Tauri.
 - **Sound design** — Beyond the BEL beep. Crowd ambient, bat-on-ball, wicket-fall stings.
-- **Bowler fatigue model** — Over-used bowler gets a flatter base and lower α. Currently profiles are static across the spell.
-- **Batsman match-state shift** — Anchor in a chase plays differently than anchor in a steady innings. Wire match-state through `pick_number` ctx.
-- **Match-up-aware bowling rotation** — Captain biases toward bowler/batter archetype matchups (spinner vs power-hitter, LA pace vs RH bat).
-- **More commentary lines** — 178 templates across 23 situations is enough to feel alive but not exhaustive. Big-moment slots (`wicket_*`, `ball_run_4/6`, `milestone_*`) are the priority.
+- **Bowler fatigue model** — Over-used bowler gets a flatter base and lower α.
+- **Batsman match-state shift** — Anchor in a chase plays differently than anchor in a steady innings.
+- **Match-up-aware bowling rotation** — Captain biases toward bowler/batter archetype matchups.
+- **More commentary lines** — Big-moment slots (`wicket_*`, `ball_run_4/6`, `milestone_*`) are the priority.
 - **Hand-curated rosters** for less-known nations where the auto-generator's name pools read off-rhythm.
 - **Multiplayer** — Local hot-seat first; networked second.
 - **Localization** — English-only commentary; parallel `LINES` dicts for other languages.
@@ -161,12 +162,8 @@ Loose order, biggest impact first:
 
 ## Contributing
 
-This is a personal hobby project. PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). All participants must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+This is a personal hobby project — PRs welcome but I may be slow to respond. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow. All participants must follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-## License
+## License & changelog
 
-[MIT](LICENSE) — © 2026 Deepro Mallick.
-
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md).
+[MIT](LICENSE) · [Changelog](CHANGELOG.md) · © 2026 Deepro Mallick.
