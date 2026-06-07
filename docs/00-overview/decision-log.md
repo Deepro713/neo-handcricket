@@ -7,6 +7,21 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0023 — M009 cluster `leaderboard`: daily score + local best-table
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/leaderboard` · **Issues:** #73
+
+**Context.** A daily challenge needs a single comparable score and a way to keep your best — offline and
+shareable.
+
+**Decision.** Pure `daily/score.py`: `score_result(...)` is monotonic in winning + margin + balls-to-
+spare + wickets-in-hand (bad inputs clamped); `make_entry`/`update_best`/`best_for` keep the highest
+score **per date** as plain dicts that round-trip through `career.sharecode`. Thin
+`persistence/daily.py` stores the best-table at `stats/daily.json`.
+
+**Consequences.** 7 unit tests (win>loss, per-input monotonicity, clamp, keep-higher, per-date, sharecode
+round-trip, persistence round-trip). Gate green (ruff + mypy + 123 tests + playtest 57/57). Feeds the
+`m009/ui-and-playtest` daily menu (#71).
+
 ## ADR-0022 — M009 cluster `daily-core`: deterministic daily challenge + modifiers
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/daily-core` · **Issues:** #70, #72
 
