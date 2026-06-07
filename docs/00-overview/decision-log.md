@@ -7,6 +7,21 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0032 — M013 cluster `content`: curated rosters + commentary breadth
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m013/content` · **Issues:** #82, #84
+
+**Decision.**
+- **Curated rosters (#82):** hand-curated the **Iceland** (authentic Icelandic patronymics) and
+  **Mongolia** rosters with on-rhythm, original/CC0 fictional names, replacing off-rhythm auto-generated
+  pools — structure/roles untouched; both still validate, load and select an XI.
+- **Commentary breadth (#84):** appended ~30 original CC0 lines to thinner categories (run-2/3/5,
+  milestone_100, partnership_50, hat-trick, collapse, maiden, last-ball finish, caught, over-start,
+  innings/match end) via an append-only `_EXTRA` merge — no category emptied, no within-match-dup change.
+
+**Consequences.** 4 unit tests (rosters load/validate/select + distinct on-rhythm names; every category
+non-empty; thin categories expanded) + 3 playtest invariants. Gate green (ruff + mypy 64 files + 182
+tests + playtest 71/71). **Completes M013 — and Round 2.**
+
 ## ADR-0031 — M013 cluster `localization`: a locale-keyed string scaffold
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m013/localization` · **Issues:** #83
 

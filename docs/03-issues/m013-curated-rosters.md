@@ -7,8 +7,8 @@ priority: P2
 cluster: m013/content
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 82
 ---
