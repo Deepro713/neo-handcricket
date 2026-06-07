@@ -7,6 +7,21 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0024 — M009 cluster `ui-and-playtest`: playable daily + reproducibility gate
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/ui-and-playtest` · **Issues:** #71
+
+**Decision.**
+- **Thin UI:** `ui/daily.py` `render_daily(challenge, best)` shows today's format/teams/modifiers + your
+  best; `render_result(score, code)` shows the score + an offline share code. A new **Daily challenge**
+  main-menu entry (`d`); `main._daily_flow` builds today's challenge from `daily_challenge(date,
+  countries)`, plays it via the existing match flow **seeded by `challenge.seed`**, then scores it,
+  updates the `stats/daily.json` best-table and prints a `sharecode`.
+- **Playtest invariant:** a daily challenge is **deterministic for a date** (caller-order-invariant) and
+  a seeded daily innings is **reproducible** and resolves (gate now 60 checks).
+
+**Consequences.** 3 UI smoke tests + 3 playtest checks. Gate green (ruff + mypy 52 files + 126 tests +
+playtest 60/60). **Completes M009.**
+
 ## ADR-0023 — M009 cluster `leaderboard`: daily score + local best-table
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/leaderboard` · **Issues:** #73
 

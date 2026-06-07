@@ -201,6 +201,36 @@ def _realism_invariants(lines: list[str]) -> None:
     except Exception as e:  # noqa: BLE001 — a crash IS a failed check
         check("tournament: runs without crashing", False, repr(e))
 
+    # --- Daily challenge reproduces from its seed and resolves (M009) ---
+    import datetime as _dt
+
+    from neo_handcricket.daily import seed as daily_seed
+
+    pool = ["india", "australia", "england", "japan", "brazil", "nepal"]
+    challenge = daily_seed.daily_challenge(_dt.date(2026, 6, 7), countries=pool)
+    again = daily_seed.daily_challenge(_dt.date(2026, 6, 7), countries=list(reversed(pool)))
+    check("daily: deterministic for a date", challenge == again, f"{challenge.fmt} {challenge.team_a}v{challenge.team_b}")
+
+    def _daily_score(slug: str) -> int:
+        c = loader.load_country(slug)
+        f = PRESETS[challenge.fmt]
+        r = random.Random(challenge.seed)
+        sel = selector.select_xi(c, f, rng=r)
+        di = Innings(
+            batting_country=c.country, bowling_country=c.country,
+            batting_xi=[p.id for p in sel.playing_xi], bowling_xi=[p.id for p in sel.playing_xi],
+            bowling_pool=[p.id for p in sel.bowling_pool],
+            overs_limit=f.overs_per_innings, wickets_limit=f.wickets_per_innings,
+        )
+        _sim_innings(di, c, rng=r)
+        return di.runs
+
+    s1 = _daily_score(challenge.team_a)
+    s2 = _daily_score(challenge.team_a)
+    check("daily: a seeded daily innings is reproducible", s1 == s2, f"{s1} vs {s2}")
+    check("daily: daily innings resolves with a score", s1 >= 0, f"runs={s1}")
+    lines.append(f"daily: {challenge.date_iso} {challenge.fmt} {challenge.team_a}v{challenge.team_b} mods={challenge.modifiers}")
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
