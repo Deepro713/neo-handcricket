@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
-from . import a11y, adapter, config
+from . import a11y, adapter, config, i18n
 from .bots import captain as cap_ai
 from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
@@ -789,7 +789,7 @@ def run() -> None:
     while True:
         choice = ui_prompts.main_menu(console)
         if choice == "quit":
-            console.print("[dim]bye[/dim]")
+            console.print(f"[dim]{i18n.t('common.bye')}[/dim]")
             return
         if choice == "stats":
             _show_stats(console)
