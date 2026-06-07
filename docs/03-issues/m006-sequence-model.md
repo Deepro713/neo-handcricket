@@ -7,8 +7,8 @@ priority: P1
 cluster: m006/opponent-model
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 35
 ---

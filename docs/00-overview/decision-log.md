@@ -7,6 +7,30 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0010 — M006 cluster `opponent-model`: read the human, stay unpredictable
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/opponent-model` · **Issues:** #37, #35, #34
+
+**Context.** Hand cricket is a repeated matching-pennies game (research §1): no optimal pure strategy,
+so depth = modelling the human while remaining unexploitable. The old adaptation was frequency-only.
+
+**Decision.** New pure module `neo_handcricket/bots/opponent.py`:
+- `predict_next(picks, outcomes)` blends three weak models — **frequency** (smoothed recent counts),
+  **Win-Stay-Lose-Shift** (after a rewarding pick predict *stay*, else *shift* away; needs per-pick
+  reward signs), and a **bigram** sequence predictor (what follows the last pick) — weighted by config.
+- `exploit_mix(dist, epsilon)` blends the exploit prediction toward uniform (#34): 0 = exploit hard,
+  1 = the equilibrium mixed strategy (unexploitable), so the bot punishes predictable players without
+  becoming a deterministic, reverse-engineerable target.
+- `invert(dist)` turns "where they'll go" into "where to go to avoid them" (bot batting).
+
+Wired into `strategy.pick_number` via backward-compatible `opponent_outcomes` + `epsilon` kwargs: when
+`epsilon` is given, adaptation uses the opponent model (bowling aims at the prediction; batting aims at
+its inverse); otherwise the legacy frequency path is unchanged.
+
+**Consequences.** 10 new unit tests (each sub-model's signature behaviour, exploit-mix endpoints,
+invert, and an end-to-end "low epsilon matches a predictable batter more than high epsilon"). Gate green
+(ruff + mypy 34 files + 42 tests + playtest 49/49). Next: `m006/difficulty` wires epsilon per tier
+(incl. a `legend` tier) and threads outcome tracking from `main.py`.
+
 ## ADR-0009 — M005 cluster `ui-and-playtest`: surface realism + assert it
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/ui-and-playtest` · **Issues:** #31, #30
 
