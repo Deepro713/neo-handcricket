@@ -80,6 +80,19 @@ python -m tests.test_smoke         # run the 12 smoke tests
 | `d` | Declare innings (Test cricket, while batting) |
 | `h` / `t` | Call heads / tails at the toss |
 
+**New here?** Pick **`h` — How to play** from the main menu for a short interactive tutorial.
+
+## Accessibility
+
+neo-handcricket aims to be playable by everyone *(v1.0)*:
+
+- **`NO_COLOR`** — set the [`NO_COLOR`](https://no-color.org) env var to disable all colour output.
+- **A11y mode** — set `NHC_A11Y=1` (or `config.A11Y_MODE`) for a static, **no-animation** presentation
+  (drops the redraw timer-bar) that's friendlier to screen readers.
+- **Untimed** — choose **Untimed** at match start (or `NHC_UNTIMED=1`) to remove the per-ball timer.
+- **Colour is never the only signal** — wickets, boundaries, results and timer urgency always carry a
+  glyph and a word, not just a colour.
+
 ## Project layout
 
 ```

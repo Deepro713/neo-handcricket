@@ -7,8 +7,8 @@ priority: P1
 cluster: m010/onboarding
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 74
 ---
