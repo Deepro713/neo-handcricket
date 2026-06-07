@@ -7,6 +7,23 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0028 — M011 cluster `tui`: an optional local Textual TUI
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m011/tui` · **Issues:** #78
+
+**Context.** A richer terminal front-end is wanted, but it must not add a hard dependency or any network,
+and the QA gate must pass whether or not Textual is installed.
+
+**Decision.** New `neo_handcricket/tui/` package driving the M011 adapter:
+- `viewmodel.py` — **pure** state→display helpers (scoreboard lines, prompt, event line); fully tested.
+- `app.py` — `is_available()` (Textual present?) and `run(config)` which **imports Textual only when
+  launching** (the module is safe to import without it; the app class is defined inside `run`).
+- `__main__.py` / a `neo-handcricket-tui` entry point — prints a friendly install hint when Textual is
+  absent. `textual` is an **optional `[tui]` extra**; offline, **no network/telemetry**.
+
+**Consequences.** 6 unit tests (view-model formatting/chase/dedupe, `is_available` bool, run-without-
+Textual raises cleanly). Core gate unaffected (Textual not installed): ruff + mypy 60 files + 155 tests +
+playtest 62/62 green. **Completes M011 → v1.1.0.**
+
 ## ADR-0027 — M011 cluster `adapter`: a UI-agnostic headless game adapter
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m011/adapter` · **Issues:** #77, #76
 
