@@ -804,6 +804,10 @@ def run() -> None:
         if choice == "daily":
             _daily_flow(console)
             continue
+        if choice == "tutorial":
+            from .ui import tutorial as ui_tutorial
+            ui_tutorial.run_tutorial(console)
+            continue
         if choice == "load":
             saves = save_io.list_saves()
             if not saves:

@@ -7,8 +7,8 @@ priority: P2
 cluster: m010/onboarding
 labels:
   - documentation
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 75
 ---

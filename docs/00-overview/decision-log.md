@@ -7,6 +7,22 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0026 — M010 cluster `onboarding`: tutorial + the 1.0 polish pass
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m010/onboarding` · **Issues:** #74, #75
+
+**Decision.**
+- **Onboarding tutorial (#74):** pure `neo_handcricket/onboarding.py` — `TUTORIAL_STEPS` (original
+  content explaining the pick-a-number core, batting/bowling, formats, controls) + a `Tutorial` cursor
+  model (`advance`/`back`/`skip`/`replay`, stable `current`/`done`). Thin `ui/tutorial.py` driver and a
+  **How to play** main-menu entry (`h`).
+- **1.0 polish + docs (#75):** README gains an **Accessibility** section (NO_COLOR / NHC_A11Y / untimed /
+  colour-never-alone) and a first-run tutorial pointer; recorded playtest reviewed (realism, AI-eval,
+  tournament, daily all coherent — no defects).
+
+**Consequences.** 7 unit tests (steps complete + cover essentials, advance/back bounds, skip, replay,
+stable end, render smoke). Gate green (ruff + mypy 55 files + 141 tests + playtest 60/60). **Completes
+M010 → v1.0.0.**
+
 ## ADR-0025 — M010 cluster `a11y-core`: NO_COLOR, a11y mode, colour-never-alone, untimed
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m010/a11y-core` · **Issues:** #86, #85, #87
 
