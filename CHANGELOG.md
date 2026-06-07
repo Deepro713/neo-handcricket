@@ -9,6 +9,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **History reconstruction** (2026-06-07): retroactive milestones **M001–M003**, closed issues, vault
   notes, backdated tags `v0.1.0`/`v0.2.0`/`v0.3.0` + releases, and a v0.x version scheme reconciliation.
   See `docs/00-overview/decision-log.md` (ADR-0002).
+- **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
+
+## [0.4.1] — 2026-06-07 — M004 gate-enforcement
+
+### Changed
+- **mypy is now enforced** in the QA gate (`ship-cluster.sh`, CI, Makefile) — no longer advisory.
+- Fixed `ship-cluster.sh` version map to handle zero-padded `m00N` branch slugs. (ADR-0005)
+
+## [0.4.0] — 2026-06-07 — M004 type-debt foundation
+
+### Fixed
+- Cleared all ~44 mypy errors across scoreboard/selector/main/strategy/captain/innings;
+  `mypy neo_handcricket` is now **0 errors / 31 files**. No behavioural change. (ADR-0004)
 
 ## [0.3.0] — 2026-06-07 — repo polish, docs & autonomous-dev bootstrap
 

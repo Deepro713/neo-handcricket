@@ -9,7 +9,8 @@ A single-player CLI hand cricket game with five formats, 200 country rosters, an
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen.svg)](tests/test_smoke.py)
-[![Status: v0.2.0](https://img.shields.io/badge/status-v0.2.0-informational.svg)](CHANGELOG.md)
+[![Status: v0.4.1](https://img.shields.io/badge/status-v0.4.1-informational.svg)](CHANGELOG.md)
+[![mypy: clean](https://img.shields.io/badge/mypy-clean-2C9F4A.svg)](pyproject.toml)
 [![Code style: PEP 8](https://img.shields.io/badge/code%20style-PEP%208-2C9F4A.svg)](https://peps.python.org/pep-0008/)
 
 </div>
