@@ -249,6 +249,26 @@ def _realism_invariants(lines: list[str]) -> None:
     check("adapter: deterministic under seed", r1 == r2, f"{r1} vs {r2}")
     lines.append(f"adapter: T10 india v australia #123 → {r1[0]} in {r1[1]} balls")
 
+    # --- Relic-modified tournament runs headlessly (M012) ---
+    from neo_handcricket.career import run as career_run
+
+    field2 = ["india", "australia", "england", "japan", "brazil", "antarctica", "nepal", "usa"]
+
+    def _eff_resolve(home: str, away: str, eff: dict) -> str:
+        base = sum(ord(c) for c in home + away)
+        # A boundary-value relic gives the *batting/home* side a small edge.
+        edge = int(eff.get("boundary_value_bonus", 0.0) * 3)
+        hs = _quick_score(home, base) + edge
+        as_ = _quick_score(away, base + 1)
+        return home if hs >= as_ else away
+
+    rr1 = career_run.run_with_relics(field2, _eff_resolve, seed=5)
+    rr2 = career_run.run_with_relics(field2, _eff_resolve, seed=5)
+    check("relics: relic-tournament produces a champion", rr1.champion in field2, f"champ={rr1.champion}")
+    check("relics: drafts a relic between rounds", len(rr1.owned) >= 1, f"owned={rr1.owned}")
+    check("relics: deterministic under seed", rr1.champion == rr2.champion and rr1.owned == rr2.owned)
+    lines.append(f"relics: champion={rr1.champion} owned={rr1.owned}")
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
