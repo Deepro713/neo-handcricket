@@ -7,8 +7,8 @@ priority: P2
 cluster: m004/types-fixes
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 21
 ---

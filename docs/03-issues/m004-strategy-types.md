@@ -8,8 +8,8 @@ cluster: m004/types-fixes
 labels:
   - enhancement
   - area:bots
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 26
 ---

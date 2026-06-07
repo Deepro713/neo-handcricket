@@ -7,6 +7,33 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0004 — M004 cluster `types-fixes`: clear the mypy debt (0 errors)
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m004/types-fixes` · **Issues:** #21, #23, #24, #25, #26
+
+**Context.** The package carried ~44 mypy errors across 6 files, so the gate could only treat mypy as
+advisory. Three root causes dominated: (a) the `rng = rng or random` idiom assigned the `random`
+*module* to a `Random | None` local, poisoning every downstream `rng.<method>` call (23 `union-attr`);
+(b) **name collisions** where one local was bound to two unrelated types across mutually-exclusive
+branches/loops (`gloveman` int-vs-Player, scoreboard `c` BatterCard-vs-BowlerCard, `bat`
+TeamMeta-vs-str, `score` int-vs-float, menu `match` Match-vs-Match|None); (c) `Optional`/`int | None`
+values used without narrowing.
+
+**Decision.** Fix at the source, no blanket `# type: ignore`:
+- Standardise the RNG idiom on `rng = rng if rng is not None else random.Random()` (behaviourally
+  identical — the `None` path is non-deterministic either way; seeded callers are unaffected).
+- Resolve collisions by **renaming** the narrower/secondary binding (`gloveman_id`, `bc`, `bat_country`,
+  `score: float`, `new_match`) rather than widening types.
+- Correct one genuinely-wrong annotation (`BatterCard.out_over: int -> str`, per its own comment).
+- Narrow `Optional` before use (`current_bowler_id` guard; subscript instead of `.get()` after an `in`
+  check; `Literal["heads","tails"]` for the toss call).
+- Replace the per-ball `tick` lambda with `functools.partial(update_prompt_line, prompt_text)` — fixes
+  both mypy's "cannot infer lambda" and ruff's B023 loop-binding warning, and drops a dead
+  `sum(counts.values())` expression.
+
+**Consequences.** `mypy neo_handcricket` is **0 errors / 31 files**; ruff + 12 tests + playtest (40/40)
+green. No behavioural change. Clears the way for cluster `m004/gate-enforcement` (#22) to make mypy a
+hard gate step.
+
 ## ADR-0003 — Round 1 direction: realism → AI → presentation → progression
 **Date:** 2026-06-07 · **Status:** accepted
 

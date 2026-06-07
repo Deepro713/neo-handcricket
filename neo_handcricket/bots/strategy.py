@@ -40,7 +40,6 @@ def _adapted_for_batting(recent_user_picks: list[int]) -> list[float]:
     if not recent_user_picks:
         return [1 / 7] * 7
     counts = Counter(recent_user_picks)
-    sum(counts.values())
     # Inverse: high-frequency picks get LOW probability
     raw = [1.0 / (counts.get(i, 0) + 1) for i in range(7)]  # +1 smoothing
     return _normalize(raw)
@@ -61,7 +60,7 @@ def pick_number(
     rng: random.Random | None = None,
 ) -> int:
     """Pick a 0–6 number for the bot. Pure function; uses rng if provided."""
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     diff_alpha = DIFFICULTY_ALPHA.get(difficulty, 0.3)
 
     if is_bowler:
@@ -95,7 +94,7 @@ def pick_extras_outcome(
 
     Returns (is_extra, kind). kind is "wide" or "no-ball" if is_extra is True.
     """
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     mod = profiles.BOWLER_EXTRAS_MOD.get(archetype, 1.0)
     if rng.random() >= base_pct * mod:
         return (False, None)
@@ -112,10 +111,10 @@ TIMEOUT_USER_BOWLING = ["wide", "no-ball", "byes", "leg-byes", "dead-ball"]
 
 
 def roll_timeout_bot_bowling(rng: random.Random | None = None) -> str:
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     return rng.choice(TIMEOUT_BOT_BOWLING)
 
 
 def roll_timeout_user_bowling(rng: random.Random | None = None) -> str:
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     return rng.choice(TIMEOUT_USER_BOWLING)
