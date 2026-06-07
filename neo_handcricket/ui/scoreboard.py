@@ -151,6 +151,10 @@ def render_detailed(console: Console, match: Match, innings: Innings | None = No
             name = bat_country_obj.player(pid).name
         except KeyError:
             name = f"#{pid}"
+        if c.runs >= 100:
+            name += " 💯"
+        elif c.runs >= 50:
+            name += " ★"
         bat_t.add_row(
             name,
             str(c.runs),
@@ -205,6 +209,27 @@ def render_match_summary(console: Console, match: Match) -> None:
         except KeyError:
             name = f"#{match.player_of_the_match}"
         console.print(Text(f"🏅 Player of the Match: {name} ({team.country})", style="bold magenta"))
+
+    # Highlights reel from the accumulated event stream (M007).
+    reel = _match_highlights(match)
+    if reel:
+        console.print(Text("\n  Highlights", style="bold cyan"))
+        for line in reel:
+            console.print(Text(f"   • {line}", style="dim"))
+
+
+def _match_highlights(match: Match) -> list[str]:
+    from ..commentary.highlights import build_highlights
+
+    def name_of(pid: int) -> str:
+        for meta in (match.user_team, match.opponent):
+            try:
+                return _country_from_meta(meta).player(pid).name
+            except KeyError:
+                continue
+        return f"#{pid}"
+
+    return build_highlights(match.highlight_events, name_of)
 
 
 # helpers ----

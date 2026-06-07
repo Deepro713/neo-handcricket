@@ -7,8 +7,8 @@ priority: P2
 cluster: m007/context-and-polish
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 39
 ---

@@ -16,6 +16,7 @@ from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
 from .bots import strategy
 from .bots import tells as tells_mod
+from .commentary import context as context_mod
 from .commentary import events as events_mod
 from .commentary import lines as lines_mod
 from .commentary.engine import CommentaryEngine
@@ -484,6 +485,7 @@ def _run_innings(
                 bowler_p = None
             batter_name = striker.name if striker else f"#{inn.striker_id}"
             bowler_name = bowler_p.name if bowler_p else f"#{inn.current_bowler_id}"
+            bot_fatigue = 0.0  # set in the bot-bowling branch; used for context lines
 
             if user_is_batting:
                 # Bot bowls (bot picks number, user picks number with timer)
@@ -626,13 +628,26 @@ def _run_innings(
             # Big-moment escalation, driven by the pure event detector (M007):
             # fifties/hundreds, hat-tricks, maidens, last-ball finishes, collapses,
             # 50-partnerships. Wickets/boundaries are already in the ball conversation.
-            accent = lines_mod.event_situation(events_mod.detect(inn))
+            detected = events_mod.detect(inn)
+            match.highlight_events.extend(detected)
+            accent = lines_mod.event_situation(detected)
             if accent:
                 _deliver_commentary_paced(
                     console, engine,
                     situation=accent, ctx=ctx, antarctica_on_field=antarctica_on_field,
                     min_total_seconds=0.0,
                 )
+
+            # Context-aware aside referencing live fatigue / settledness / AI-read.
+            faced_card = inn.batter_cards.get(inn.ball_log[-1].striker_id) if inn.ball_log else None
+            ctx_line = context_mod.context_line(
+                bowler_fatigue=bot_fatigue if user_is_batting else 0.0,
+                batter_settledness=matchstate_mod.settledness(faced_card.balls) if faced_card else 0.0,
+                ai_read=user_is_batting and outcome["wicket"] == "match",
+                rng=rng,
+            )
+            if ctx_line:
+                ui_overlay.show_tell(console, ctx_line)
 
         # End of over
         inn.end_over()

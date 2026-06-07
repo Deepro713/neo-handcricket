@@ -3,10 +3,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from .formats import Format
 from .innings import Innings
+
+if TYPE_CHECKING:
+    from .commentary.events import Event
 
 MatchPhase = Literal["pre", "innings1", "innings2", "innings3", "innings4", "super-over", "complete"]
 
@@ -46,6 +49,9 @@ class Match:
     result_summary: str | None = None
     player_of_the_match: int | None = None
     pom_team: str | None = None            # "user" | "opponent"
+
+    # Accumulated big-moment events across the match (for the highlights reel).
+    highlight_events: list[Event] = field(default_factory=list)
 
     @property
     def current_innings(self) -> Innings | None:
