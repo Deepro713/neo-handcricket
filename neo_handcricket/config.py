@@ -32,3 +32,11 @@ DIFFICULTY_ALPHA = {
     "medium": 0.3,
     "hard": 0.6,
 }
+
+# Bowler fatigue (M005). A bowler's effectiveness decays with overs bowled and
+# recovers with rest. Fatigue (0=fresh, 1=gassed) flattens the bowler's base
+# distribution toward uniform (easier to score off) and lowers its effective α
+# (worse at reading the batter). Pace-like bowlers tire faster than spinners.
+FATIGUE_DECAY_PACE = 0.12         # stamina lost per over bowled (pace/swing/mystery)
+FATIGUE_DECAY_SPIN = 0.07         # spinners tire slower
+FATIGUE_RECOVERY_PER_OVER = 0.05  # stamina regained per over rested since last spell

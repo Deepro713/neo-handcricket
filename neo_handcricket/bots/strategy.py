@@ -14,6 +14,7 @@ import random
 from collections import Counter
 
 from ..config import ADAPTIVE_WINDOW, DIFFICULTY_ALPHA
+from . import fatigue as fatigue_mod
 from . import profiles
 
 
@@ -57,9 +58,14 @@ def pick_number(
     recent_user_picks: list[int],
     difficulty: str = "medium",
     over_number: int = 0,
+    fatigue: float = 0.0,
     rng: random.Random | None = None,
 ) -> int:
-    """Pick a 0–6 number for the bot. Pure function; uses rng if provided."""
+    """Pick a 0–6 number for the bot. Pure function; uses rng if provided.
+
+    ``fatigue`` (0=fresh, 1=gassed) only applies when bowling: it flattens the
+    bowler's base distribution toward uniform and lowers its effective α.
+    """
     rng = rng if rng is not None else random.Random()
     diff_alpha = DIFFICULTY_ALPHA.get(difficulty, 0.3)
 
@@ -70,6 +76,8 @@ def pick_number(
             # Rotate base each over (drift)
             shift = _mystery_drift_seed(over_number) % 7
             base = base[shift:] + base[:shift]
+        if fatigue > 0:
+            base, a_player = fatigue_mod.apply_fatigue(base, a_player, fatigue)
         adapted = _adapted_for_bowling(recent_user_picks[-ADAPTIVE_WINDOW:])
     else:
         base = list(profiles.BATSMAN_BASE.get(archetype, profiles.BATSMAN_BASE["tail-ender"]))

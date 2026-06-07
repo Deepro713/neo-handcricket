@@ -12,6 +12,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 from .bots import captain as cap_ai
+from .bots import fatigue as fatigue_mod
 from .bots import strategy
 from .commentary.engine import CommentaryEngine
 from .config import (
@@ -386,6 +387,7 @@ def _run_innings(
 
     over_counts: dict[int, int] = {}
     bowler_economies: dict[int, float] = {}
+    last_over_by_bowler: dict[int, int] = {}  # bowler_id → over index of their last spell (fatigue)
     last_bowler: int | None = None
 
     user_recent_bowling_picks: list[int] = []   # user's bowling picks (when user is bowler)
@@ -457,12 +459,18 @@ def _run_innings(
             if user_is_batting:
                 # Bot bowls (bot picks number, user picks number with timer)
                 bowler_arch = bowler_p.bowling_archetype if bowler_p and bowler_p.bowling_archetype else "pace"
+                last_ov = last_over_by_bowler.get(bowler_id)
+                overs_rested = (inn.overs_completed - last_ov) if last_ov is not None else inn.overs_completed
+                bot_fatigue = fatigue_mod.fatigue_factor(
+                    over_counts.get(bowler_id, 0), overs_rested, bowler_arch
+                )
                 bot_pick = strategy.pick_number(
                     archetype=bowler_arch,
                     is_bowler=True,
                     recent_user_picks=user_recent_batting_picks,
                     difficulty=match.difficulty,
                     over_number=inn.overs_completed,
+                    fatigue=bot_fatigue,
                     rng=rng,
                 )
                 # Prompt user
@@ -580,6 +588,7 @@ def _run_innings(
 
         # End of over
         inn.end_over()
+        last_over_by_bowler[bowler_id] = inn.overs_completed  # for fatigue rest-tracking
         over_counts[bowler_id] = over_counts.get(bowler_id, 0) + 1
         last_bowler = bowler_id
 
