@@ -7,6 +7,22 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0030 — M012 cluster `career-and-ui`: relics in the tournament run
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m012/career-and-ui` · **Issues:** #81
+
+**Decision.** Wire relics into the M008 tournament:
+- `tournament.play_tournament` gains an optional `on_round_end(round_idx, winners)` hook (between rounds).
+- New pure `career/run.py` `run_with_relics(teams, eff_resolve, *, seed, picker)`: between rounds it
+  draws a **seeded draft offer**, the `picker` chooses (or declines), and the chosen relics' **effective
+  config** is passed to the resolver (`eff_resolve(home, away, eff)`). Returns a `RunResult` (champion,
+  owned relics, draft log, `effective`). Deterministic.
+- Thin `ui/relics.py` renders the draft offer + owned relics.
+
+**Consequences.** 7 unit tests (champion, one-relic-per-draft, determinism, decline, effective reflects
+owned, relics change outcomes, UI smoke) + 3 playtest invariants (relic tournament resolves, drafts,
+deterministic; gate now 65). Gate green (ruff + mypy 63 files + 172 tests + playtest 65/65). **Completes
+M012 → v1.2.0.**
+
 ## ADR-0029 — M012 cluster `relics-core`: relic registry + seeded draft
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m012/relics-core` · **Issues:** #80, #79
 

@@ -13,6 +13,8 @@ from dataclasses import dataclass, field
 
 # resolve(home, away) -> the winning team name. Never called for byes.
 Resolver = Callable[[str, str], str]
+# on_round_end(next_round_idx, winners) -> called between rounds (e.g. for a draft).
+RoundHook = Callable[[int, "list[str]"], None]
 
 
 @dataclass
@@ -68,8 +70,12 @@ def _first_round(slots: list[str | None]) -> list[Fixture]:
     return fixtures
 
 
-def play_tournament(teams: list[str], resolve: Resolver) -> Tournament:
-    """Run the whole bracket to a single champion. Deterministic given ``resolve``."""
+def play_tournament(teams: list[str], resolve: Resolver, *, on_round_end: RoundHook | None = None) -> Tournament:
+    """Run the whole bracket to a single champion. Deterministic given ``resolve``.
+
+    ``on_round_end(next_round_idx, winners)`` fires between rounds — used by the
+    career run to draft a relic before the next round.
+    """
     unique = list(dict.fromkeys(teams))  # de-dupe, preserve seed order
     t = Tournament(teams=unique)
     if len(unique) <= 1:
@@ -88,6 +94,8 @@ def play_tournament(teams: list[str], resolve: Resolver) -> Tournament:
             t.champion = winners[0]
             return t
         round_idx += 1
+        if on_round_end is not None:
+            on_round_end(round_idx, winners)
         current = [
             Fixture(round_idx=round_idx, home=winners[i], away=winners[i + 1])
             for i in range(0, len(winners), 2)
