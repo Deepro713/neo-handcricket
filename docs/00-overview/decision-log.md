@@ -7,6 +7,33 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0003 — Round 1 direction: realism → AI → presentation → progression
+**Date:** 2026-06-07 · **Status:** accepted
+
+**Context.** Research ([[2026-06-07-comparable-games]]) framed hand cricket as a repeated
+simultaneous-move (matching-pennies) game whose depth comes from **opponent modelling** plus
+**cricket-context modifiers** (bowler fatigue, batsman settled-ness/momentum, match-up awareness), and
+showed that **roguelite meta-progression** is the standard wrapper that makes single-player sessions
+feel productive. These line up almost exactly with the existing README roadmap.
+
+**Decision.** Round 1 = milestones **M004–M008**, in this order:
+1. **M004 — Type-debt foundation:** clear the ~44 mypy errors and **add mypy to the QA gate** so every
+   subsequent milestone is type-checked. Foundation first, by design.
+2. **M005 — Cricket realism layer:** bowler fatigue, batsman match-state/momentum, match-up-aware
+   bowling rotation — pure-logic, seeded, unit-tested; playtest invariants extended.
+3. **M006 — Strategic AI & opponent modelling:** WSLS/sequence detection, exploit-vs-mix balancing,
+   deeper difficulty, optional "tells" surfaced to the player.
+4. **M007 — Commentary & presentation depth:** big-moment slots (wickets, boundaries, milestones,
+   finishes) + context-aware lines that reference M005/M006 state.
+5. **M008 — Career & roguelite meta-progression:** offline tournament campaign with banked currency,
+   variety unlocks, achievements, shareable save codes (no network/accounts).
+
+Each is one minor bump (v0.4.0 → v0.8.0); M010 remains the v1.0.0 target.
+
+**Consequences.** A coherent arc (pay debt → deepen sim → deepen AI → deepen presentation → wrap in
+progression). mypy enforcement from M005 onward raises the floor permanently. Guardrails preserved:
+single-player/offline, CC0/original content.
+
 ## ADR-0002 — Reconstruct pre-cycle history & fix the v0.x version scheme
 **Date:** 2026-06-07 · **Status:** accepted
 
