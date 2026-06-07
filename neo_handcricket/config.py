@@ -16,7 +16,7 @@ RETOSS_CAP = 3                       # consecutive 0s before fair-flip fallback
 EXTRAS_BASE_PCT = 0.05               # 5% base chance per ball for wide/no-ball
 ADAPTIVE_WINDOW = 5                  # last N user picks tracked for adaptation
 NUMBER_RANGE = range(0, 7)           # 0-6 inclusive
-SAVE_SCHEMA_VERSION = 1
+SAVE_SCHEMA_VERSION = 2              # v2 (M008): forward-compatible; v1 saves auto-migrate on load
 INTER_BALL_GAP_SECONDS = 10.0        # minimum total seconds between balls (skippable)
 COMMENTARY_LINE_GAP_SECONDS = 3.0    # pause between successive commentary lines (skippable)
 

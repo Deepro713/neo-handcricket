@@ -57,7 +57,18 @@ def save_match(match: Match, *, name: str = "auto") -> Path:
 def load_match(name: str) -> Match:
     path = _path(name)
     raw = json.loads(path.read_text(encoding="utf-8"))
+    raw = _migrate_save(raw)
     return _deserialize_match(raw)
+
+
+def _migrate_save(raw: dict) -> dict:
+    """Forward-migrate an older save dict to the current schema. v1 saves predate
+    the M007 highlights field (not serialised) and are otherwise compatible — we
+    just stamp the version so loading is explicit and future-proof."""
+    version = int(raw.get("schema_version", 1))
+    if version < SAVE_SCHEMA_VERSION:
+        raw = {**raw, "schema_version": SAVE_SCHEMA_VERSION}
+    return raw
 
 
 def delete_save(name: str) -> bool:
