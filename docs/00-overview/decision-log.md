@@ -7,6 +7,26 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0027 — M011 cluster `adapter`: a UI-agnostic headless game adapter
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m011/adapter` · **Issues:** #77, #76
+
+**Context.** A future web/GUI port (offline-safe) needs the engine drivable without any I/O. The adapter
+is that seam.
+
+**Decision.** New module `neo_handcricket/adapter.py`:
+- `GameAdapter(AdapterConfig)` builds a user-batting innings from country slugs / format / seed and
+  exposes `state()` (a structured dict) + `submit_pick(0..6)` (resolves a ball → outcome, events, new
+  state). It owns bowler rotation (captain + fatigue), the opponent-model bookkeeping (recent picks,
+  reward outcomes) and event detection — **no printing, no input, deterministic under seed.**
+- `bot_bowl_pick(...)` is the **single source of truth** for the bot's bowling pick (opponent model +
+  fatigue + per-difficulty epsilon); **the CLI ball-loop now routes through it** (#76), so the same
+  logic drives the CLI, the adapter and any future front-end.
+
+**Consequences.** 8 unit tests (state shape, innings completes, determinism, outcome/events shape,
+invalid-pick guard, wicket-on-match, target ends innings) + 2 playtest invariants (adapter completes +
+deterministic; gate now 62). Gate green (ruff + mypy 56 files + 149 tests + playtest 62/62). No CLI
+behaviour change. Feeds `m011/tui` (#78).
+
 ## ADR-0026 — M010 cluster `onboarding`: tutorial + the 1.0 polish pass
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m010/onboarding` · **Issues:** #74, #75
 

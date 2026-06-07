@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
-from . import a11y, config
+from . import a11y, adapter, config
 from .bots import captain as cap_ai
 from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
@@ -508,15 +508,15 @@ def _run_innings(
                 bot_fatigue = fatigue_mod.fatigue_factor(
                     over_counts.get(bowler_id, 0), overs_rested, bowler_arch
                 )
-                bot_pick = strategy.pick_number(
-                    archetype=bowler_arch,
-                    is_bowler=True,
-                    recent_user_picks=user_recent_batting_picks,
+                # Route the bot's bowling pick through the shared headless adapter
+                # helper (single source of truth for the CLI, TUI and any front-end).
+                bot_pick = adapter.bot_bowl_pick(
+                    bowler_archetype=bowler_arch,
+                    recent_user_batting_picks=user_recent_batting_picks,
                     difficulty=match.difficulty,
                     over_number=inn.overs_completed,
                     fatigue=bot_fatigue,
-                    opponent_outcomes=user_batting_outcomes,
-                    epsilon=DIFFICULTY_EPSILON.get(match.difficulty),
+                    batting_outcomes=user_batting_outcomes,
                     rng=rng,
                 )
                 if TELLS_ENABLED:
