@@ -153,6 +153,22 @@ def _realism_invariants(lines: list[str]) -> None:
     check("ai-eval: favourite-number player exploited above chance", fav > 0.18, f"rate={fav:.3f}")
     lines.append(f"ai-eval: predictable model/baseline={model_sum:.3f}/{base_sum:.3f}; favourite={fav:.3f}")
 
+    # --- Big-moment event detection (M007) ---
+    from neo_handcricket.commentary import events as ev_mod
+    inn = Innings(
+        batting_country="A", bowling_country="B", batting_xi=list(range(1, 12)),
+        bowling_xi=list(range(101, 106)), bowling_pool=list(range(101, 106)),
+        overs_limit=20, wickets_limit=10,
+    )
+    inn.start_over(101)
+    inn.record_ball(runs=4)
+    check("events: boundary detected", any(e.kind == "boundary" for e in ev_mod.detect(inn)))
+    inn.record_ball(wicket="bowled")
+    check("events: wicket detected with kind", any(e.kind == "wicket" and e.subtype == "bowled" for e in ev_mod.detect(inn)))
+    inn.record_ball(wicket="lbw")
+    inn.record_ball(wicket="caught")
+    check("events: hat-trick detected on three in a row", any(e.kind == "hat_trick" for e in ev_mod.detect(inn)))
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()

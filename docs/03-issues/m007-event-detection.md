@@ -7,8 +7,8 @@ priority: P1
 cluster: m007/event-detection
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 40
 ---
