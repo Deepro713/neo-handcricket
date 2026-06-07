@@ -2,6 +2,12 @@
 
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
+## Round 2 (in progress)
+- **v0.9.2** — M009 `ui-and-playtest`: playable Daily challenge menu + reproducibility gate.
+  **Completes M009.**
+- **v0.9.1** — M009 `leaderboard`: daily score + local best-table (offline, shareable).
+- **v0.9.0** — **M009 Daily-seed & procedural challenges**: deterministic daily match + modifiers.
+
 ## Round 1 (forward development) — **COMPLETE (M004–M008)**
 - **v0.8.3** — M008 `ui-and-playtest`: campaign dashboard + full-tournament playtest invariant.
   **Completes M008 and Round 1.**

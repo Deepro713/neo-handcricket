@@ -17,5 +17,17 @@ progression. (See `docs/00-overview/decision-log.md` ADR-0003 and the Round 1 re
 - ✅ **M008 — Career & roguelite meta-progression** (v0.8.x) — offline tournament campaign, banked
   currency, variety unlocks, achievements, shareable save codes. **Done.**
 
-**Round 1 (M004–M008) is complete.** The loop now re-researches the next frontier and plans Round 2
-(**M009–M013**); **v1.0.0** lands at **M010**.
+**Round 1 (M004–M008) is complete.**
+
+## Round 2 — M009–M013 (in progress)
+Arc: retain → polish to **1.0** → open up → deepen → broaden. (ADR-0021 + the Round 2 research note.)
+
+- ✅ **M009 — Daily-seed & procedural challenges** (v0.9.x) — deterministic daily match + modifiers,
+  score + local best-table, offline share codes. **Done.**
+- ⏳ **M010 — Accessibility, onboarding & 1.0 polish** (**v1.0.0**) — NO_COLOR + static a11y mode,
+  colour-never-alone, configurable/untimed timer, onboarding tutorial.
+- ⬜ **M011 — Headless adapter & Textual TUI foundation** (v1.1.0) — local, no network.
+- ⬜ **M012 — Roguelite draft: relics & run modifiers** (v1.2.0).
+- ⬜ **M013 — Content & localization scaffold** (v1.3.0).
+
+**v1.0.0** lands at **M010**.
