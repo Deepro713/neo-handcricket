@@ -13,6 +13,7 @@ dependencies = ["rich>=13.0"]
 
 [project.scripts]
 neo-handcricket = "neo_handcricket.main:run"
+neo-handcricket-tui = "neo_handcricket.tui.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
@@ -20,6 +21,7 @@ include = ["neo_handcricket*"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.6", "mypy>=1.11"]
+tui = ["textual>=0.50"]   # optional local TUI front-end (offline; no network)
 
 [tool.ruff]
 line-length = 110
