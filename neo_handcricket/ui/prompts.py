@@ -13,7 +13,7 @@ from .input import read_key, read_line
 
 
 def main_menu(console: Console) -> str:
-    """Return one of: 'new', 'load', 'stats', 'quit'."""
+    """Return one of: 'new', 'load', 'stats', 'career', 'quit'."""
     console.clear()
     console.print(Panel(
         Text("neo-handcricket\n  hand cricket — but make it a real fixture", style="bold cyan", justify="left"),
@@ -23,6 +23,7 @@ def main_menu(console: Console) -> str:
         ("n", "New match"),
         ("l", "Load a save"),
         ("s", "Career stats"),
+        ("c", "Campaign & progression"),
         ("q", "Quit"),
     ]
     for k, label in options:
@@ -30,8 +31,8 @@ def main_menu(console: Console) -> str:
     console.print()
     while True:
         ch = read_key().lower()
-        if ch in ("n", "l", "s", "q"):
-            return {"n": "new", "l": "load", "s": "stats", "q": "quit"}[ch]
+        if ch in ("n", "l", "s", "c", "q"):
+            return {"n": "new", "l": "load", "s": "stats", "c": "career", "q": "quit"}[ch]
 
 
 def select_country(console: Console, *, prompt: str, exclude: str | None = None) -> str:
