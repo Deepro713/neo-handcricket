@@ -401,7 +401,19 @@ def _run_innings(
         # Pick bowler
         archetypes = _bot_archetypes_for_pool(inn.bowling_pool, bowling_country_obj)
         if user_is_batting:
-            # Bot picks bowler
+            # Bot picks bowler — bias by match-up vs the current striker + freshness.
+            try:
+                striker_arch = batting_country_obj.player(inn.striker_id).batting_archetype
+            except KeyError:
+                striker_arch = None
+            pool_fatigues = {
+                pid: fatigue_mod.fatigue_factor(
+                    over_counts.get(pid, 0),
+                    inn.overs_completed - last_over_by_bowler.get(pid, inn.overs_completed),
+                    archetypes.get(pid, "pace"),
+                )
+                for pid in inn.bowling_pool
+            }
             bowler_id = cap_ai.pick_next_bowler(
                 bowling_pool=inn.bowling_pool,
                 archetypes=archetypes,
@@ -411,6 +423,8 @@ def _run_innings(
                 over_idx=inn.overs_completed,
                 total_overs=total_overs,
                 fmt=fmt,
+                batter_archetype=striker_arch,
+                fatigues=pool_fatigues,
                 rng=rng,
             )
         else:
