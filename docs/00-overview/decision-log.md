@@ -7,6 +7,24 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0018 — M008 cluster `progression`: currency, variety unlocks & save migration
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/progression` · **Issues:** #45
+
+**Context.** The roguelite wrapper needs persistent progression that makes every result bank something,
+without power-creep, plus a forward-compatible save format.
+
+**Decision.** Pure `career/progression.py` over a plain dict: `reward_for(result, tournament_champion)`
+banks currency; `UNLOCKS` is a registry of **variety** items (bonus opponents, commentary panels,
+challenge modifiers — never raw power); `bank`/`unlock`/`can_unlock`/`available_unlocks` enforce
+affordability and one-time ownership; `migrate()` upgrades an implicit-v1 dict to schema v2. Thin
+`persistence/progression.py` round-trips `stats/progression.json` (migrating on load). Bumped
+`SAVE_SCHEMA_VERSION` 1→2 and added `_migrate_save` so existing **v1 match saves load cleanly**.
+
+**Consequences.** 9 unit tests (reward table, currency accrual incl. negative-ignore, unlock gating +
+no-funds/unknown no-ops, available-sort, v1 migration, persistence round-trip + legacy-file migrate).
+Gate green (ruff + mypy 43 files + 94 tests + playtest 54/54). Feeds `m008/achievements` (#42) and the
+campaign UI (#43).
+
 ## ADR-0017 — M008 cluster `tournament-core`: an injectable knockout bracket
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/tournament-core` · **Issues:** #46
 
