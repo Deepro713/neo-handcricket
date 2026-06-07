@@ -10,9 +10,9 @@ progression. (See `docs/00-overview/decision-log.md` ADR-0003 and the Round 1 re
 - ✅ **M004 — Type-debt foundation** (v0.4.x) — mypy clean + enforced in the gate. **Done.**
 - ✅ **M005 — Cricket realism layer** (v0.5.x) — bowler fatigue, batsman match-state/momentum,
   match-up-aware bowling rotation, live indicators. **Done.**
-- ⏳ **M006 — Strategic AI & opponent modelling** (v0.6.0) — WSLS + n-gram detection, exploit-vs-mix
-  balancing, richer difficulty, optional tells, an offline eval harness.
-- ⬜ **M007 — Commentary & presentation depth** (v0.7.0) — big-moment event detector + line banks,
+- ✅ **M006 — Strategic AI & opponent modelling** (v0.6.x) — opponent model (frequency + WSLS + bigram),
+  exploit-vs-mix, Legend tier, eval harness, optional tells. **Done.**
+- ⏳ **M007 — Commentary & presentation depth** (v0.7.0) — big-moment event detector + line banks,
   context-aware lines, scoreboard/summary polish.
 - ⬜ **M008 — Career & roguelite meta-progression** (v0.8.0) — offline tournament campaign, banked
   currency, variety unlocks, achievements, shareable save codes.
