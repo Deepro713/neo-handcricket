@@ -7,6 +7,33 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0021 — Round 2 direction: retain → polish to 1.0 → open up → deepen → broaden
+**Date:** 2026-06-07 · **Status:** accepted
+
+**Context.** Round 1 made the core deep. Research ([[2026-06-07-round2]]) framed the next frontier:
+daily-seed challenges are the genre's cheapest retention mechanic (and we already have seeded RNG +
+share codes); CLI **accessibility** has clear standards we miss (`NO_COLOR`, no-animation/static mode,
+colour-not-alone, configurable timer) and pairs with onboarding to set a real **1.0 bar**; a **headless
+adapter** is the guardrail-safe path toward future front-ends (offline-only); **relics/run-modifiers**
+add Slay-the-Spire-style draft depth over the M005/M006 tunables; and **content + localization** broadens
+reach.
+
+**Decision.** Round 2 = milestones **M009–M013**:
+1. **M009 — Daily-seed & procedural challenges** (v0.9.0): date-seeded daily match + modifiers, score
+   function, local best-table, results shareable via `sharecode`. Offline.
+2. **M010 — Accessibility, onboarding & 1.0 polish** (**v1.0.0**, headline): `NO_COLOR` + `--a11y`/static
+   no-animation mode, colour-not-alone glyphs, surfaced/untimed timer, an interactive tutorial.
+3. **M011 — Headless adapter + optional Textual TUI** (v1.1.0): a UI-agnostic API over the pure engine
+   any front-end can drive; a local TUI. **No network/telemetry.**
+4. **M012 — Roguelite draft: relics & run modifiers** (v1.2.0): run-scoped, drafted rule-benders over
+   the existing tunables, composed with the M008 career.
+5. **M013 — Content & localization scaffold** (v1.3.0): more curated rosters/commentary + parallel
+   string-table structure for translation.
+
+**Consequences.** A coherent arc (retain → polish to 1.0 → open up → deepen → broaden); **v1.0.0 at
+M010**. Guardrails preserved: single-player/offline (a *local* TUI/adapter is fine; no network), CC0/
+original content. After M013, research again and plan M014–M018.
+
 ## ADR-0020 — M008 cluster `ui-and-playtest`: campaign dashboard + tournament gate
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/ui-and-playtest` · **Issues:** #43, #44
 
