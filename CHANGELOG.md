@@ -11,6 +11,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [0.5.0]–[0.5.3] — 2026-06-07 — M005 cricket realism layer
+
+### Added
+- **Bowler fatigue** (`bots/fatigue.py`): a bowler's effectiveness fades over a long spell and recovers
+  with rest (pacers tire faster); flattens the bowling distribution and lowers its adaptation. (v0.5.0)
+- **Batsman match-state / momentum** (`bots/matchstate.py`): settledness grows with balls faced and a
+  chase raises intent, reshaping the batter toward (or away from) boundaries. (v0.5.1)
+- **Match-up-aware bowling rotation** (`bots/captain.py`): the captain biases bowler choice by
+  bowler-vs-batter archetype advantage and freshness, preserving cap / no-consecutive-over rules. (v0.5.2)
+- **Live realism indicators**: a bowler stamina gauge in the over overlay and a settled marker per
+  batter on the scoreboard; 9 new playtest invariants (gate now 49 checks). (v0.5.3)
+
 ## [0.4.1] — 2026-06-07 — M004 gate-enforcement
 
 ### Changed

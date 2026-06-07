@@ -9,7 +9,7 @@ A single-player CLI hand cricket game with five formats, 200 country rosters, an
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen.svg)](tests/test_smoke.py)
-[![Status: v0.4.1](https://img.shields.io/badge/status-v0.4.1-informational.svg)](CHANGELOG.md)
+[![Status: v0.5.3](https://img.shields.io/badge/status-v0.5.3-informational.svg)](CHANGELOG.md)
 [![mypy: clean](https://img.shields.io/badge/mypy-clean-2C9F4A.svg)](pyproject.toml)
 [![Code style: PEP 8](https://img.shields.io/badge/code%20style-PEP%208-2C9F4A.svg)](https://peps.python.org/pep-0008/)
 
@@ -47,6 +47,7 @@ Pick a country, pick the opponent, pick a format, play.
 - **🌍 200 country rosters** — every UN member + observers + **Antarctica** (yes, the penguins). 18 hand-curated, 182 auto-generated from regional / linguistic name pools.
 - **⏱️ Hidden 3-second timer** per ball with audible BEL beep. Miss it and one of five outcomes rolls at 20% each.
 - **🤖 Adaptive bot AI** with per-player archetype profiles (pace / swing / off-spin / leg-spin / mystery; opener / anchor / power-hitter / finisher / tail-ender). Tunable difficulty.
+- **🥵 Cricket realism layer** *(v0.5)* — **bowler fatigue** (effectiveness fades over a long spell, recovers with rest; pacers tire faster), **batsman match-state** (new batters start tentative and accelerate as they settle; chases sharpen intent), and **match-up-aware bowling rotation** (the captain favours good archetype match-ups and fresh bowlers). Stamina + settled indicators show it live.
 - **🎙️ Conversational commentary** — every ball, 2–3 lines flow as a conversation across a randomly chosen panel of 2 or 3 commentators. 20 personalities total, each with trait tags and country.
 - **🪙 Toss with personality** — hidden 0–6 RNG with parity-based heads/tails, and a 100-line bank of ridiculous excuses for when the coin "rolls into the gutter".
 - **💾 Save / pause / quit** at any over boundary. Career stats with aggregate dashboard (W/L/D by format, head-to-head, top scorers, longest streak, PoTM count).
@@ -152,9 +153,9 @@ Loose order, biggest impact first:
 
 - **GUI / web port** — Reuse the engine; render with React or Tauri.
 - **Sound design** — Beyond the BEL beep. Crowd ambient, bat-on-ball, wicket-fall stings.
-- **Bowler fatigue model** — Over-used bowler gets a flatter base and lower α.
-- **Batsman match-state shift** — Anchor in a chase plays differently than anchor in a steady innings.
-- **Match-up-aware bowling rotation** — Captain biases toward bowler/batter archetype matchups.
+- ~~**Bowler fatigue model**~~ — ✅ shipped in v0.5 (M005).
+- ~~**Batsman match-state shift**~~ — ✅ shipped in v0.5 (M005).
+- ~~**Match-up-aware bowling rotation**~~ — ✅ shipped in v0.5 (M005).
 - **More commentary lines** — Big-moment slots (`wicket_*`, `ball_run_4/6`, `milestone_*`) are the priority.
 - **Hand-curated rosters** for less-known nations where the auto-generator's name pools read off-rhythm.
 - **Multiplayer** — Local hot-seat first; networked second.
