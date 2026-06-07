@@ -7,8 +7,8 @@ priority: P2
 cluster: m008/achievements
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 42
 ---

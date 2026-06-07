@@ -7,6 +7,25 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0019 — M008 cluster `achievements`: achievements + shareable save codes
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/achievements` · **Issues:** #42
+
+**Context.** Progression wants goals to chase and an offline way to share results — both must stay
+single-player/offline.
+
+**Decision.**
+- `career/achievements.py`: an `ACHIEVEMENTS` registry of id → {label, check}, where each `check` is a
+  pure predicate over the match's detected `Event` stream + a small result `summary` dict (won, format,
+  won_by_innings, chase_target…). `evaluate(events, summary)` returns the set earned this match (hat-trick,
+  century, fifty, maiden, last-ball thriller, win-a-Test-by-an-innings, chase-200+, win-after-collapse).
+- `career/sharecode.py`: `encode(dict)`/`decode(str)` — JSON → zlib → Base32 with an `NHC1-` prefix.
+  Compact (<120 chars), case-insensitive, clipboard-safe, **offline** (just text). Corrupt input → None.
+
+**Consequences.** 10 unit tests (each achievement's exact trigger incl. win-gating and the 200 chase
+boundary; sharecode round-trip, case-insensitivity/trim, corruption→None, compactness). Gate green
+(ruff + mypy 45 files + 104 tests + playtest 54/54). Last logic cluster of M008; only `ui-and-playtest`
+(#43/#44) remains.
+
 ## ADR-0018 — M008 cluster `progression`: currency, variety unlocks & save migration
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/progression` · **Issues:** #45
 
