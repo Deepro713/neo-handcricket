@@ -7,8 +7,8 @@ priority: P2
 cluster: m005/ui-and-playtest
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 31
 ---

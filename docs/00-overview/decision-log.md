@@ -7,6 +7,27 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0009 — M005 cluster `ui-and-playtest`: surface realism + assert it
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/ui-and-playtest` · **Issues:** #31, #30
+
+**Context.** The three M005 realism levers (fatigue, match-state, rotation) were invisible to the player
+and unguarded by the playtest gate.
+
+**Decision.**
+- **Thin UI (#31), read-only:** `overlay.show_bowler_card` gains an optional `fatigue` arg and renders a
+  5-block **stamina gauge**; `scoreboard.render_compact` appends a **settled marker** (`★`/`·`) to each
+  batter derived from balls faced via `matchstate.settledness`. `main.py` computes the current bowler's
+  fatigue (reusing the rest tracker) and passes it to the overlay. No logic in the UI layer.
+- **Playtest invariants (#30):** new `_realism_invariants()` adds 9 checks — fatigue rises/recovers,
+  pace tires faster, a tired bowler matches a predictable batter less; settledness monotonic, chase
+  raises intent, an aggressive batter hits more boundaries; and a full-innings rotation respects the
+  no-consecutive-over and per-bowler-cap invariants. The recorded transcript gains a realism summary
+  line.
+
+**Consequences.** Playtest is **49/49** (was 40); recorded transcript reviewed (fresh/tired matches
+87/63, boundaries tentative/aggressive 69/148, rotation 4 overs each — all as expected). Gate green
+(ruff + mypy 33 files + 32 tests + playtest 49/49). **Completes M005.**
+
 ## ADR-0008 — M005 cluster `rotation`: match-up-aware bowling rotation
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/rotation` · **Issues:** #29
 
