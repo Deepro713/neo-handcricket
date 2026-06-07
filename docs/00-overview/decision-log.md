@@ -7,6 +7,25 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0005 — M004 cluster `gate-enforcement`: make mypy a hard gate + fix the version map
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m004/gate-enforcement` · **Issues:** #22
+
+**Context.** With the package mypy-clean (ADR-0004), mypy can move from advisory to enforced. Separately,
+shipping `m004/types-fixes` surfaced a bug: `ship-cluster.sh`'s version-map regex
+(`s#^m\([0-9]+\)/…#`) captured the **zero-padded** milestone number (`m004` → `004`), which matched no
+`case` label, so the tag/release step was skipped (v0.4.0 had to be tagged by hand).
+
+**Decision.**
+- **Enforce mypy everywhere it gates:** move `mypy neo_handcricket` out of the advisory `|| true` block
+  in `ship-cluster.sh run_gate`; drop `|| true` in `.github/workflows/ci.yml`; the `Makefile` `gate`
+  target already chained `type`. README updated ("all four are enforced; mypy-clean as of v0.4.0").
+- **Fix the version map** to strip leading zeros: `s#^m0*\([0-9][0-9]*\)/…#\1#` — now `m4`, `m004`,
+  `m010`, `m020` all resolve correctly, honouring the zero-padded `m00N` branch convention.
+
+**Consequences.** A deliberately-introduced type error now fails the gate (verified); future ships from
+zero-padded slugs tag + release without manual intervention. mypy enforcement holds for every milestone
+from M005 onward.
+
 ## ADR-0004 — M004 cluster `types-fixes`: clear the mypy debt (0 errors)
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m004/types-fixes` · **Issues:** #21, #23, #24, #25, #26
 

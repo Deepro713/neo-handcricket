@@ -8,8 +8,8 @@ cluster: m004/gate-enforcement
 labels:
   - enhancement
   - area:tooling
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 22
 ---
