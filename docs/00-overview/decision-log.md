@@ -7,6 +7,24 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0014 — M007 cluster `event-detection`: a pure big-moment detector
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/event-detection` · **Issues:** #40
+
+**Context.** Richer commentary and scoreboard polish both need a single source of truth for "what just
+happened". Detection must be deterministic and decoupled from line selection and rendering.
+
+**Decision.** New pure module `neo_handcricket/commentary/events.py`: `detect(inn) -> list[Event]`
+inspects the most recent ball plus innings state and emits typed `Event`s —
+`wicket` (+kind), `boundary` (4/6), `milestone` (fifty/hundred, crossed on the ball), `hat_trick`
+(bowler's last three legal balls all wickets), `collapse` (≥3 wickets in the last 12 legal balls),
+`maiden` (over completed conceding 0), `partnership` (50-run stand crossed), and `last_ball_finish`
+(chase sealed with ≤1 ball to spare). Thresholds live in `config`; no I/O, no RNG.
+
+**Consequences.** 9 unit tests pin each trigger to its exact boundary (incl. collapse-without-hat-trick
+and the milestone off-by-one). 3 playtest invariants added (gate now **54 checks**). Gate green
+(ruff + mypy 37 files + 64 tests). Feeds `m007/bigmoment-lines` (#38, line banks per category) and
+`m007/context-and-polish` (#39/#41, context lines + scoreboard highlights from the event stream).
+
 ## ADR-0013 — M006 cluster `tells`: optional player-facing mind-games
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/tells` · **Issues:** #36
 

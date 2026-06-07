@@ -80,3 +80,11 @@ DIFFICULTY_EPSILON = {           # exploit-vs-mix epsilon per difficulty
 # the time, so it adds mind-games without breaking the hidden-pick core.
 TELLS_ENABLED = False
 TELLS_TRUTHFUL_PROB = 0.6
+
+# Big-moment event detection (M007). Thresholds for the pure event detector that
+# turns ball/innings state into typed commentary events.
+MILESTONE_RUNS = (50, 100)       # individual batting milestones
+PARTNERSHIP_MILESTONE = 50       # partnership milestone
+COLLAPSE_WINDOW = 12             # legal balls over which a collapse is measured
+COLLAPSE_WICKETS = 3             # wickets within the window that count as a collapse
+LAST_BALL_FINISH_BALLS = 1       # balls remaining at/under which a winning hit is a "last-ball" finish
