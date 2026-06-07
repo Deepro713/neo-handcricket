@@ -56,3 +56,19 @@ AGGRO_TILT = 0.8                # strength of the boundary tilt at full aggressi
 # batter and bowler freshness (1 - fatigue) when choosing the next bowler.
 ROTATION_MATCHUP_WEIGHT = 2.0    # weight on bowler-vs-batter archetype advantage
 ROTATION_FRESHNESS_WEIGHT = 1.5  # weight on bowler freshness (1 - fatigue)
+
+# Strategic AI / opponent modelling (M006). The bot predicts the human's next
+# pick by blending three models — recent frequency, Win-Stay-Lose-Shift, and a
+# bigram (sequence) predictor — then balances exploitation against the
+# matching-pennies mixed-strategy equilibrium via an epsilon (0 = exploit hard,
+# 1 = uniform / unexploitable). Higher difficulty exploits more (lower epsilon).
+OPP_WINDOW = 20                  # picks of history fed to the opponent model
+OPP_WEIGHT_FREQ = 1.0            # weight on the frequency model
+OPP_WEIGHT_WSLS = 1.2            # weight on the Win-Stay-Lose-Shift model
+OPP_WEIGHT_NGRAM = 1.0           # weight on the bigram (sequence) model
+DIFFICULTY_EPSILON = {           # exploit-vs-mix epsilon per difficulty
+    "easy": 0.85,
+    "medium": 0.5,
+    "hard": 0.25,
+    "legend": 0.08,
+}

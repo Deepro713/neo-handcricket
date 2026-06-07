@@ -13,9 +13,10 @@ from __future__ import annotations
 import random
 from collections import Counter
 
-from ..config import ADAPTIVE_WINDOW, DIFFICULTY_ALPHA
+from ..config import ADAPTIVE_WINDOW, DIFFICULTY_ALPHA, OPP_WINDOW
 from . import fatigue as fatigue_mod
 from . import matchstate as matchstate_mod
+from . import opponent as opponent_mod
 from . import profiles
 
 
@@ -61,6 +62,8 @@ def pick_number(
     over_number: int = 0,
     fatigue: float = 0.0,
     aggression: float | None = None,
+    opponent_outcomes: list[int] | None = None,
+    epsilon: float | None = None,
     rng: random.Random | None = None,
 ) -> int:
     """Pick a 0–6 number for the bot. Pure function; uses rng if provided.
@@ -69,6 +72,9 @@ def pick_number(
     bowler's base distribution toward uniform and lowers its effective α.
     ``aggression`` (0=blocking, 0.5=neutral, 1=all-out), when given, only applies
     when batting: it reshapes the batter's base toward (or away from) boundaries.
+    ``epsilon`` (0=exploit hard, 1=unexploitable), when given, switches adaptation
+    to the richer opponent model (frequency + WSLS + bigram) mixed toward the
+    equilibrium; ``opponent_outcomes`` are per-pick reward signs enabling WSLS.
     """
     rng = rng if rng is not None else random.Random()
     diff_alpha = DIFFICULTY_ALPHA.get(difficulty, 0.3)
@@ -82,13 +88,23 @@ def pick_number(
             base = base[shift:] + base[:shift]
         if fatigue > 0:
             base, a_player = fatigue_mod.apply_fatigue(base, a_player, fatigue)
-        adapted = _adapted_for_bowling(recent_user_picks[-ADAPTIVE_WINDOW:])
+        if epsilon is not None:
+            # Bowling = match the human: aim at where they are predicted to go.
+            pred = opponent_mod.predict_next(recent_user_picks[-OPP_WINDOW:], (opponent_outcomes or [])[-OPP_WINDOW:])
+            adapted = opponent_mod.exploit_mix(pred, epsilon)
+        else:
+            adapted = _adapted_for_bowling(recent_user_picks[-ADAPTIVE_WINDOW:])
     else:
         base = list(profiles.BATSMAN_BASE.get(archetype, profiles.BATSMAN_BASE["tail-ender"]))
         a_player = profiles.BATSMAN_ALPHA.get(archetype, 0.3)
         if aggression is not None:
             base = matchstate_mod.apply_matchstate(base, aggression)
-        adapted = _adapted_for_batting(recent_user_picks[-ADAPTIVE_WINDOW:])
+        if epsilon is not None:
+            # Batting = avoid the human's bowling pick: go where they are unlikely.
+            pred = opponent_mod.predict_next(recent_user_picks[-OPP_WINDOW:], (opponent_outcomes or [])[-OPP_WINDOW:])
+            adapted = opponent_mod.exploit_mix(opponent_mod.invert(pred), epsilon)
+        else:
+            adapted = _adapted_for_batting(recent_user_picks[-ADAPTIVE_WINDOW:])
 
     alpha = a_player * diff_alpha
     base = _normalize(base)
