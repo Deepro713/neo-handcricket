@@ -7,6 +7,29 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0015 — M007 cluster `bigmoment-lines`: escalate on the event stream
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/bigmoment-lines` · **Issues:** #38
+
+**Context.** The event detector (ADR-0014) produces typed big moments, but the commentary engine only
+keyed off the per-ball `situation`. Big moments (hat-tricks, milestones, last-ball finishes) deserve an
+extra escalation beat, and lines were repeating within a match.
+
+**Decision.**
+- Add **original CC0 line banks** for `wicket_caught`, `hat_trick`, `maiden`, `last_ball_finish`,
+  `collapse`, `partnership_50` (via `LINES.update`); `wicket_caught` is a full ball situation, the rest
+  are single-line accents. No broadcaster catchphrases.
+- `event_situation(events)` maps the **highest-priority** detected event to an accent situation key
+  (last-ball finish > hat-trick > hundred > fifty > collapse > partnership > maiden); wickets/boundaries
+  stay in the ball conversation (returns None).
+- `main.py` replaces the old (buggy 50-vs-100) manual milestone block with one event-driven escalation
+  call from `events.detect(inn)`.
+- The engine now tracks `_used_lines` and prefers a **not-yet-used template** each pick — within-match
+  variety with graceful fallback once a pool is exhausted.
+
+**Consequences.** 6 unit tests (every category has lines, priority mapping, caught→situation, engine
+renders each, no-duplicate variety). Fixes the latent caught-wicket-renders-as-dot gap. Gate green
+(ruff + mypy 37 files + 70 tests + playtest 54/54). Next: `m007/context-and-polish` (#39/#41).
+
 ## ADR-0014 — M007 cluster `event-detection`: a pure big-moment detector
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/event-detection` · **Issues:** #40
 
