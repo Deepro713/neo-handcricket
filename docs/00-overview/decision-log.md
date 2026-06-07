@@ -7,6 +7,25 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0022 — M009 cluster `daily-core`: deterministic daily challenge + modifiers
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/daily-core` · **Issues:** #70, #72
+
+**Context.** Daily challenges (research §1) need a fixed match that's identical for everyone on a given
+day, plus modifiers for variety — both deterministic and pure.
+
+**Decision.** New pure package `neo_handcricket/daily/`:
+- `seed.py`: `daily_seed(date)` = `YYYYMMDD`; `daily_challenge(date, *, countries)` →
+  `DailyChallenge` (seed, format, both teams, difficulty, modifiers) drawn from a seeded RNG over a
+  **sorted** country pool (caller ordering can't change the result). Date + pool are passed in — no I/O.
+- `modifiers.py`: a `MODIFIERS` registry of rule-benders over a neutral `tunables` dict;
+  `select_modifiers(seed, n)` picks deterministically; `apply_modifiers` composes them with `_mult`
+  keys multiplying and others adding, so distinct modifiers are **order-independent**.
+
+**Consequences.** 9 unit tests (seed stability, same-date-identical incl. caller-order invariance,
+dates-differ, validity/playability, ≥2-countries guard, deterministic + order-independent modifiers,
+modifier math). Gate green (ruff + mypy 49 files + 116 tests + playtest 57/57). Feeds
+`m009/leaderboard` (#73) and `m009/ui-and-playtest` (#71).
+
 ## ADR-0021 — Round 2 direction: retain → polish to 1.0 → open up → deepen → broaden
 **Date:** 2026-06-07 · **Status:** accepted
 
