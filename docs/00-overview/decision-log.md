@@ -7,6 +7,21 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0031 — M013 cluster `localization`: a locale-keyed string scaffold
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m013/localization` · **Issues:** #83
+
+**Context.** The game is English-only; translation should be possible without code changes (research §5).
+
+**Decision.** New pure `neo_handcricket/i18n.py`: a `STRINGS` table keyed by locale (`en` default + a few
+menu/result/pick strings), `t(key, locale="en", **fmt)` which falls back **locale → en → the key itself**
+and applies `str.format` gracefully, plus `available_locales` / `add_locale`. A couple of user-facing
+strings (e.g. the quit message) are routed through `t()` as a proof. No real translations shipped — the
+scaffold only.
+
+**Consequences.** 6 unit tests (default lookup, unknown key→key, unknown locale→en, stub-locale override
++ fallback, format args, en default) + 3 playtest invariants. Gate green (ruff + mypy + 178 tests +
+playtest 68/68). Feeds `m013/content` (#82/#84).
+
 ## ADR-0030 — M012 cluster `career-and-ui`: relics in the tournament run
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m012/career-and-ui` · **Issues:** #81
 

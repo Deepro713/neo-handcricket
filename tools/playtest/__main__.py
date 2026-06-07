@@ -269,6 +269,13 @@ def _realism_invariants(lines: list[str]) -> None:
     check("relics: deterministic under seed", rr1.champion == rr2.champion and rr1.owned == rr2.owned)
     lines.append(f"relics: champion={rr1.champion} owned={rr1.owned}")
 
+    # --- Localization scaffold: lookup + fallback (M013) ---
+    from neo_handcricket import i18n
+
+    check("i18n: default locale resolves", i18n.t("menu.new") == "New match")
+    check("i18n: unknown locale falls back to en", i18n.t("menu.quit", locale="zz") == i18n.t("menu.quit"))
+    check("i18n: unknown key returns the key", i18n.t("nope.key") == "nope.key")
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
