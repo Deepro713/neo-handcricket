@@ -2,8 +2,8 @@
 title: M007 — Commentary & presentation depth
 type: milestone
 milestone: M007
-status: Todo
-state: open
+status: Done
+state: closed
 version: v0.7.0
 github:
   milestone: 7
@@ -11,7 +11,7 @@ github:
 
 # M007 — Commentary & presentation depth
 
-**Status:** Todo · **Target version:** v0.7.0 · **GitHub milestone:** #7
+**Status:** Done · **Target version:** v0.7.0 · **GitHub milestone:** #7
 
 ## Goal
 Make every big moment land (research §3): a pure event detector, big-moment line banks, context-aware lines referencing M005/M006 state, and scoreboard/summary polish.

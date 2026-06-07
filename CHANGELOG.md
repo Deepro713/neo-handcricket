@@ -11,6 +11,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [0.7.0]–[0.7.2] — 2026-06-07 — M007 commentary & presentation depth
+
+### Added
+- **Big-moment event detector** (`commentary/events.py`): a pure, deterministic detector emitting typed
+  events — wickets (+kind), boundaries, fifties/hundreds, hat-tricks, collapses, maidens, 50-run
+  partnerships, last-ball finishes. (v0.7.0)
+- **Escalating big-moment commentary** (`commentary/lines.py`): original CC0 line banks per event with a
+  priority `event_situation` mapping; the engine now adds an accent beat on a big moment and avoids
+  within-match line repeats. (v0.7.1)
+- **Context-aware asides** (`commentary/context.py`) referencing live fatigue / settledness / AI-reads,
+  a `★`/`💯` scoreboard marker for fifties/hundreds, and a **match highlights reel**
+  (`commentary/highlights.py`) built from the event stream. (v0.7.2)
+
 ## [0.6.0]–[0.6.3] — 2026-06-07 — M006 strategic AI & opponent modelling
 
 ### Added

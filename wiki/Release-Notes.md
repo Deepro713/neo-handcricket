@@ -3,6 +3,10 @@
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
 ## Round 1 (forward development)
+- **v0.7.2** — M007 `context-and-polish`: context-aware asides + ★ scoreboard milestones + a match
+  highlights reel. **Completes M007.**
+- **v0.7.1** — M007 `bigmoment-lines`: escalating big-moment line banks + within-match variety.
+- **v0.7.0** — **M007 Commentary & presentation depth**: pure big-moment event detector.
 - **v0.6.3** — M006 `tells`: optional, off-by-default player-facing reads on the bowler (never leak the
   pick). **Completes M006.**
 - **v0.6.2** — M006 `eval`: offline AI eval harness proving the model beats the frequency baseline

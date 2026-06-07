@@ -9,7 +9,7 @@ A single-player CLI hand cricket game with five formats, 200 country rosters, an
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen.svg)](tests/test_smoke.py)
-[![Status: v0.6.3](https://img.shields.io/badge/status-v0.6.3-informational.svg)](CHANGELOG.md)
+[![Status: v0.7.2](https://img.shields.io/badge/status-v0.7.2-informational.svg)](CHANGELOG.md)
 [![mypy: clean](https://img.shields.io/badge/mypy-clean-2C9F4A.svg)](pyproject.toml)
 [![Code style: PEP 8](https://img.shields.io/badge/code%20style-PEP%208-2C9F4A.svg)](https://peps.python.org/pep-0008/)
 
@@ -157,7 +157,7 @@ Loose order, biggest impact first:
 - ~~**Bowler fatigue model**~~ — ✅ shipped in v0.5 (M005).
 - ~~**Batsman match-state shift**~~ — ✅ shipped in v0.5 (M005).
 - ~~**Match-up-aware bowling rotation**~~ — ✅ shipped in v0.5 (M005).
-- ~~**More commentary lines**~~ — *(in progress, M007)* big-moment slots (`wicket_*`, `ball_run_4/6`, `milestone_*`).
+- ~~**More commentary lines**~~ — ✅ shipped in v0.7 (M007): big-moment event detector, escalating line banks (hat-tricks, milestones, last-ball finishes, collapses…), context-aware asides, a milestone-marked scoreboard and a match highlights reel.
 - **Hand-curated rosters** for less-known nations where the auto-generator's name pools read off-rhythm.
 - **Multiplayer** — Local hot-seat first; networked second.
 - **Localization** — English-only commentary; parallel `LINES` dicts for other languages.
