@@ -725,6 +725,54 @@ def _award_pom(match: Match) -> None:
     match.pom_team = top_team
 
 
+def _daily_flow(console: Console) -> None:
+    """Show today's deterministic daily challenge and, on request, play it."""
+    import datetime as _dt
+
+    from .career import sharecode
+    from .daily import score as daily_score
+    from .daily import seed as daily_seed_mod
+    from .formats import PRESETS
+    from .persistence import daily as daily_io
+    from .ui import daily as ui_daily
+
+    challenge = daily_seed_mod.daily_challenge(_dt.date.today(), countries=loader.list_countries())
+    table = daily_io.load_best_table()
+    ui_daily.render_daily(console, challenge, daily_score.best_for(table, challenge.date_iso))
+    console.print("\n  [yellow]p[/yellow] play today's challenge   ·   any other key to go back")
+    if read_key().lower() != "p":
+        return
+
+    rng = random.Random(challenge.seed)
+    user_country = loader.load_country(challenge.team_a)
+    opp_country = loader.load_country(challenge.team_b)
+    fmt = PRESETS[challenge.fmt]
+    user_sel = selector.select_xi(user_country, fmt, rng=rng)
+    opp_sel = selector.select_xi(opp_country, fmt, rng=rng)
+    match = Match(
+        user_team=_team_meta_from_country(user_country),
+        opponent=_team_meta_from_country(opp_country),
+        user_xi=[p.id for p in user_sel.playing_xi],
+        opponent_xi=[p.id for p in opp_sel.playing_xi],
+        user_bowling_pool=[p.id for p in user_sel.bowling_pool],
+        opponent_bowling_pool=[p.id for p in opp_sel.bowling_pool],
+        fmt=fmt,
+        difficulty=challenge.difficulty,
+    )
+    _do_toss(console, match)
+    _play_match(console, match)
+
+    won = match.winner == "user"
+    totals = [inn.runs for inn in match.innings_list]
+    margin = abs(totals[0] - totals[1]) if len(totals) >= 2 else 0
+    score_val = daily_score.score_result(won=won, runs_margin=margin)
+    entry = daily_score.make_entry(challenge.date_iso, challenge.seed, score_val, summary=match.result_summary or "")
+    table = daily_score.update_best(table, entry)
+    daily_io.save_best_table(table)
+    ui_daily.render_result(console, score_val, sharecode.encode(entry))
+    ui_prompts.confirm_continue(console)
+
+
 # -----------------------------------------------------------------------------
 # entry
 # -----------------------------------------------------------------------------
@@ -745,6 +793,9 @@ def run() -> None:
             state = prog_io.load_progression()
             ui_campaign.render_dashboard(console, state, set(state.get("achievements", [])))
             ui_prompts.confirm_continue(console)
+            continue
+        if choice == "daily":
+            _daily_flow(console)
             continue
         if choice == "load":
             saves = save_io.list_saves()
