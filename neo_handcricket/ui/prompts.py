@@ -149,13 +149,14 @@ def custom_mode_wizard(console: Console) -> Format:
 
 def select_difficulty(console: Console) -> str:
     console.print(Panel(Text("Choose difficulty", style="bold"), border_style="green"))
-    console.print("  [yellow]e[/yellow]  Easy   — base profiles only, no adaptation")
-    console.print("  [yellow]m[/yellow]  Medium — base + light adaptation (α 0.3)")
-    console.print("  [yellow]h[/yellow]  Hard   — base + full adaptation (α 0.6)")
+    console.print("  [yellow]e[/yellow]  Easy   — base profiles, plays its archetype (won't read you)")
+    console.print("  [yellow]m[/yellow]  Medium — reads your patterns lightly, stays unpredictable")
+    console.print("  [yellow]h[/yellow]  Hard   — reads frequency, WSLS & sequences; exploits more")
+    console.print("  [yellow]l[/yellow]  Legend — full opponent model, exploits hard (punishes patterns)")
     while True:
         ch = read_key().lower()
-        if ch in ("e", "m", "h"):
-            return {"e": "easy", "m": "medium", "h": "hard"}[ch]
+        if ch in ("e", "m", "h", "l"):
+            return {"e": "easy", "m": "medium", "h": "hard", "l": "legend"}[ch]
 
 
 def choose_bat_or_bowl(console: Console) -> str:

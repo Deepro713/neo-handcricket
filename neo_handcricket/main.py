@@ -18,6 +18,7 @@ from .bots import strategy
 from .commentary.engine import CommentaryEngine
 from .config import (
     COMMENTARY_LINE_GAP_SECONDS,
+    DIFFICULTY_EPSILON,
     EXTRAS_BASE_PCT,
     INTER_BALL_GAP_SECONDS,
     TEST_BALL_CAP,
@@ -393,6 +394,8 @@ def _run_innings(
 
     user_recent_bowling_picks: list[int] = []   # user's bowling picks (when user is bowler)
     user_recent_batting_picks: list[int] = []   # user's batting picks (when user is batter)
+    user_batting_outcomes: list[int] = []       # reward sign per batting pick (opponent model / WSLS)
+    user_bowling_outcomes: list[int] = []        # reward sign per bowling pick (opponent model / WSLS)
 
     fmt = match.fmt
     total_overs = inn.overs_limit
@@ -493,6 +496,8 @@ def _run_innings(
                     difficulty=match.difficulty,
                     over_number=inn.overs_completed,
                     fatigue=bot_fatigue,
+                    opponent_outcomes=user_batting_outcomes,
+                    epsilon=DIFFICULTY_EPSILON.get(match.difficulty),
                     rng=rng,
                 )
                 # Prompt user
@@ -532,6 +537,8 @@ def _run_innings(
                     difficulty=match.difficulty,
                     over_number=inn.overs_completed,
                     aggression=bot_aggression,
+                    opponent_outcomes=user_bowling_outcomes,
+                    epsilon=DIFFICULTY_EPSILON.get(match.difficulty),
                     rng=rng,
                 )
                 prompt_text = f"BOWL — pick 0–6  (vs {batter_name})"
@@ -569,6 +576,17 @@ def _run_innings(
                 extra_kind=outcome["extra_kind"],
                 timed_out=outcome["timed_out"],
             )
+
+            # Opponent-model outcome tracking (M006): reward sign for the user's pick,
+            # kept aligned with the corresponding picks list (appended only when the
+            # user actually picked a number).
+            if user_pick is not None:
+                if user_is_batting:
+                    rewarded = outcome["wicket"] is None and outcome["runs"] > 0
+                    user_batting_outcomes.append(1 if rewarded else -1)
+                else:
+                    rewarded = outcome["wicket"] is not None or outcome["runs"] <= 1
+                    user_bowling_outcomes.append(1 if rewarded else -1)
 
             # Update bowler economy
             bid = inn.current_bowler_id

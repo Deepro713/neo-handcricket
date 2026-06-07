@@ -7,6 +7,26 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0011 — M006 cluster `difficulty`: wire the opponent model behind difficulty
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/difficulty` · **Issues:** #33
+
+**Context.** ADR-0010 added the opponent model but only the legacy frequency path was active in real games.
+Difficulty needs to control exploitation, and the human's pick outcomes must be tracked to power WSLS.
+
+**Decision.**
+- Add a **`legend`** tier (`DIFFICULTY_ALPHA["legend"]=0.8`) and a `DIFFICULTY_EPSILON` map
+  (easy 0.85 → medium 0.5 → hard 0.25 → legend 0.08): harder = lower epsilon = exploit more.
+- `main.py` now passes `epsilon=DIFFICULTY_EPSILON[difficulty]` to every `pick_number` call, so the
+  opponent model is the live adaptation in games, and **tracks per-pick reward signs**
+  (`user_batting_outcomes`/`user_bowling_outcomes`, kept aligned with the picks lists) to feed WSLS — a
+  batting pick is "rewarded" if it scored without getting out; a bowling pick if it took a wicket or
+  conceded ≤1.
+- The difficulty selector gains **Legend** with reworded, behaviour-accurate descriptions.
+
+**Consequences.** 3 new unit tests (all tiers defined, epsilon strictly decreasing, harder tiers dismiss
+a predictable batter more often). Gate green (ruff + mypy 34 files + 44 tests + playtest 49/49). Easy
+still ignores reads (α=0); Legend punishes patterns hard while the epsilon floor keeps it non-deterministic.
+
 ## ADR-0010 — M006 cluster `opponent-model`: read the human, stay unpredictable
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/opponent-model` · **Issues:** #37, #35, #34
 
