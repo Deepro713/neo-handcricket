@@ -8,8 +8,8 @@ cluster: m010/a11y-core
 labels:
   - enhancement
   - area:accessibility
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 86
 ---

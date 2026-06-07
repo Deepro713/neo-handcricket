@@ -12,6 +12,12 @@ STATS_DIR = PROJECT_ROOT / "stats"
 
 # Game tunables
 TIMER_SECONDS = 3.0
+TIMER_UNTIMED = False                # when True, the per-ball timer is disabled (no timeout)
+
+# Accessibility (M010). A11Y_MODE (or the NHC_A11Y env var) switches the UI to a
+# static, no-animation, screen-reader-friendlier presentation; NO_COLOR (env) and
+# a11y mode both disable colour. These are read via neo_handcricket.a11y.
+A11Y_MODE = False
 RETOSS_CAP = 3                       # consecutive 0s before fair-flip fallback
 EXTRAS_BASE_PCT = 0.05               # 5% base chance per ball for wide/no-ball
 ADAPTIVE_WINDOW = 5                  # last N user picks tracked for adaptation

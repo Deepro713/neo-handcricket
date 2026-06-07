@@ -149,6 +149,17 @@ def custom_mode_wizard(console: Console) -> Format:
     return custom_fmt(overs=overs, wickets=wickets, innings_per_team=innings, playing_size=playing)
 
 
+def select_timer(console: Console) -> bool:
+    """Ask whether to play untimed (accessibility). Returns True for untimed."""
+    console.print(Panel(Text("Per-ball timer", style="bold"), border_style="green"))
+    console.print("  [yellow]t[/yellow]  Timed (3s per ball — the classic feel)")
+    console.print("  [yellow]u[/yellow]  Untimed (take your time — no timeout)")
+    while True:
+        ch = read_key().lower()
+        if ch in ("t", "u"):
+            return ch == "u"
+
+
 def select_difficulty(console: Console) -> str:
     console.print(Panel(Text("Choose difficulty", style="bold"), border_style="green"))
     console.print("  [yellow]e[/yellow]  Easy   — base profiles, plays its archetype (won't read you)")

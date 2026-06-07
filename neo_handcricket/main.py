@@ -11,6 +11,7 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 
+from . import a11y, config
 from .bots import captain as cap_ai
 from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
@@ -30,7 +31,6 @@ from .config import (
     TEST_BOT_DECLARE_LEAD,
     TEST_BOT_FOLLOW_ON_LEAD,
     TEST_FOLLOW_ON_THRESHOLD,
-    TIMER_SECONDS,
 )
 from .innings import Innings
 from .match import Match, TeamMeta
@@ -47,6 +47,18 @@ from .ui.input import beep, read_key, read_key_with_timer
 # -----------------------------------------------------------------------------
 # pre-match flow
 # -----------------------------------------------------------------------------
+
+def _read_timed(prompt_text: str) -> str | None:
+    """Read the user's pick, honouring the untimed option + a11y (no-animation) mode."""
+    secs = a11y.timer_seconds()
+    if secs is None:                       # untimed — block until a key is pressed
+        ui_cli.update_prompt_line(prompt_text)
+        return read_key()
+    if a11y.animations_enabled():
+        return read_key_with_timer(secs, tick=partial(ui_cli.update_prompt_line, prompt_text))
+    ui_cli.update_prompt_line(prompt_text)  # static prompt, no redraw bar
+    return read_key_with_timer(secs)
+
 
 def _team_meta_from_country(c: loader.Country) -> TeamMeta:
     return TeamMeta(
@@ -79,6 +91,7 @@ def _new_match_flow(console: Console) -> Match | None:
 
     fmt = ui_prompts.select_format(console)
     diff = ui_prompts.select_difficulty(console)
+    config.TIMER_UNTIMED = ui_prompts.select_timer(console)  # session timer preference
 
     rng = random.Random()
 
@@ -511,10 +524,7 @@ def _run_innings(
                 # Prompt user
                 prompt_text = f"BAT — pick 0–6  ({batter_name})"
                 beep()
-                user_ch = read_key_with_timer(
-                    TIMER_SECONDS,
-                    tick=partial(ui_cli.update_prompt_line, prompt_text),
-                )
+                user_ch = _read_timed(prompt_text)
                 ui_cli.newline()
                 user_pick: int | None = None
                 if user_ch and user_ch.isdigit():
@@ -551,10 +561,7 @@ def _run_innings(
                 )
                 prompt_text = f"BOWL — pick 0–6  (vs {batter_name})"
                 beep()
-                user_ch = read_key_with_timer(
-                    TIMER_SECONDS,
-                    tick=partial(ui_cli.update_prompt_line, prompt_text),
-                )
+                user_ch = _read_timed(prompt_text)
                 ui_cli.newline()
                 user_pick = None
                 if user_ch and user_ch.isdigit():
