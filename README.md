@@ -9,7 +9,7 @@ A single-player CLI hand cricket game with five formats, 200 country rosters, an
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen.svg)](tests/test_smoke.py)
-[![Status: v1.1.1](https://img.shields.io/badge/status-v1.1.1-success.svg)](CHANGELOG.md)
+[![Status: v1.2.1](https://img.shields.io/badge/status-v1.2.1-success.svg)](CHANGELOG.md)
 [![mypy: clean](https://img.shields.io/badge/mypy-clean-2C9F4A.svg)](pyproject.toml)
 [![Code style: PEP 8](https://img.shields.io/badge/code%20style-PEP%208-2C9F4A.svg)](https://peps.python.org/pep-0008/)
 
@@ -50,6 +50,7 @@ Pick a country, pick the opponent, pick a format, play.
 - **🥵 Cricket realism layer** *(v0.5)* — **bowler fatigue** (effectiveness fades over a long spell, recovers with rest; pacers tire faster), **batsman match-state** (new batters start tentative and accelerate as they settle; chases sharpen intent), and **match-up-aware bowling rotation** (the captain favours good archetype match-ups and fresh bowlers). Stamina + settled indicators show it live.
 - **🧠 Strategic AI** *(v0.6)* — the bot *reads you*: a blended opponent model (recent **frequency** + **Win-Stay-Lose-Shift** + **sequence/bigram**) predicts your next number, then balances exploitation against the matching-pennies equilibrium so it punishes patterns without becoming a predictable target itself. Four tiers (Easy → **Legend**) dial exploitation up; an offline eval harness proves it beats a frequency-only baseline. Optional "tells" add mind-games.
 - **🏆 Career & roguelite progression** *(v0.8)* — an offline **tournament campaign** (reputation-seeded knockout bracket), **banked currency** spent on **variety unlocks** (bonus opponents, commentary panels, challenge modifiers — never raw power), **achievements** (hat-trick, chase-200, win-a-Test-by-an-innings…), and compact **shareable save codes** (copy-paste a result/seed — fully offline). Forward-compatible saves.
+- **🎴 Relics & draft** *(v1.2)* — between tournament rounds you **draft a relic** (Short Rope, Marathoners, Long Powerplay…) with real opportunity cost — run-scoped rule-benders that compose into your run. Seeded and deterministic.
 - **🗓️ Daily challenge** *(v0.9)* — a **date-seeded daily match** with shared modifiers that's *identical for everyone* on a given day, a score + a local best-table, and an offline share code to compare. Deterministic; no server.
 - **🎙️ Conversational commentary** — every ball, 2–3 lines flow as a conversation across a randomly chosen panel of 2 or 3 commentators. 20 personalities total, each with trait tags and country.
 - **🪙 Toss with personality** — hidden 0–6 RNG with parity-based heads/tails, and a 100-line bank of ridiculous excuses for when the coin "rolls into the gutter".

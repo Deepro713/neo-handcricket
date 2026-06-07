@@ -28,7 +28,7 @@ Arc: retain → polish to **1.0** → open up → deepen → broaden. (ADR-0021 
   colour-never-alone, untimed timer, onboarding tutorial. **Done — neo-handcricket is 1.0.**
 - ✅ **M011 — Headless adapter & Textual TUI foundation** (v1.1.x) — UI-agnostic engine adapter + optional
   local Textual TUI. **Done.**
-- ⬜ **M012 — Roguelite draft: relics & run modifiers** (v1.2.0).
+- ✅ **M012 — Roguelite draft: relics & run modifiers** (v1.2.x) — relic registry + between-rounds draft in the career. **Done.**
 - ⬜ **M013 — Content & localization scaffold** (v1.3.0).
 
 **v1.0.0** lands at **M010**.

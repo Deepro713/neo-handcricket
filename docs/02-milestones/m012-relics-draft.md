@@ -2,8 +2,8 @@
 title: M012 — Roguelite draft: relics & run modifiers
 type: milestone
 milestone: M012
-status: Todo
-state: open
+status: Done
+state: closed
 version: v1.2.0
 github:
   milestone: 12
@@ -11,7 +11,7 @@ github:
 
 # M012 — Roguelite draft: relics & run modifiers
 
-**Status:** Todo · **Target version:** v1.2.0 · **GitHub milestone:** #12
+**Status:** Done · **Target version:** v1.2.0 · **GitHub milestone:** #12
 
 ## Goal
 Deepen the roguelite (research §4): run-scoped relics/modifiers drafted between matches with real opportunity cost, composing over the M005/M006 tunables and the M008 career for build variety.
