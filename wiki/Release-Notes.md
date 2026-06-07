@@ -3,6 +3,9 @@
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
 ## Round 2 (in progress)
+- **🎉 v1.0.0 / v1.0.1** — **M010 Accessibility, onboarding & the 1.0 release**: NO_COLOR + a static
+  no-animation a11y mode, colour-never-alone signalling, an untimed option, and an interactive
+  onboarding tutorial. **Completes M010 — neo-handcricket hits 1.0.**
 - **v0.9.2** — M009 `ui-and-playtest`: playable Daily challenge menu + reproducibility gate.
   **Completes M009.**
 - **v0.9.1** — M009 `leaderboard`: daily score + local best-table (offline, shareable).

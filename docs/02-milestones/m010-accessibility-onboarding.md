@@ -2,8 +2,8 @@
 title: M010 — Accessibility, onboarding & 1.0 polish
 type: milestone
 milestone: M010
-status: Todo
-state: open
+status: Done
+state: closed
 version: v1.0.0
 github:
   milestone: 10
@@ -11,7 +11,7 @@ github:
 
 # M010 — Accessibility, onboarding & 1.0 polish
 
-**Status:** Todo · **Target version:** v1.0.0 · **GitHub milestone:** #10
+**Status:** Done · **Target version:** v1.0.0 · **GitHub milestone:** #10
 
 ## Goal
 The v1.0.0 headline (research §2): meet CLI accessibility standards (NO_COLOR, static/no-animation a11y mode, colour-never-alone, configurable/untimed timer) and add an onboarding tutorial + a definitive polish pass. The release that says 'this is done and welcoming'.

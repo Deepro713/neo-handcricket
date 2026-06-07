@@ -11,6 +11,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [1.0.0]–[1.0.1] — 2026-06-07 — M010 accessibility, onboarding & the 1.0 release 🎉
+
+The **1.0** release: a complete, accessible, welcoming game.
+
+### Added
+- **Accessibility** (`a11y.py`): honour `NO_COLOR`; an a11y/static **no-animation** mode (`NHC_A11Y` /
+  `config.A11Y_MODE`); an **untimed** option (`NHC_UNTIMED` / a setup prompt); a **colour-never-alone**
+  signal map (every signal carries a glyph + word). (v1.0.0)
+- **Interactive onboarding tutorial** (`onboarding.py`, "How to play" menu) + a README Accessibility
+  section and first-run pointer; recorded-playtest polish review. (v1.0.1)
+
 ## [0.9.0]–[0.9.2] — 2026-06-07 — M009 daily-seed & procedural challenges
 
 ### Added
