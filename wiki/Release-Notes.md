@@ -3,6 +3,12 @@
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
 ## Round 1 (forward development)
+- **v0.6.3** — M006 `tells`: optional, off-by-default player-facing reads on the bowler (never leak the
+  pick). **Completes M006.**
+- **v0.6.2** — M006 `eval`: offline AI eval harness proving the model beats the frequency baseline
+  (gate now 51 checks).
+- **v0.6.1** — M006 `difficulty`: opponent model wired live per difficulty + a new **Legend** tier.
+- **v0.6.0** — **M006 Strategic AI**: opponent model (frequency + WSLS + bigram) with exploit-vs-mix.
 - **v0.5.3** — M005 `ui-and-playtest`: live stamina gauge + settled markers; 9 new playtest invariants
   (gate now 49 checks). **Completes M005.**
 - **v0.5.2** — M005 `rotation`: match-up-aware bowling rotation (archetype advantage + freshness).

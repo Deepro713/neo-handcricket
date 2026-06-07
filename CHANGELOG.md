@@ -11,6 +11,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [0.6.0]–[0.6.3] — 2026-06-07 — M006 strategic AI & opponent modelling
+
+### Added
+- **Opponent model** (`bots/opponent.py`): predicts your next number by blending recent **frequency**,
+  **Win-Stay-Lose-Shift**, and a **bigram/sequence** predictor, then `exploit_mix`es toward the
+  matching-pennies equilibrium so the bot exploits patterns without becoming predictable. (v0.6.0)
+- **Difficulty tiers** wire it live with per-tier epsilon and a new **Legend** tier; the engine tracks
+  per-pick reward signs to power WSLS. (v0.6.1)
+- **Offline AI eval harness** (`bots/evaluation.py`) proving the model beats the frequency baseline
+  against predictable players (and shows no edge vs a random one); 2 new playtest invariants. (v0.6.2)
+- **Optional player-facing "tells"** (`bots/tells.py`, off by default): a coarse, sometimes-bluffing
+  zone read on the bowler that never leaks the exact pick. (v0.6.3)
+
 ## [0.5.0]–[0.5.3] — 2026-06-07 — M005 cricket realism layer
 
 ### Added

@@ -2,8 +2,8 @@
 title: M006 — Strategic AI & opponent modelling
 type: milestone
 milestone: M006
-status: Todo
-state: open
+status: Done
+state: closed
 version: v0.6.0
 github:
   milestone: 6
@@ -11,7 +11,7 @@ github:
 
 # M006 — Strategic AI & opponent modelling
 
-**Status:** Todo · **Target version:** v0.6.0 · **GitHub milestone:** #6
+**Status:** Done · **Target version:** v0.6.0 · **GitHub milestone:** #6
 
 ## Goal
 Make the bot a real opponent (research §1): WSLS + n-gram detection, exploit-vs-mix balancing, richer difficulty, optional tells, and an offline eval harness proving it beats the frequency-only baseline.
