@@ -4,7 +4,6 @@ from __future__ import annotations
 import random
 import sys
 import time
-from dataclasses import asdict
 from typing import Literal
 
 from rich.console import Console
@@ -15,28 +14,26 @@ from .bots import captain as cap_ai
 from .bots import strategy
 from .commentary.engine import CommentaryEngine
 from .config import (
+    COMMENTARY_LINE_GAP_SECONDS,
     EXTRAS_BASE_PCT,
     INTER_BALL_GAP_SECONDS,
-    COMMENTARY_LINE_GAP_SECONDS,
     TEST_BALL_CAP,
     TEST_BOT_DECLARE_LEAD,
     TEST_BOT_FOLLOW_ON_LEAD,
     TEST_FOLLOW_ON_THRESHOLD,
     TIMER_SECONDS,
 )
-from .formats import Format, custom as custom_fmt
 from .innings import Innings
 from .match import Match, TeamMeta
 from .persistence import save as save_io
 from .persistence import stats as stats_io
 from .rosters import loader, selector
-from .toss import perform_toss, machine_picks_bat_or_bowl
+from .toss import machine_picks_bat_or_bowl, perform_toss
 from .ui import cli as ui_cli
 from .ui import overlay as ui_overlay
 from .ui import prompts as ui_prompts
 from .ui import scoreboard as ui_scoreboard
 from .ui.input import beep, read_key, read_key_with_timer
-
 
 # -----------------------------------------------------------------------------
 # pre-match flow
@@ -472,7 +469,7 @@ def _run_innings(
                 beep()
                 user_ch = read_key_with_timer(
                     TIMER_SECONDS,
-                    tick=lambda r: ui_cli.update_prompt_line(prompt_text, r),
+                    tick=lambda r, pt=prompt_text: ui_cli.update_prompt_line(pt, r),
                 )
                 ui_cli.newline()
                 user_pick: int | None = None
@@ -504,7 +501,7 @@ def _run_innings(
                 beep()
                 user_ch = read_key_with_timer(
                     TIMER_SECONDS,
-                    tick=lambda r: ui_cli.update_prompt_line(prompt_text, r),
+                    tick=lambda r, pt=prompt_text: ui_cli.update_prompt_line(pt, r),
                 )
                 ui_cli.newline()
                 user_pick = None
@@ -616,7 +613,7 @@ def _run_innings(
         if ch == "p":
             choice = ui_prompts.pause_menu(console)
             if choice == "save":
-                name = (sys.stdin.read(0) or "manual").strip()  # placeholder
+                (sys.stdin.read(0) or "manual").strip()  # placeholder
                 save_io.save_match(match, name="manual")
                 console.print("[green]  Saved.[/green]")
                 read_key()
@@ -712,8 +709,8 @@ def _play_match_innings(console: Console, match: Match, engine: CommentaryEngine
         _play_test_match(console, match, engine)
         return
 
-    user_country_obj = _country_obj_from_meta(match.user_team)
-    opp_country_obj = _country_obj_from_meta(match.opponent)
+    _country_obj_from_meta(match.user_team)
+    _country_obj_from_meta(match.opponent)
 
     # Innings 1
     if match.phase == "innings1":

@@ -6,15 +6,14 @@ Manual saves at saves/<name>.json — persistent until user deletes.
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, fields, is_dataclass
+from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 
-from ..config import SAVES_DIR, SAVE_SCHEMA_VERSION
-from ..formats import Format, custom as custom_fmt, PRESETS
+from ..config import SAVE_SCHEMA_VERSION, SAVES_DIR
+from ..formats import PRESETS, Format
 from ..innings import BallEvent, BatterCard, BowlerCard, Innings
 from ..match import Match, TeamMeta
-
 
 SAVES_DIR.mkdir(parents=True, exist_ok=True)
 

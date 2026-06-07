@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .loader import Country, Player
+from .loader import Country
 
 
 @dataclass

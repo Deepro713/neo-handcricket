@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- **Autonomous-dev scaffolding**: `docs/00-overview/` (conventions-and-rules, dev-runbook,
+  decision-log), an Obsidian vault (`docs/` + `.obsidian/`) for milestones/issues/research, a GitHub
+  Project board, `scripts/ship-cluster.sh` + `scripts/sync.py`, a headless game-sim QA gate
+  (`tools/playtest`), ruff/mypy/pytest config + a `[dev]` extra, a `Makefile` gate, CI + wiki-publish
+  workflows, and `wiki/` seed pages.
+
 ### Changed
 - Removed one-shot data-prep script `tools/generate_remaining_rosters.py`
   (581 lines). The 200 country JSONs are committed; the generator served its

@@ -10,13 +10,13 @@ Public API:
 """
 from __future__ import annotations
 
+import contextlib
 import select
 import sys
 import termios
 import time
 import tty
-from typing import Callable, ContextManager
-import contextlib
+from collections.abc import Callable
 
 
 def is_tty() -> bool:

@@ -92,7 +92,7 @@ def select_xi(country: Country, fmt: Format, rng: random.Random | None = None) -
 
     needed_pacers = max(0, fmt.min_pacers - pacers_in_chosen)
     needed_spinners = max(0, fmt.min_spinners - spinners_in_chosen)
-    needed_bowlers = max(0, fmt.min_bowlers_in_xi - bowlers_in_chosen)
+    max(0, fmt.min_bowlers_in_xi - bowlers_in_chosen)
 
     # Pull pacers
     pacer_pool = [p for p in candidates if _is_pacer(p)]

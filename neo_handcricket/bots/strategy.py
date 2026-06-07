@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import random
 from collections import Counter
-from typing import Literal
 
 from ..config import ADAPTIVE_WINDOW, DIFFICULTY_ALPHA
 from . import profiles
@@ -41,7 +40,7 @@ def _adapted_for_batting(recent_user_picks: list[int]) -> list[float]:
     if not recent_user_picks:
         return [1 / 7] * 7
     counts = Counter(recent_user_picks)
-    total = sum(counts.values())
+    sum(counts.values())
     # Inverse: high-frequency picks get LOW probability
     raw = [1.0 / (counts.get(i, 0) + 1) for i in range(7)]  # +1 smoothing
     return _normalize(raw)
@@ -80,7 +79,7 @@ def pick_number(
 
     alpha = a_player * diff_alpha
     base = _normalize(base)
-    final = [(1 - alpha) * b + alpha * a for b, a in zip(base, adapted)]
+    final = [(1 - alpha) * b + alpha * a for b, a in zip(base, adapted, strict=False)]
     final = _normalize(final)
 
     return rng.choices(range(7), weights=final, k=1)[0]

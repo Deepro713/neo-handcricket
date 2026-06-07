@@ -8,7 +8,6 @@ from typing import Literal
 from .formats import Format
 from .innings import Innings
 
-
 MatchPhase = Literal["pre", "innings1", "innings2", "innings3", "innings4", "super-over", "complete"]
 
 
