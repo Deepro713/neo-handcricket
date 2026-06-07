@@ -73,3 +73,10 @@ DIFFICULTY_EPSILON = {           # exploit-vs-mix epsilon per difficulty
     "hard": 0.25,
     "legend": 0.08,
 }
+
+# Player-facing "tells" (M006). OFF by default. When enabled, before the user bats
+# the bot bowler drops a coarse, sometimes-bluffing hint about its likely *zone*
+# (low/middle/high — never an exact number). Truthful only TELLS_TRUTHFUL_PROB of
+# the time, so it adds mind-games without breaking the hidden-pick core.
+TELLS_ENABLED = False
+TELLS_TRUTHFUL_PROB = 0.6

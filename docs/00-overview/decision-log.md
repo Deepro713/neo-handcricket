@@ -7,6 +7,23 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0013 — M006 cluster `tells`: optional player-facing mind-games
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/tells` · **Issues:** #36
+
+**Context.** Add optional reads on the bowler that create mind-games without breaking the hidden-pick
+core — they must never leak the actual number.
+
+**Decision.** New pure module `neo_handcricket/bots/tells.py`: `generate_tell(archetype, fatigue, rng,
+truthful_prob)` returns a **coarse zone** hint — low (0-2) / middle (3-4) / high (5-6) — drawn from
+original CC0 line banks. It points at the archetype's favoured zone only `TELLS_TRUTHFUL_PROB` (0.6) of
+the time and **bluffs** otherwise; a gassed bowler sometimes telegraphs fatigue. A zone is three numbers
+wide and only sometimes true, so the exact pick never leaks. Gated by `TELLS_ENABLED` (**off by
+default**); when on, `main.py` shows a tell before the user bats via `overlay.show_tell`.
+
+**Consequences.** 6 new unit tests including a hard invariant — **a tell never contains a digit** — plus
+truthful-vs-bluff control and the fatigue telegraph. Gate green (ruff + mypy 36 files + 55 tests +
+playtest 51/51). **Completes M006's build work** (all 6 issues shipped).
+
 ## ADR-0012 — M006 cluster `eval`: prove the opponent model works
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/eval` · **Issues:** #32
 

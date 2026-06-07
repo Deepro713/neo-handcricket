@@ -42,3 +42,8 @@ def show_bowler_card(
 
 def show_over_pause_hint(console: Console, message: str = "Press any key to continue") -> None:
     console.print(Text(f"  ⏸  {message}", style="dim italic"))
+
+
+def show_tell(console: Console, tell: str) -> None:
+    """A coarse, sometimes-bluffing read on the bowler (player-facing tells)."""
+    console.print(Text(f"  👀  {tell}", style="magenta italic"))

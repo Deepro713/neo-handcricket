@@ -7,8 +7,8 @@ priority: P3
 cluster: m006/tells
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 36
 ---
