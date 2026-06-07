@@ -10,13 +10,15 @@ import sys
 
 from rich.console import Console
 
+from .. import a11y
 from ..commentary.engine import CommentaryEngine
 from ..match import Match
 from . import scoreboard
 
 
 def make_console() -> Console:
-    return Console(highlight=False)
+    # Honour NO_COLOR / a11y mode (community-standard accessibility).
+    return Console(highlight=False, no_color=not a11y.color_enabled())
 
 
 def render_frame(

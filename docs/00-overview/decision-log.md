@@ -7,6 +7,27 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0025 — M010 cluster `a11y-core`: NO_COLOR, a11y mode, colour-never-alone, untimed
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m010/a11y-core` · **Issues:** #86, #85, #87
+
+**Context.** CLI accessibility has clear standards (research §2) we were missing; this is the core of the
+v1.0.0 bar.
+
+**Decision.** New module `neo_handcricket/a11y.py` as the single source of truth:
+- `color_enabled()` — disabled when `NO_COLOR` is present (community standard) or in a11y mode;
+  `make_console` now passes `no_color` accordingly.
+- `a11y_enabled()` (env `NHC_A11Y` or `config.A11Y_MODE`) + `animations_enabled()` — a11y mode turns off
+  the redraw timer-bar in favour of static prompts (`main._read_timed` renders statically when animations
+  are off).
+- `timer_seconds()` returns the per-ball length or **None when untimed** (`NHC_UNTIMED` /
+  `config.TIMER_UNTIMED`); a thin `select_timer` prompt sets the session preference; `_read_timed` blocks
+  on a plain read when untimed.
+- `SIGNALS` — a **colour-never-alone** map giving every signalling state a non-empty glyph **and** word.
+
+**Consequences.** 8 unit tests (NO_COLOR/off-values, a11y via env+config, animations off, timer/untimed,
+every signal has glyph+word). Gate green (ruff + mypy 53 files + 134 tests + playtest 60/60). First
+cluster of M010 — the project crosses into **v1.0.0**.
+
 ## ADR-0024 — M009 cluster `ui-and-playtest`: playable daily + reproducibility gate
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m009/ui-and-playtest` · **Issues:** #71
 
