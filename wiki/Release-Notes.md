@@ -3,6 +3,11 @@
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
 ## Round 1 (forward development)
+- **v0.5.3** — M005 `ui-and-playtest`: live stamina gauge + settled markers; 9 new playtest invariants
+  (gate now 49 checks). **Completes M005.**
+- **v0.5.2** — M005 `rotation`: match-up-aware bowling rotation (archetype advantage + freshness).
+- **v0.5.1** — M005 `matchstate`: batsman settledness + chase intent reshape the batter's scoring.
+- **v0.5.0** — **M005 Cricket realism layer**: bowler fatigue (workload decay + rest recovery).
 - **v0.4.1** — M004 `gate-enforcement`: mypy is now a hard QA-gate step (ship-cluster + CI + Makefile);
   ship-cluster version map fixed for zero-padded slugs.
 - **v0.4.0** — **M004 Type-debt foundation**: cleared all ~44 mypy errors (`mypy neo_handcricket` =
