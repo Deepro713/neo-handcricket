@@ -12,9 +12,9 @@ progression. (See `docs/00-overview/decision-log.md` ADR-0003 and the Round 1 re
   match-up-aware bowling rotation, live indicators. **Done.**
 - ✅ **M006 — Strategic AI & opponent modelling** (v0.6.x) — opponent model (frequency + WSLS + bigram),
   exploit-vs-mix, Legend tier, eval harness, optional tells. **Done.**
-- ⏳ **M007 — Commentary & presentation depth** (v0.7.0) — big-moment event detector + line banks,
-  context-aware lines, scoreboard/summary polish.
-- ⬜ **M008 — Career & roguelite meta-progression** (v0.8.0) — offline tournament campaign, banked
+- ✅ **M007 — Commentary & presentation depth** (v0.7.x) — big-moment event detector + escalating line
+  banks, context-aware asides, scoreboard milestones + highlights reel. **Done.**
+- ⏳ **M008 — Career & roguelite meta-progression** (v0.8.0) — offline tournament campaign, banked
   currency, variety unlocks, achievements, shareable save codes.
 
 **v1.0.0** lands at **M010**. After M008, the loop researches again and plans the next five.
