@@ -7,6 +7,30 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0006 — M005 cluster `fatigue`: bowler fatigue model
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/fatigue` · **Issues:** #28
+
+**Context.** First realism lever (research §2): a bowler should get less effective the longer they
+bowl and recover with rest. The game alternates bowlers (no consecutive overs), so the meaningful
+signal is **cumulative workload** offset by **rest since last spell**, not strictly-consecutive overs.
+
+**Decision.** New pure module `neo_handcricket/bots/fatigue.py`:
+- `fatigue_factor(overs_bowled, overs_rested, archetype) -> float` in [0,1] — workload
+  (`overs_bowled × decay_rate`) minus recovery (`overs_rested × recovery`), clamped. Pace/swing/mystery
+  decay faster (`FATIGUE_DECAY_PACE=0.12`) than spin (`FATIGUE_DECAY_SPIN=0.07`); recovery 0.05/over.
+- `apply_fatigue(base, alpha, fatigue) -> (base', alpha')` — blends the base distribution toward
+  uniform by `fatigue` and scales α by `(1-fatigue)`: a tired bowler is easier to score off and reads
+  the batter worse.
+
+Wired into `strategy.pick_number` via a new `fatigue: float = 0.0` kwarg (bowling-only,
+backward-compatible). `main.py` tracks `last_over_by_bowler` to derive rest, reads `over_counts` for
+workload, and passes the computed factor for the bot bowler each over.
+
+**Consequences.** 8 new unit tests (bounds, monotonicity, rest-recovery, pace-vs-spin, distribution
+validity, and an end-to-end "tired bowler matches a predictable batter less"). Pure/seeded; gate green
+(ruff + mypy 32 files + 20 tests + playtest 40/40). Sets up `m005/rotation` (#29) to factor freshness
+into bowler selection and `m005/realism-ui` (#31) to surface stamina.
+
 ## ADR-0005 — M004 cluster `gate-enforcement`: make mypy a hard gate + fix the version map
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m004/gate-enforcement` · **Issues:** #22
 
