@@ -3,6 +3,7 @@
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
 ## Round 2 (in progress)
+- **v1.2.0 / v1.2.1** — **M012 Roguelite draft: relics & run modifiers**: a relic registry + a deterministic between-rounds draft wired into the tournament career. **Completes M012.**
 - **v1.1.0 / v1.1.1** — **M011 Headless adapter & Textual TUI foundation**: a UI-agnostic engine adapter
   (the CLI now routes through it) + an optional local Textual TUI (`[tui]` extra, offline). **Completes M011.**
 - **🎉 v1.0.0 / v1.0.1** — **M010 Accessibility, onboarding & the 1.0 release**: NO_COLOR + a static

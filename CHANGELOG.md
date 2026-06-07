@@ -11,6 +11,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [1.2.0]–[1.2.1] — 2026-06-07 — M012 roguelite draft: relics & run modifiers
+
+### Added
+- **Relic registry** (`career/relics.py`): run-scoped rule-benders over a neutral effective-config
+  (boundary value, fatigue, powerplay overs, tail aggression, currency), composing order-independently,
+  plus a deterministic seeded **draft**. (v1.2.0)
+- **Relics in the career** (`career/run.py`): a between-rounds draft wired into the tournament (decline
+  allowed); the chosen relics' effective config feeds match resolution. Thin draft/owned UI. (v1.2.1)
+
 ## [1.1.0]–[1.1.1] — 2026-06-07 — M011 headless adapter & Textual TUI foundation
 
 ### Added
