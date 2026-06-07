@@ -7,8 +7,8 @@ priority: P1
 cluster: m008/tournament-core
 labels:
   - enhancement
-status: Todo
-state: open
+status: Done
+state: closed
 github:
   issue: 46
 ---
