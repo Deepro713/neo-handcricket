@@ -15,12 +15,14 @@ from .bots import captain as cap_ai
 from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
 from .bots import strategy
+from .bots import tells as tells_mod
 from .commentary.engine import CommentaryEngine
 from .config import (
     COMMENTARY_LINE_GAP_SECONDS,
     DIFFICULTY_EPSILON,
     EXTRAS_BASE_PCT,
     INTER_BALL_GAP_SECONDS,
+    TELLS_ENABLED,
     TEST_BALL_CAP,
     TEST_BOT_DECLARE_LEAD,
     TEST_BOT_FOLLOW_ON_LEAD,
@@ -500,6 +502,8 @@ def _run_innings(
                     epsilon=DIFFICULTY_EPSILON.get(match.difficulty),
                     rng=rng,
                 )
+                if TELLS_ENABLED:
+                    ui_overlay.show_tell(console, tells_mod.generate_tell(bowler_arch, bot_fatigue, rng=rng))
                 # Prompt user
                 prompt_text = f"BAT — pick 0–6  ({batter_name})"
                 beep()
