@@ -7,6 +7,23 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0020 — M008 cluster `ui-and-playtest`: campaign dashboard + tournament gate
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/ui-and-playtest` · **Issues:** #43, #44
+
+**Context.** The progression/achievement/tournament systems needed a player-facing surface and a
+gameplay-gate that exercises a full campaign end-to-end.
+
+**Decision.**
+- **Thin UI (#43):** `ui/campaign.py` `render_dashboard(state, earned)` shows reputation, owned /
+  affordable / locked unlocks and earned achievements; `unlock_toast`. A new **Campaign & progression**
+  main-menu entry (`c` → `career`) loads `persistence/progression` and renders it. No logic in the UI.
+- **Playtest invariant (#44):** a headless full **8-team tournament** resolved through the real engine —
+  each fixture simulates a seeded T10 innings per side and the higher score advances — asserting a
+  champion emerges, the bracket has 7 fixtures, and every fixture resolved.
+
+**Consequences.** 3 UI smoke tests + 3 tournament playtest checks (gate now **57**). Gate green (ruff +
+mypy 46 files + 107 tests). **Completes M008 and Round 1** (M004–M008 all shipped).
+
 ## ADR-0019 — M008 cluster `achievements`: achievements + shareable save codes
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/achievements` · **Issues:** #42
 

@@ -739,6 +739,13 @@ def run() -> None:
         if choice == "stats":
             _show_stats(console)
             continue
+        if choice == "career":
+            from .persistence import progression as prog_io
+            from .ui import campaign as ui_campaign
+            state = prog_io.load_progression()
+            ui_campaign.render_dashboard(console, state, set(state.get("achievements", [])))
+            ui_prompts.confirm_continue(console)
+            continue
         if choice == "load":
             saves = save_io.list_saves()
             if not saves:

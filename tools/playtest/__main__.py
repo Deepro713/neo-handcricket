@@ -169,6 +169,38 @@ def _realism_invariants(lines: list[str]) -> None:
     inn.record_ball(wicket="caught")
     check("events: hat-trick detected on three in a row", any(e.kind == "hat_trick" for e in ev_mod.detect(inn)))
 
+    # --- Full offline tournament resolved via the engine (M008) ---
+    from neo_handcricket.career import tournament as T
+
+    tfmt = PRESETS["T10"]
+
+    def _quick_score(slug: str, seed: int) -> int:
+        c = loader.load_country(slug)
+        r = random.Random(seed)
+        sel = selector.select_xi(c, tfmt, rng=r)
+        ti = Innings(
+            batting_country=c.country, bowling_country=c.country,
+            batting_xi=[p.id for p in sel.playing_xi], bowling_xi=[p.id for p in sel.playing_xi],
+            bowling_pool=[p.id for p in sel.bowling_pool],
+            overs_limit=tfmt.overs_per_innings, wickets_limit=tfmt.wickets_per_innings,
+        )
+        _sim_innings(ti, c, rng=r)
+        return ti.runs
+
+    def _resolve(home: str, away: str) -> str:
+        base = sum(ord(ch) for ch in home + away)
+        return home if _quick_score(home, base) >= _quick_score(away, base + 1) else away
+
+    field = ["india", "australia", "england", "japan", "brazil", "antarctica", "nepal", "usa"]
+    try:
+        tourney = T.play_tournament(field, _resolve)
+        check("tournament: a champion emerges", tourney.champion in field, f"champion={tourney.champion}")
+        check("tournament: 8-team bracket has 7 fixtures", T.total_fixtures(tourney) == 7)
+        check("tournament: every fixture resolved", all(fx.winner for r in tourney.rounds for fx in r))
+        lines.append(f"tournament: champion={tourney.champion}, fixtures={T.total_fixtures(tourney)}")
+    except Exception as e:  # noqa: BLE001 — a crash IS a failed check
+        check("tournament: runs without crashing", False, repr(e))
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
