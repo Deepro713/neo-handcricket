@@ -10,11 +10,11 @@ PY="${PY:-.venv/bin/python}"
 cmd="${1:-}"; shift || true
 
 run_gate() {
-  echo "== QA gate: ruff + pytest + playtest =="
+  echo "== QA gate: ruff + mypy + pytest + playtest =="
   "$PY" -m ruff check .
+  "$PY" -m mypy neo_handcricket
   "$PY" -m pytest -q
   "$PY" -m tools.playtest
-  echo "== (mypy advisory) =="; "$PY" -m mypy neo_handcricket || true
 }
 
 case "$cmd" in
@@ -53,7 +53,8 @@ ${title}
     [ "$state" = "MERGED" ] || { echo "PR not merged yet — finish merge manually."; exit 1; }
     git checkout main && git pull --ff-only origin main
     # Version: minor = milestone, patch = next free. M00N -> v0.N (N<10), M010 -> v1.0, ...
-    mnum="$(printf '%s' "$branch" | sed -n 's#^m\([0-9][0-9]*\)/.*#\1#p')"
+    # strip the leading zeros of zero-padded slugs (m004/… → 4, m010/… → 10)
+    mnum="$(printf '%s' "$branch" | sed -n 's#^m0*\([0-9][0-9]*\)/.*#\1#p')"
     case "$mnum" in
       1) minor="0.1";; 2) minor="0.2";; 3) minor="0.3";; 4) minor="0.4";; 5) minor="0.5";;
       6) minor="0.6";; 7) minor="0.7";; 8) minor="0.8";; 9) minor="0.9";; 10) minor="1.0";;

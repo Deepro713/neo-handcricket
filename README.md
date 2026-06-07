@@ -165,13 +165,14 @@ Loose order, biggest impact first:
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"          # rich + pytest + ruff + mypy
-make gate                        # ruff + pytest + tools.playtest  (the QA gate)
+make gate                        # ruff + mypy + pytest + tools.playtest  (the QA gate)
 neo-handcricket                  # play
 ```
 
-The **QA gate** that must pass before every change: `ruff check .` · `pytest` · `python -m tools.playtest`
-(a headless game-sim that plays full matches across every format with seeded RNG and asserts
-invariants). `mypy` is advisory while existing type-debt is paid down.
+The **QA gate** that must pass before every change: `ruff check .` · `mypy neo_handcricket` · `pytest` ·
+`python -m tools.playtest` (a headless game-sim that plays full matches across every format with seeded
+RNG and asserts invariants). All four are **enforced** — the package is mypy-clean as of v0.4.0
+(milestone M004).
 
 ## Autonomous build
 
