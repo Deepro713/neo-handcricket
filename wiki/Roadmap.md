@@ -14,7 +14,8 @@ progression. (See `docs/00-overview/decision-log.md` ADR-0003 and the Round 1 re
   exploit-vs-mix, Legend tier, eval harness, optional tells. **Done.**
 - ✅ **M007 — Commentary & presentation depth** (v0.7.x) — big-moment event detector + escalating line
   banks, context-aware asides, scoreboard milestones + highlights reel. **Done.**
-- ⏳ **M008 — Career & roguelite meta-progression** (v0.8.0) — offline tournament campaign, banked
-  currency, variety unlocks, achievements, shareable save codes.
+- ✅ **M008 — Career & roguelite meta-progression** (v0.8.x) — offline tournament campaign, banked
+  currency, variety unlocks, achievements, shareable save codes. **Done.**
 
-**v1.0.0** lands at **M010**. After M008, the loop researches again and plans the next five.
+**Round 1 (M004–M008) is complete.** The loop now re-researches the next frontier and plans Round 2
+(**M009–M013**); **v1.0.0** lands at **M010**.

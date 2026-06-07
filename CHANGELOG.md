@@ -11,6 +11,19 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [0.8.0]–[0.8.3] — 2026-06-07 — M008 career & roguelite meta-progression
+
+### Added
+- **Offline tournament core** (`career/tournament.py`): reputation-seeded single-elimination bracket
+  with byes and an injected fixture resolver. (v0.8.0)
+- **Progression** (`career/progression.py`): banked currency from results spent on **variety unlocks**
+  (opponents/panels/modifiers, not power); persisted to `stats/progression.json`. Bumped
+  `SAVE_SCHEMA_VERSION` 1→2 with migration so v1 saves load cleanly. (v0.8.1)
+- **Achievements** (`career/achievements.py`) evaluated from the event stream + result, and
+  **shareable save codes** (`career/sharecode.py`, offline Base32, corruption-safe). (v0.8.2)
+- **Campaign & progression dashboard** (main-menu entry) and a headless full-tournament playtest
+  invariant (gate now 57 checks). (v0.8.3)
+
 ## [0.7.0]–[0.7.2] — 2026-06-07 — M007 commentary & presentation depth
 
 ### Added
