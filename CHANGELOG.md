@@ -11,6 +11,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [1.1.0]–[1.1.1] — 2026-06-07 — M011 headless adapter & Textual TUI foundation
+
+### Added
+- **Headless game adapter** (`adapter.py`): a UI-agnostic façade — start a match from a config, submit a
+  0–6 pick, observe structured state + events; deterministic, no I/O. `bot_bowl_pick` is now the single
+  source of truth the CLI also routes through. (v1.1.0)
+- **Optional local Textual TUI** (`tui/`, `neo-handcricket-tui`): a richer terminal front-end driving the
+  adapter. `textual` is an optional `[tui]` extra — offline, no network; the core CLI/gate never depend
+  on it. (v1.1.1)
+
 ## [1.0.0]–[1.0.1] — 2026-06-07 — M010 accessibility, onboarding & the 1.0 release 🎉
 
 The **1.0** release: a complete, accessible, welcoming game.

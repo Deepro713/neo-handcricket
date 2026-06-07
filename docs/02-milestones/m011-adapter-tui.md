@@ -2,8 +2,8 @@
 title: M011 — Headless adapter & Textual TUI foundation
 type: milestone
 milestone: M011
-status: Todo
-state: open
+status: Done
+state: closed
 version: v1.1.0
 github:
   milestone: 11
@@ -11,7 +11,7 @@ github:
 
 # M011 — Headless adapter & Textual TUI foundation
 
-**Status:** Todo · **Target version:** v1.1.0 · **GitHub milestone:** #11
+**Status:** Done · **Target version:** v1.1.0 · **GitHub milestone:** #11
 
 ## Goal
 Open the engine to new front-ends (research §3): a UI-agnostic headless adapter any UI can drive, the CLI routed through it, and an optional local Textual TUI. Offline only — de-risks a future web/GUI port without adding network/telemetry.

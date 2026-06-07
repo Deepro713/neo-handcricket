@@ -26,7 +26,8 @@ Arc: retain → polish to **1.0** → open up → deepen → broaden. (ADR-0021 
   score + local best-table, offline share codes. **Done.**
 - ✅ **M010 — Accessibility, onboarding & 1.0 polish** (**v1.0.0** 🎉) — NO_COLOR + static a11y mode,
   colour-never-alone, untimed timer, onboarding tutorial. **Done — neo-handcricket is 1.0.**
-- ⬜ **M011 — Headless adapter & Textual TUI foundation** (v1.1.0) — local, no network.
+- ✅ **M011 — Headless adapter & Textual TUI foundation** (v1.1.x) — UI-agnostic engine adapter + optional
+  local Textual TUI. **Done.**
 - ⬜ **M012 — Roguelite draft: relics & run modifiers** (v1.2.0).
 - ⬜ **M013 — Content & localization scaffold** (v1.3.0).
 
