@@ -2,8 +2,8 @@
 title: M013 — Content & localization scaffold
 type: milestone
 milestone: M013
-status: Todo
-state: open
+status: Done
+state: closed
 version: v1.3.0
 github:
   milestone: 13
@@ -11,7 +11,7 @@ github:
 
 # M013 — Content & localization scaffold
 
-**Status:** Todo · **Target version:** v1.3.0 · **GitHub milestone:** #13
+**Status:** Done · **Target version:** v1.3.0 · **GitHub milestone:** #13
 
 ## Goal
 Broaden reach (research §5): more hand-curated rosters and commentary, plus a parallel string-table structure so the English-only commentary can be localized later. CC0/original.

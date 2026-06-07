@@ -11,6 +11,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [1.3.0]–[1.3.1] — 2026-06-07 — M013 content & localization scaffold
+
+### Added
+- **Localization scaffold** (`i18n.py`): a locale-keyed string table (English default + fallback) so the
+  English-only strings can be translated later without code changes. (v1.3.0)
+- **More content**: hand-curated **Iceland** + **Mongolia** rosters (on-rhythm original names) and ~30
+  extra original commentary lines across thinner categories. (v1.3.1)
+
 ## [1.2.0]–[1.2.1] — 2026-06-07 — M012 roguelite draft: relics & run modifiers
 
 ### Added

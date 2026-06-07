@@ -19,7 +19,7 @@ progression. (See `docs/00-overview/decision-log.md` ADR-0003 and the Round 1 re
 
 **Round 1 (M004–M008) is complete.**
 
-## Round 2 — M009–M013 (in progress)
+## Round 2 — M009–M013 (COMPLETE)
 Arc: retain → polish to **1.0** → open up → deepen → broaden. (ADR-0021 + the Round 2 research note.)
 
 - ✅ **M009 — Daily-seed & procedural challenges** (v0.9.x) — deterministic daily match + modifiers,
@@ -29,6 +29,6 @@ Arc: retain → polish to **1.0** → open up → deepen → broaden. (ADR-0021 
 - ✅ **M011 — Headless adapter & Textual TUI foundation** (v1.1.x) — UI-agnostic engine adapter + optional
   local Textual TUI. **Done.**
 - ✅ **M012 — Roguelite draft: relics & run modifiers** (v1.2.x) — relic registry + between-rounds draft in the career. **Done.**
-- ⬜ **M013 — Content & localization scaffold** (v1.3.0).
+- ✅ **M013 — Content & localization scaffold** (v1.3.x) — localization scaffold + curated rosters + commentary breadth. **Done.**
 
 **v1.0.0** lands at **M010**.
