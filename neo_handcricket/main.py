@@ -13,6 +13,7 @@ from rich.text import Text
 
 from .bots import captain as cap_ai
 from .bots import fatigue as fatigue_mod
+from .bots import matchstate as matchstate_mod
 from .bots import strategy
 from .commentary.engine import CommentaryEngine
 from .config import (
@@ -498,12 +499,18 @@ def _run_innings(
                 bot_arch = "tail-ender"
                 if striker and striker.batting_archetype:
                     bot_arch = striker.batting_archetype
+                striker_balls = inn.batter_cards[inn.striker_id].balls if inn.striker_id in inn.batter_cards else 0
+                bot_aggression = matchstate_mod.aggression(
+                    matchstate_mod.settledness(striker_balls),
+                    matchstate_mod.chase_intent(inn.runs_needed, inn.balls_remaining),
+                )
                 bot_pick = strategy.pick_number(
                     archetype=bot_arch,
                     is_bowler=False,
                     recent_user_picks=user_recent_bowling_picks,
                     difficulty=match.difficulty,
                     over_number=inn.overs_completed,
+                    aggression=bot_aggression,
                     rng=rng,
                 )
                 prompt_text = f"BOWL — pick 0–6  (vs {batter_name})"

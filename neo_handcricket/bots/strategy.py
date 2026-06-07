@@ -15,6 +15,7 @@ from collections import Counter
 
 from ..config import ADAPTIVE_WINDOW, DIFFICULTY_ALPHA
 from . import fatigue as fatigue_mod
+from . import matchstate as matchstate_mod
 from . import profiles
 
 
@@ -59,12 +60,15 @@ def pick_number(
     difficulty: str = "medium",
     over_number: int = 0,
     fatigue: float = 0.0,
+    aggression: float | None = None,
     rng: random.Random | None = None,
 ) -> int:
     """Pick a 0–6 number for the bot. Pure function; uses rng if provided.
 
     ``fatigue`` (0=fresh, 1=gassed) only applies when bowling: it flattens the
     bowler's base distribution toward uniform and lowers its effective α.
+    ``aggression`` (0=blocking, 0.5=neutral, 1=all-out), when given, only applies
+    when batting: it reshapes the batter's base toward (or away from) boundaries.
     """
     rng = rng if rng is not None else random.Random()
     diff_alpha = DIFFICULTY_ALPHA.get(difficulty, 0.3)
@@ -82,6 +86,8 @@ def pick_number(
     else:
         base = list(profiles.BATSMAN_BASE.get(archetype, profiles.BATSMAN_BASE["tail-ender"]))
         a_player = profiles.BATSMAN_ALPHA.get(archetype, 0.3)
+        if aggression is not None:
+            base = matchstate_mod.apply_matchstate(base, aggression)
         adapted = _adapted_for_batting(recent_user_picks[-ADAPTIVE_WINDOW:])
 
     alpha = a_player * diff_alpha
