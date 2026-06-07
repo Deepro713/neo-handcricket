@@ -6,6 +6,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **History reconstruction** (2026-06-07): retroactive milestones **M001–M003**, closed issues, vault
+  notes, backdated tags `v0.1.0`/`v0.2.0`/`v0.3.0` + releases, and a v0.x version scheme reconciliation.
+  See `docs/00-overview/decision-log.md` (ADR-0002).
+
+## [0.3.0] — 2026-06-07 — repo polish, docs & autonomous-dev bootstrap
+
+### Added
 - **Autonomous-dev scaffolding**: `docs/00-overview/` (conventions-and-rules, dev-runbook,
   decision-log), an Obsidian vault (`docs/` + `.obsidian/`) for milestones/issues/research, a GitHub
   Project board, `scripts/ship-cluster.sh` + `scripts/sync.py`, a headless game-sim QA gate
