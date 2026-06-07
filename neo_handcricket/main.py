@@ -4,6 +4,7 @@ from __future__ import annotations
 import random
 import sys
 import time
+from functools import partial
 from typing import Literal
 
 from rich.console import Console
@@ -99,7 +100,7 @@ def _do_toss(console: Console, match: Match) -> None:
     console.print(Panel(Text("The Toss", style="bold cyan"), border_style="cyan"))
     console.print("  Call it: [yellow]h[/yellow]eads / [yellow]t[/yellow]ails  (or any key for heads)")
     ch = read_key().lower()
-    user_call = "tails" if ch == "t" else "heads"
+    user_call: Literal["heads", "tails"] = "tails" if ch == "t" else "heads"
     console.print(f"  You called: [bold]{user_call}[/bold]")
     console.print("  Press any key to flip the coin...")
     read_key()
@@ -358,7 +359,7 @@ def _commentary_ctx(*, match: Match, inn: Innings, runs: int, wicket: str | None
         "bowling_country": inn.bowling_country,
         "striker_id": inn.striker_id,
         "bowler_id": inn.current_bowler_id,
-        "batter_runs": inn.batter_cards.get(inn.striker_id).runs if inn.striker_id in inn.batter_cards else 0,
+        "batter_runs": inn.batter_cards[inn.striker_id].runs if inn.striker_id in inn.batter_cards else 0,
         "result_summary": match.result_summary or "",
     }
 
@@ -469,7 +470,7 @@ def _run_innings(
                 beep()
                 user_ch = read_key_with_timer(
                     TIMER_SECONDS,
-                    tick=lambda r, pt=prompt_text: ui_cli.update_prompt_line(pt, r),
+                    tick=partial(ui_cli.update_prompt_line, prompt_text),
                 )
                 ui_cli.newline()
                 user_pick: int | None = None
@@ -501,7 +502,7 @@ def _run_innings(
                 beep()
                 user_ch = read_key_with_timer(
                     TIMER_SECONDS,
-                    tick=lambda r, pt=prompt_text: ui_cli.update_prompt_line(pt, r),
+                    tick=partial(ui_cli.update_prompt_line, prompt_text),
                 )
                 ui_cli.newline()
                 user_pick = None
@@ -534,9 +535,11 @@ def _run_innings(
             )
 
             # Update bowler economy
-            bcard = inn.bowler_cards.get(inn.current_bowler_id)
-            if bcard and bcard.balls > 0:
-                bowler_economies[inn.current_bowler_id] = bcard.economy
+            bid = inn.current_bowler_id
+            if bid is not None:
+                bcard = inn.bowler_cards.get(bid)
+                if bcard and bcard.balls > 0:
+                    bowler_economies[bid] = bcard.economy
 
             # Commentary
             from .commentary.lines import situation_for_ball
@@ -633,7 +636,7 @@ def _award_pom(match: Match) -> None:
     # tuple: (player_id, team, score, tiebreak, runs, wickets)
     for inn in match.innings_list:
         for pid, c in inn.batter_cards.items():
-            score = c.runs + 25 * 0  # batting only
+            score: float = c.runs + 25 * 0  # batting only
             tb = c.strike_rate
             team = "user" if inn.batting_country == match.user_team.country else "opponent"
             candidates.append((pid, team, score, tb, c.runs, 0))
@@ -679,10 +682,10 @@ def run() -> None:
             continue
 
         # NEW match
-        match = _new_match_flow(console)
-        if match is None:
+        new_match = _new_match_flow(console)
+        if new_match is None:
             continue
-        _play_match(console, match)
+        _play_match(console, new_match)
 
 
 def _continue_match(console: Console, match: Match) -> None:
@@ -877,22 +880,22 @@ def _play_test_match(console: Console, match: Match, engine: CommentaryEngine) -
     # --- Innings 3 ---
     if follow_on:
         # Team B bats again (same xi/pool as inn2)
-        bat = match.innings_list[1].batting_country
-        b3_meta = match.opponent if bat == match.opponent.country else match.user_team
-        bowl_meta = match.user_team if bat == match.opponent.country else match.opponent
-        bat_xi = match.opponent_xi if bat == match.opponent.country else match.user_xi
-        bowl_xi = match.user_xi if bat == match.opponent.country else match.opponent_xi
-        bowl_pool = match.user_bowling_pool if bat == match.opponent.country else match.opponent_bowling_pool
-        user_is_batting = (bat == match.user_team.country)
+        bat_country = match.innings_list[1].batting_country
+        b3_meta = match.opponent if bat_country == match.opponent.country else match.user_team
+        bowl_meta = match.user_team if bat_country == match.opponent.country else match.opponent
+        bat_xi = match.opponent_xi if bat_country == match.opponent.country else match.user_xi
+        bowl_xi = match.user_xi if bat_country == match.opponent.country else match.opponent_xi
+        bowl_pool = match.user_bowling_pool if bat_country == match.opponent.country else match.opponent_bowling_pool
+        user_is_batting = (bat_country == match.user_team.country)
     else:
         # Normal: Team A bats again (same xi/pool as inn1)
-        bat = match.innings_list[0].batting_country
-        b3_meta = match.user_team if bat == match.user_team.country else match.opponent
-        bowl_meta = match.opponent if bat == match.user_team.country else match.user_team
-        bat_xi = match.user_xi if bat == match.user_team.country else match.opponent_xi
-        bowl_xi = match.opponent_xi if bat == match.user_team.country else match.user_xi
-        bowl_pool = match.opponent_bowling_pool if bat == match.user_team.country else match.user_bowling_pool
-        user_is_batting = (bat == match.user_team.country)
+        bat_country = match.innings_list[0].batting_country
+        b3_meta = match.user_team if bat_country == match.user_team.country else match.opponent
+        bowl_meta = match.opponent if bat_country == match.user_team.country else match.user_team
+        bat_xi = match.user_xi if bat_country == match.user_team.country else match.opponent_xi
+        bowl_xi = match.opponent_xi if bat_country == match.user_team.country else match.user_xi
+        bowl_pool = match.opponent_bowling_pool if bat_country == match.user_team.country else match.user_bowling_pool
+        user_is_batting = (bat_country == match.user_team.country)
 
     inn3 = _build_innings(match=match, batting_country=b3_meta, bowling_country=bowl_meta,
                           batting_xi=bat_xi, bowling_xi=bowl_xi, bowling_pool=bowl_pool)

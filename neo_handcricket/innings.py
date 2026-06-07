@@ -36,7 +36,7 @@ class BatterCard:
     sixes: int = 0
     out_to: WicketKind | None = None
     out_bowler_id: int | None = None
-    out_over: int | None = None  # over.ball string built later
+    out_over: str | None = None  # over.ball string built later
 
     @property
     def strike_rate(self) -> float:

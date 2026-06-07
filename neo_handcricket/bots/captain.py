@@ -70,7 +70,7 @@ def pick_next_bowler(
     rng: random.Random | None = None,
 ) -> int:
     """Return the player_id of the next bowler. Falls back to a random eligible bowler if no preference matches."""
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     eligible = _eligible(bowling_pool, over_counts, fmt.bowler_over_cap, last_bowler)
     if not eligible:
         # Truly stuck: all overs spent. Caller should have bailed before this.

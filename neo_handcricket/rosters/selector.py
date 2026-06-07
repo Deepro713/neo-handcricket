@@ -41,18 +41,18 @@ def _is_spinner(p: Player) -> bool:
 
 
 def select_xi(country: Country, fmt: Format, rng: random.Random | None = None) -> Selection:
-    rng = rng or random
+    rng = rng if rng is not None else random.Random()
     if fmt.playing_size < 11 or len(country.players) < 11:
         # Custom small squad — take first N players, treat first as captain by convention
         size = min(fmt.playing_size, len(country.players))
         xi = country.players[:size]
         bowlers_in_xi = [p for p in xi if p.can_bowl] or xi[-2:]  # fallback
         keeper_ids = [p.id for p in xi if p.role in ("keeper", "keeper-reserve")]
-        gloveman = keeper_ids[0] if keeper_ids else xi[0].id
+        gloveman_id = keeper_ids[0] if keeper_ids else xi[0].id
         return Selection(
             playing_xi=xi,
             bowling_pool=bowlers_in_xi[:5],
-            gloveman_id=gloveman,
+            gloveman_id=gloveman_id,
             fielder_keeper_id=None,
             reserve_keeper_id=None,
         )

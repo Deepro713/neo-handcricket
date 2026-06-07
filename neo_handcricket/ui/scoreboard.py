@@ -163,8 +163,8 @@ def render_detailed(console: Console, match: Match, innings: Innings | None = No
     bowl_t.add_column("R", justify="right")
     bowl_t.add_column("W", justify="right")
     bowl_t.add_column("Econ", justify="right")
-    for pid, c in inn.bowler_cards.items():
-        if c.balls == 0:
+    for pid, bc in inn.bowler_cards.items():
+        if bc.balls == 0:
             continue
         try:
             name = bowl_country_obj.player(pid).name
@@ -172,11 +172,11 @@ def render_detailed(console: Console, match: Match, innings: Innings | None = No
             name = f"#{pid}"
         bowl_t.add_row(
             name,
-            c.overs,
-            str(c.maidens),
-            str(c.runs_conceded),
-            str(c.wickets),
-            f"{c.economy:.2f}",
+            bc.overs,
+            str(bc.maidens),
+            str(bc.runs_conceded),
+            str(bc.wickets),
+            f"{bc.economy:.2f}",
         )
     console.print(bowl_t)
 
