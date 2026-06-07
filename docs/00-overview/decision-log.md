@@ -7,6 +7,22 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0029 — M012 cluster `relics-core`: relic registry + seeded draft
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m012/relics-core` · **Issues:** #80, #79
+
+**Context.** Roguelite depth (research §4) wants run-scoped relics drafted with real opportunity cost.
+
+**Decision.** Pure `career/relics.py` (mirroring the daily-modifiers pattern): a `RELICS` registry where
+each relic is a small transform over a neutral `EFFECTIVE_DEFAULTS` config (boundary value, fatigue rate,
+powerplay overs, tail aggression, currency mult). `apply_relics` composes them — `_mult` multiply, others
+add — so distinct relics are **order-independent**. `draft_offer(seed, owned, count)` gives a
+**deterministic** offer excluding owned relics; `choose` adds one (no-op if unknown / already owned / not
+on the offer) — declining is simply not choosing.
+
+**Consequences.** 10 unit tests (defaults, effects, order-independence, mult-vs-add, unknown ignored,
+draft determinism + owned-exclusion + cap, choose/offer rules, labels). Gate green (ruff + mypy +
+165 tests + playtest 62/62). Feeds `m012/career-and-ui` (#81).
+
 ## ADR-0028 — M011 cluster `tui`: an optional local Textual TUI
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m011/tui` · **Issues:** #78
 
