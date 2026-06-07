@@ -7,6 +7,26 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0016 — M007 cluster `context-and-polish`: state-aware lines + highlights reel
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/context-and-polish` · **Issues:** #39, #41
+
+**Context.** The realism (M005) and AI (M006) state was invisible in the commentary, and the match
+summary had no recap of the big moments the detector now produces.
+
+**Decision.**
+- **Context-aware lines (#39):** pure `commentary/context.py` `context_line(*, bowler_fatigue,
+  batter_settledness, ai_read, rng, emit_prob)` returns an occasional original aside when a threshold
+  holds (tired bowler / set batter / AI just read the human), gated by `CONTEXT_LINE_PROB`. `main.py`
+  computes the live signals after each ball and shows it as a styled aside.
+- **Polish (#41):** scoreboard adds a `★`/`💯` marker to batters past 50/100; a new pure
+  `commentary/highlights.py` `build_highlights(events, name_of)` turns the accumulated event stream into
+  a de-duplicated, capped **highlights reel** rendered in the match summary. `Match` gains a
+  `highlight_events` list (TYPE_CHECKING import, excluded from the selective save serializer).
+
+**Consequences.** 8 unit tests (context thresholds/emit-prob; highlights noteworthy-filter, dedupe,
+limit, century formatting). Gate green (ruff + mypy 39 files + 78 tests + playtest 54/54). **Completes
+M007** — every M005/M006 mechanic now surfaces in commentary or the scoreboard.
+
 ## ADR-0015 — M007 cluster `bigmoment-lines`: escalate on the event stream
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/bigmoment-lines` · **Issues:** #38
 

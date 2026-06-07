@@ -88,3 +88,9 @@ PARTNERSHIP_MILESTONE = 50       # partnership milestone
 COLLAPSE_WINDOW = 12             # legal balls over which a collapse is measured
 COLLAPSE_WICKETS = 3             # wickets within the window that count as a collapse
 LAST_BALL_FINISH_BALLS = 1       # balls remaining at/under which a winning hit is a "last-ball" finish
+
+# Context-aware commentary (M007). Occasional flavour lines that reference live
+# fatigue / settledness / AI-read state. Gated on thresholds + a low emit chance.
+CONTEXT_LINE_PROB = 0.25         # chance to emit a context line when a condition holds
+CONTEXT_FATIGUE_THRESHOLD = 0.6  # bowler fatigue at/above which "tired" lines unlock
+CONTEXT_SETTLED_THRESHOLD = 0.6  # batter settledness at/above which "set" lines unlock
