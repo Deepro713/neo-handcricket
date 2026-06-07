@@ -7,6 +7,28 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0008 — M005 cluster `rotation`: match-up-aware bowling rotation
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/rotation` · **Issues:** #29
+
+**Context.** Third realism lever (research §2): the captain should bias bowler selection toward a
+favourable bowler-vs-batter archetype match-up and toward fresher bowlers, without breaking the
+existing phase logic or the cap / no-consecutive-over invariants.
+
+**Decision.** Extend `bots/captain.py`:
+- A `MATCHUP` table (bowler archetype × batter archetype → advantage in ~[-0.2, 0.2], original content)
+  and `matchup_advantage(bowler, batter)`.
+- `pick_next_bowler` gains two optional, backward-compatible kwargs: `batter_archetype` and
+  `fatigues` (bowler_id → fatigue). In the power/middle phases it ranks the preferred-kind pool by
+  `ROTATION_MATCHUP_WEIGHT·matchup + ROTATION_FRESHNESS_WEIGHT·freshness − overs_bowled` (then random
+  top-half pick). The death phase keeps economy-first, with freshness as a new tie-breaker.
+
+`main.py` computes the striker's archetype and a per-pool fatigue map (reusing `fatigue_factor` with the
+`last_over_by_bowler` rest tracker) and passes them in.
+
+**Consequences.** 6 new unit tests (match-up lookup, no-consecutive/cap invariants preserved, match-up
+bias, freshness tie-break, death economy). Gate green (ruff + mypy + 32 tests + playtest 40/40). The
+three core M005 realism levers (fatigue, match-state, rotation) now compose.
+
 ## ADR-0007 — M005 cluster `matchstate`: batsman match-state / momentum
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/matchstate` · **Issues:** #27
 

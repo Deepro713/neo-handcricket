@@ -50,3 +50,9 @@ AGGRO_BASE = 0.35               # aggression of a fresh batter not under chase p
 AGGRO_SETTLE_WEIGHT = 0.30      # how much being settled adds to aggression
 AGGRO_INTENT_WEIGHT = 0.35      # how much chase pressure adds to aggression
 AGGRO_TILT = 0.8                # strength of the boundary tilt at full aggression swing
+
+# Match-up-aware bowling rotation (M005). The captain blends the existing
+# phase/rotation preference with an archetype match-up advantage vs the current
+# batter and bowler freshness (1 - fatigue) when choosing the next bowler.
+ROTATION_MATCHUP_WEIGHT = 2.0    # weight on bowler-vs-batter archetype advantage
+ROTATION_FRESHNESS_WEIGHT = 1.5  # weight on bowler freshness (1 - fatigue)
