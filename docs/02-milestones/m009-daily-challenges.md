@@ -2,8 +2,8 @@
 title: M009 — Daily-seed & procedural challenges
 type: milestone
 milestone: M009
-status: Todo
-state: open
+status: Done
+state: closed
 version: v0.9.0
 github:
   milestone: 9
@@ -11,7 +11,7 @@ github:
 
 # M009 — Daily-seed & procedural challenges
 
-**Status:** Todo · **Target version:** v0.9.0 · **GitHub milestone:** #9
+**Status:** Done · **Target version:** v0.9.0 · **GitHub milestone:** #9
 
 ## Goal
 Give players a reason to return every day (research §1): a date-seeded daily match with shared modifiers, a score + local best-table, and offline shareable results. We already have seeded RNG + share codes — this is mostly a deterministic seed + scoring + a thin menu.

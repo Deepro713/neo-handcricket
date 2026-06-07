@@ -11,6 +11,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   See `docs/00-overview/decision-log.md` (ADR-0002).
 - **Round 1 plan** (M004–M008) + research synthesis (ADR-0003).
 
+## [0.9.0]–[0.9.2] — 2026-06-07 — M009 daily-seed & procedural challenges
+
+### Added
+- **Daily challenge core** (`daily/seed.py`, `daily/modifiers.py`): a date-seeded, deterministic daily
+  match (format, teams, difficulty) + a pool of composable modifiers — identical for everyone on a
+  given day. (v0.9.0)
+- **Daily scoring + local best-table** (`daily/score.py`, `persistence/daily.py`): a monotonic score and
+  a best-per-date table that round-trips through the offline share codes. (v0.9.1)
+- **Playable Daily challenge** main-menu entry (seeded match → score → share code) + a reproducibility
+  playtest invariant (gate now 60 checks). (v0.9.2)
+
 ## [0.8.0]–[0.8.3] — 2026-06-07 — M008 career & roguelite meta-progression
 
 ### Added
