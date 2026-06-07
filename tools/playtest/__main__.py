@@ -12,7 +12,7 @@ import argparse
 import random
 import sys
 
-from neo_handcricket.bots import captain, fatigue, matchstate, strategy
+from neo_handcricket.bots import captain, evaluation, fatigue, matchstate, strategy
 from neo_handcricket.formats import PRESETS
 from neo_handcricket.formats import custom as custom_fmt
 from neo_handcricket.innings import Innings
@@ -139,6 +139,19 @@ def _realism_invariants(lines: list[str]) -> None:
     check("rotation: respects per-bowler over cap", cap_ok, f"counts={over_counts}")
     lines.append(f"realism: fatigue fresh/tired matches={fresh_hits}/{tired_hits}; "
                  f"boundaries tentative/aggressive={tentative_big}/{aggressive_big}; rotation={over_counts}")
+
+    # --- Strategic AI: opponent model beats the frequency baseline (M006) ---
+    model_sum = base_sum = 0.0
+    for seed in (0, 1, 2):
+        res = evaluation.evaluate(n_balls=400, seed=seed)
+        for name in ("favourite", "wsls", "sequence"):
+            model_sum += res[name]["model"]
+            base_sum += res[name]["baseline"]
+    check("ai-eval: opponent model beats frequency baseline vs predictable players",
+          model_sum > base_sum, f"model={model_sum:.3f} baseline={base_sum:.3f}")
+    fav = evaluation.simulate_match_rate(evaluation.favourite_pattern(4), epsilon=0.08, n_balls=600, seed=1)
+    check("ai-eval: favourite-number player exploited above chance", fav > 0.18, f"rate={fav:.3f}")
+    lines.append(f"ai-eval: predictable model/baseline={model_sum:.3f}/{base_sum:.3f}; favourite={fav:.3f}")
 
 
 def main() -> int:
