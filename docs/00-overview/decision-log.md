@@ -7,6 +7,24 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0017 — M008 cluster `tournament-core`: an injectable knockout bracket
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m008/tournament-core` · **Issues:** #46
+
+**Context.** A roguelite "run" needs a campaign structure. It must be deterministic and unit-testable
+without spinning up real matches.
+
+**Decision.** New pure package `neo_handcricket/career/` with `tournament.py`: a single-elimination
+bracket seeded by reputation (best first), padded to a power of two with **byes** via standard seeding
+(`seed_slots`), and `play_tournament(teams, resolve)` that runs every round to one `champion`. Fixture
+resolution is an **injected `Resolver` callback** (`resolve(home, away) -> winner`) — the game passes a
+resolver that plays a real match; tests pass a deterministic one. De-dupes teams; handles byes,
+single-team and empty fields.
+
+**Consequences.** 7 unit tests (seed/pad sizing, pow2-no-byes, champion-by-seed, byes auto-advance,
+dedupe, valid pairings, fixture counts). Decoupling resolution keeps the core pure and lets
+`m008/ui-and-playtest` (#44) run a full headless tournament invariant cheaply. Gate green (ruff + mypy
+41 files + 85 tests + playtest 54/54). Feeds `m008/progression` (#45) and `m008/achievements` (#42).
+
 ## ADR-0016 — M007 cluster `context-and-polish`: state-aware lines + highlights reel
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m007/context-and-polish` · **Issues:** #39, #41
 
