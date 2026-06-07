@@ -26,3 +26,5 @@ saves/*.json
 stats/*.json
 !saves/.gitkeep
 !stats/.gitkeep
+.ruff_cache/
+.mypy_cache/

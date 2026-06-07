@@ -12,7 +12,6 @@ from typing import Literal
 from .config import RETOSS_CAP
 from .excuses import FALLBACK_LINE, random_excuse
 
-
 CoinFace = Literal["heads", "tails"]
 
 

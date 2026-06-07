@@ -9,12 +9,12 @@ Tests the engine layer by simulating ball-by-ball outcomes directly. Verifies:
 """
 from __future__ import annotations
 
-import json
 import random
 from pathlib import Path
 
 from neo_handcricket.bots import strategy
-from neo_handcricket.formats import PRESETS, custom as custom_fmt
+from neo_handcricket.formats import PRESETS
+from neo_handcricket.formats import custom as custom_fmt
 from neo_handcricket.innings import Innings
 from neo_handcricket.match import Match, TeamMeta
 from neo_handcricket.persistence import save as save_io
@@ -44,7 +44,7 @@ def _simulate_innings(inn: Innings, bowling_country: loader.Country, batting_cou
     bowler_idx = 0
     inn.start_over(pool[bowler_idx])
     bowler_arch_lookup = {p.id: (p.bowling_archetype or "pace") for p in bowling_country.players}
-    batter_arch_lookup = {p.id: (p.batting_archetype or "tail-ender") for p in batting_country.players}
+    {p.id: (p.batting_archetype or "tail-ender") for p in batting_country.players}
 
     user_recent: list[int] = []
     safety = 0

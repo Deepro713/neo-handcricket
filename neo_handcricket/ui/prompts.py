@@ -6,7 +6,8 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from ..formats import PRESETS, Format, custom as custom_fmt
+from ..formats import PRESETS, Format
+from ..formats import custom as custom_fmt
 from ..rosters import loader
 from .input import read_key, read_line
 

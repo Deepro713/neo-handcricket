@@ -1,0 +1,22 @@
+name: Publish wiki
+on:
+  push:
+    branches: [main]
+    paths: ['wiki/**']
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Mirror wiki/ to the GitHub wiki
+        run: |
+          git config --global user.name "wiki-bot"
+          git config --global user.email "wiki-bot@users.noreply.github.com"
+          git clone "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git" wiki-repo
+          rm -rf wiki-repo/*
+          cp -r wiki/* wiki-repo/
+          cd wiki-repo
+          git add -A
+          git diff --cached --quiet || git commit -m "sync wiki from ${{ github.sha }}"
+          git push || echo "wiki push failed — ensure the wiki has an initial page"

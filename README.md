@@ -160,6 +160,29 @@ Loose order, biggest impact first:
 - **Localization** — English-only commentary; parallel `LINES` dicts for other languages.
 - **Native Windows** — `msvcrt`-based input fallback so the game runs without WSL.
 
+## Development
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"          # rich + pytest + ruff + mypy
+make gate                        # ruff + pytest + tools.playtest  (the QA gate)
+neo-handcricket                  # play
+```
+
+The **QA gate** that must pass before every change: `ruff check .` · `pytest` · `python -m tools.playtest`
+(a headless game-sim that plays full matches across every format with seeded RNG and asserts
+invariants). `mypy` is advisory while existing type-debt is paid down.
+
+## Autonomous build
+
+This project is developed by a **looped autonomous-dev cycle** (research → plan milestones → implement
+cluster-by-cluster under the gate → repeat), documented in [`docs/00-overview/`](docs/00-overview/):
+[conventions-and-rules](docs/00-overview/conventions-and-rules.md) · [dev-runbook](docs/00-overview/dev-runbook.md)
+· [decision-log](docs/00-overview/decision-log.md). Plans live in the Obsidian vault under `docs/`
+(`02-milestones/`, `03-issues/`, `04-research/`) and are the **source of truth**; the GitHub Project
+board + issues are generated from them via [`scripts/sync.py`](scripts/sync.py). Clusters ship through
+[`scripts/ship-cluster.sh`](scripts/ship-cluster.sh).
+
 ## Contributing
 
 This is a personal hobby project — PRs welcome but I may be slow to respond. See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow. All participants must follow the [Code of Conduct](CODE_OF_CONDUCT.md).

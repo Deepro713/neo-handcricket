@@ -3,11 +3,9 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
-from pathlib import Path
 
 from ..config import STATS_DIR
 from ..match import Match
-
 
 STATS_DIR.mkdir(parents=True, exist_ok=True)
 CAREER_FILE = STATS_DIR / "career.json"
