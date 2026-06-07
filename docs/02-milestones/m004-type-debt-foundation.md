@@ -2,8 +2,8 @@
 title: M004 — Type-debt foundation
 type: milestone
 milestone: M004
-status: Todo
-state: open
+status: Done
+state: closed
 version: v0.4.0
 github:
   milestone: 4
@@ -11,7 +11,7 @@ github:
 
 # M004 — Type-debt foundation
 
-**Status:** Todo · **Target version:** v0.4.0 · **GitHub milestone:** #4
+**Status:** Done · **Target version:** v0.4.0 · **GitHub milestone:** #4
 
 ## Goal
 Pay down the ~44 mypy errors and make mypy a hard gate. Foundation first: every later milestone is type-checked. No gameplay change — pure correctness/quality.
