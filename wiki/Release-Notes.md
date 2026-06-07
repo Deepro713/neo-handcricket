@@ -2,7 +2,12 @@
 
 Per-milestone releases (one minor bump each; clusters are patch bumps). Refreshed at every ship.
 
-## Round 1 (forward development)
+## Round 1 (forward development) — **COMPLETE (M004–M008)**
+- **v0.8.3** — M008 `ui-and-playtest`: campaign dashboard + full-tournament playtest invariant.
+  **Completes M008 and Round 1.**
+- **v0.8.2** — M008 `achievements`: achievements + offline shareable save codes.
+- **v0.8.1** — M008 `progression`: banked currency, variety unlocks, save-schema migration.
+- **v0.8.0** — **M008 Career & roguelite meta-progression**: offline knockout tournament core.
 - **v0.7.2** — M007 `context-and-polish`: context-aware asides + ★ scoreboard milestones + a match
   highlights reel. **Completes M007.**
 - **v0.7.1** — M007 `bigmoment-lines`: escalating big-moment line banks + within-match variety.

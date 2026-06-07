@@ -2,8 +2,8 @@
 title: M008 — Career & roguelite meta-progression
 type: milestone
 milestone: M008
-status: Todo
-state: open
+status: Done
+state: closed
 version: v0.8.0
 github:
   milestone: 8
@@ -11,7 +11,7 @@ github:
 
 # M008 — Career & roguelite meta-progression
 
-**Status:** Todo · **Target version:** v0.8.0 · **GitHub milestone:** #8
+**Status:** Done · **Target version:** v0.8.0 · **GitHub milestone:** #8
 
 ## Goal
 Wrap it in progression (research §4): an offline tournament campaign with banked currency, variety unlocks, achievements and shareable save codes — every session banks something. Single-player/offline.
