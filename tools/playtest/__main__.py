@@ -231,6 +231,24 @@ def _realism_invariants(lines: list[str]) -> None:
     check("daily: daily innings resolves with a score", s1 >= 0, f"runs={s1}")
     lines.append(f"daily: {challenge.date_iso} {challenge.fmt} {challenge.team_a}v{challenge.team_b} mods={challenge.modifiers}")
 
+    # --- Headless adapter drives a full innings deterministically (M011) ---
+    from neo_handcricket.adapter import AdapterConfig, GameAdapter
+
+    def _drive_adapter(seed: int) -> tuple[int, int, bool]:
+        a = GameAdapter(AdapterConfig(batting="india", bowling="australia", fmt="T10", seed=seed))
+        n = 0
+        while not a.is_complete and n < 2000:
+            a.submit_pick(n % 7)
+            n += 1
+        s = a.state()
+        return s["runs"], s["balls"], s["complete"]
+
+    r1 = _drive_adapter(123)
+    r2 = _drive_adapter(123)
+    check("adapter: drives an innings to completion", r1[2] is True, f"runs={r1[0]} balls={r1[1]}")
+    check("adapter: deterministic under seed", r1 == r2, f"{r1} vs {r2}")
+    lines.append(f"adapter: T10 india v australia #123 → {r1[0]} in {r1[1]} balls")
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
