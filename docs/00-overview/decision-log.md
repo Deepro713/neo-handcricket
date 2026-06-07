@@ -7,6 +7,28 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0007 — M005 cluster `matchstate`: batsman match-state / momentum
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/matchstate` · **Issues:** #27
+
+**Context.** Second realism lever (research §2): a batter should start tentative and accelerate as they
+settle, and a chase should sharpen intent as the required rate climbs.
+
+**Decision.** New pure module `neo_handcricket/bots/matchstate.py`:
+- `settledness(balls_faced)` → [0,1), `balls/(balls+SETTLE_BALLS_K)` (0.5 at K=8 balls).
+- `chase_intent(runs_needed, balls_remaining)` → [0,1] from required-per-ball (1/ball ≈ 0.5, 2+ → 1; 0
+  when not chasing).
+- `aggression(settled, intent)` → [0,1] = `AGGRO_BASE + w_settle·settled + w_intent·intent`.
+- `apply_matchstate(base, aggression)` reshapes the batter base by a boundary **tilt** centred at 0.5
+  (neutral = identity; <0.5 favours safe low scores; >0.5 favours 4/6). Always returns a valid pmf.
+
+Wired into `strategy.pick_number` via a backward-compatible `aggression: float | None = None` kwarg
+(batting-only; `None` = no change). `main.py` computes it for the bot batter from the striker's balls
+faced and the innings chase state (`inn.runs_needed`, `inn.balls_remaining`).
+
+**Consequences.** 6 new unit tests (settledness/intent/aggression bounds+ordering, neutral-identity,
+tentative-vs-aggressive reshape, and an end-to-end "aggressive batter hits more 4/6"). Gate green
+(ruff + mypy 33 files + 26 tests + playtest 40/40).
+
 ## ADR-0006 — M005 cluster `fatigue`: bowler fatigue model
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m005/fatigue` · **Issues:** #28
 

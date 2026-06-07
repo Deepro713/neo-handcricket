@@ -40,3 +40,13 @@ DIFFICULTY_ALPHA = {
 FATIGUE_DECAY_PACE = 0.12         # stamina lost per over bowled (pace/swing/mystery)
 FATIGUE_DECAY_SPIN = 0.07         # spinners tire slower
 FATIGUE_RECOVERY_PER_OVER = 0.05  # stamina regained per over rested since last spell
+
+# Batsman match-state / momentum (M005). A new batter is tentative and accelerates
+# as they settle (balls faced); a chase raises intent as the required rate climbs.
+# Both feed a single "aggression" scalar (0=blocking, 0.5=neutral, 1=all-out) that
+# reshapes the batsman base distribution toward boundaries (or away, when tentative).
+SETTLE_BALLS_K = 8               # balls faced at which settledness reaches 0.5
+AGGRO_BASE = 0.35               # aggression of a fresh batter not under chase pressure
+AGGRO_SETTLE_WEIGHT = 0.30      # how much being settled adds to aggression
+AGGRO_INTENT_WEIGHT = 0.35      # how much chase pressure adds to aggression
+AGGRO_TILT = 0.8                # strength of the boundary tilt at full aggression swing
