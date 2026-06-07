@@ -26,11 +26,12 @@ TEST_FOLLOW_ON_THRESHOLD = 200       # lead at which follow-on can be enforced
 TEST_BOT_DECLARE_LEAD = 280          # bot captain declares once lead crosses this
 TEST_BOT_FOLLOW_ON_LEAD = 250        # bot captain enforces follow-on at this lead
 
-# Difficulty → adaptation alpha
+# Difficulty → adaptation alpha (legacy frequency mixing strength)
 DIFFICULTY_ALPHA = {
     "easy": 0.0,
     "medium": 0.3,
     "hard": 0.6,
+    "legend": 0.8,
 }
 
 # Bowler fatigue (M005). A bowler's effectiveness decays with overs bowled and
