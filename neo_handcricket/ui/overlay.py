@@ -8,7 +8,20 @@ from rich.text import Text
 from ..rosters.loader import Player
 
 
-def show_bowler_card(console: Console, bowler: Player, over_num: int, country_name: str) -> None:
+def _stamina_bar(fatigue: float, width: int = 5) -> str:
+    """Render a small stamina gauge from a fatigue value (0=fresh, 1=gassed)."""
+    stamina = max(0.0, min(1.0, 1.0 - fatigue))
+    filled = int(round(width * stamina))
+    return "▓" * filled + "░" * (width - filled) + f" {int(round(stamina * 100))}%"
+
+
+def show_bowler_card(
+    console: Console,
+    bowler: Player,
+    over_num: int,
+    country_name: str,
+    fatigue: float | None = None,
+) -> None:
     body = Text()
     body.append(bowler.name + "\n", style="bold")
     style_line = []
@@ -18,6 +31,11 @@ def show_bowler_card(console: Console, bowler: Player, over_num: int, country_na
         style_line.append(bowler.batting_archetype)
     if style_line:
         body.append(" · ".join(style_line), style="dim")
+    if fatigue is not None:
+        if style_line:
+            body.append("\n")
+        body.append("Stamina ", style="dim")
+        body.append(_stamina_bar(fatigue), style="green" if fatigue < 0.5 else "yellow")
     title = Text(f"Over {over_num + 1} · {country_name} bowling", style="cyan bold")
     console.print(Panel(body, title=title, border_style="cyan", padding=(0, 2), expand=False))
 

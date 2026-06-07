@@ -6,6 +6,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from ..bots import matchstate
 from ..innings import Innings
 from ..match import Match
 from ..rosters.loader import Country, Player
@@ -16,6 +17,16 @@ def _name_for(country: Country, pid: int) -> str:
         return country.player(pid).name
     except KeyError:
         return f"#{pid}"
+
+
+def _settled_marker(balls_faced: int) -> str:
+    """A small glyph showing how 'in' a batter is, from balls faced (M005)."""
+    s = matchstate.settledness(balls_faced)
+    if s >= 0.6:
+        return " ★"      # set
+    if s >= 0.3:
+        return " ·"      # getting in
+    return ""            # new at the crease
 
 
 def render_compact(console: Console, match: Match) -> None:
@@ -64,13 +75,13 @@ def render_compact(console: Console, match: Match) -> None:
     bat_table.add_column(justify="right", style="dim")
     if striker and striker_card:
         bat_table.add_row(
-            Text("► " + striker.name, style="bold"),
+            Text("► " + striker.name + _settled_marker(striker_card.balls), style="bold"),
             Text(f"{striker_card.runs}({striker_card.balls})", style="yellow"),
             Text(f"4s:{striker_card.fours}  6s:{striker_card.sixes}"),
         )
     if nonstriker and nonstriker_card:
         bat_table.add_row(
-            Text("  " + nonstriker.name),
+            Text("  " + nonstriker.name + _settled_marker(nonstriker_card.balls)),
             Text(f"{nonstriker_card.runs}({nonstriker_card.balls})"),
             Text(f"4s:{nonstriker_card.fours}  6s:{nonstriker_card.sixes}"),
         )

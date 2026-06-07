@@ -443,7 +443,14 @@ def _run_innings(
         except KeyError:
             bowler = None
         if bowler:
-            ui_overlay.show_bowler_card(console, bowler, inn.overs_completed, bowling_country_obj.country)
+            cur_fatigue = fatigue_mod.fatigue_factor(
+                over_counts.get(bowler_id, 0),
+                inn.overs_completed - last_over_by_bowler.get(bowler_id, inn.overs_completed),
+                archetypes.get(bowler_id, "pace"),
+            )
+            ui_overlay.show_bowler_card(
+                console, bowler, inn.overs_completed, bowling_country_obj.country, fatigue=cur_fatigue
+            )
 
         antarctica_on_field = (
             inn.batting_country == "Antarctica" or inn.bowling_country == "Antarctica"

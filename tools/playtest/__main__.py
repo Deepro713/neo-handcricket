@@ -12,7 +12,7 @@ import argparse
 import random
 import sys
 
-from neo_handcricket.bots import strategy
+from neo_handcricket.bots import captain, fatigue, matchstate, strategy
 from neo_handcricket.formats import PRESETS
 from neo_handcricket.formats import custom as custom_fmt
 from neo_handcricket.innings import Innings
@@ -70,11 +70,83 @@ def _play(fmt, a_id: str, b_id: str, seed: int, lines: list[str]) -> None:
     lines.append(f"{tag}: {inn.runs}/{inn.wickets} in {inn.balls} balls")
 
 
+def _realism_invariants(lines: list[str]) -> None:
+    """M005 realism-layer invariants: fatigue, batsman match-state, rotation."""
+    # --- Bowler fatigue ---
+    fs = [fatigue.fatigue_factor(o, 0, "pace") for o in range(8)]
+    check("fatigue: rises within a spell", all(b >= a for a, b in zip(fs, fs[1:], strict=False)))
+    check("fatigue: rest reduces it", fatigue.fatigue_factor(6, 4, "pace") < fatigue.fatigue_factor(6, 0, "pace"))
+    check("fatigue: pace tires faster than spin",
+          fatigue.fatigue_factor(5, 0, "pace") > fatigue.fatigue_factor(5, 0, "off-spin"))
+    # A gassed bowler matches a predictable batter less than a fresh one.
+    rng = random.Random(11)
+    recent = [4] * 5
+    fresh_hits = sum(
+        strategy.pick_number(archetype="pace", is_bowler=True, recent_user_picks=recent,
+                             difficulty="hard", fatigue=0.0, rng=rng) == 4
+        for _ in range(400)
+    )
+    tired_hits = sum(
+        strategy.pick_number(archetype="pace", is_bowler=True, recent_user_picks=recent,
+                             difficulty="hard", fatigue=0.9, rng=rng) == 4
+        for _ in range(400)
+    )
+    check("fatigue: tired bowler matches predictable batter less", fresh_hits > tired_hits,
+          f"fresh={fresh_hits} tired={tired_hits}")
+
+    # --- Batsman match-state / momentum ---
+    ss = [matchstate.settledness(b) for b in range(12)]
+    check("matchstate: settledness monotonic from 0", ss[0] == 0.0 and all(b >= a for a, b in zip(ss, ss[1:], strict=False)))
+    check("matchstate: chase raises intent", matchstate.aggression(1.0, 1.0) > matchstate.aggression(0.0, 0.0))
+    rng = random.Random(22)
+    tentative_big = sum(
+        strategy.pick_number(archetype="anchor", is_bowler=False, recent_user_picks=[],
+                             difficulty="medium", aggression=0.1, rng=rng) in (4, 6)
+        for _ in range(400)
+    )
+    aggressive_big = sum(
+        strategy.pick_number(archetype="anchor", is_bowler=False, recent_user_picks=[],
+                             difficulty="medium", aggression=0.95, rng=rng) in (4, 6)
+        for _ in range(400)
+    )
+    check("matchstate: aggressive batter hits more boundaries", aggressive_big > tentative_big,
+          f"tentative={tentative_big} aggressive={aggressive_big}")
+
+    # --- Match-up-aware rotation: invariants over a full T20 innings ---
+    rng = random.Random(5)
+    pool = [1, 2, 3, 4, 5]
+    arch = {1: "pace", 2: "swing", 3: "off-spin", 4: "leg-spin", 5: "mystery"}
+    fmt = PRESETS["T20"]
+    over_counts: dict[int, int] = {}
+    last: int | None = None
+    no_consecutive = True
+    cap_ok = True
+    for ov in range(fmt.overs_per_innings or 20):
+        b = captain.pick_next_bowler(
+            bowling_pool=pool, archetypes=arch, over_counts=over_counts, economies={},
+            last_bowler=last, over_idx=ov, total_overs=fmt.overs_per_innings, fmt=fmt,
+            batter_archetype="anchor",
+            fatigues={pid: fatigue.fatigue_factor(over_counts.get(pid, 0), 0, arch[pid]) for pid in pool},
+            rng=rng,
+        )
+        if b == last:
+            no_consecutive = False
+        over_counts[b] = over_counts.get(b, 0) + 1
+        if fmt.bowler_over_cap is not None and over_counts[b] > fmt.bowler_over_cap:
+            cap_ok = False
+        last = b
+    check("rotation: no consecutive overs across an innings", no_consecutive)
+    check("rotation: respects per-bowler over cap", cap_ok, f"counts={over_counts}")
+    lines.append(f"realism: fatigue fresh/tired matches={fresh_hits}/{tired_hits}; "
+                 f"boundaries tentative/aggressive={tentative_big}/{aggressive_big}; rotation={over_counts}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--record", metavar="FILE", help="write a transcript of the sessions")
     args = ap.parse_args()
     lines: list[str] = []
+    _realism_invariants(lines)
     for fmt_name in ("T10", "T20", "ODI"):
         fmt = PRESETS[fmt_name]
         for seed in (1, 7, 42):
