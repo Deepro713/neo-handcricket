@@ -503,6 +503,72 @@ LINES.update({
 })
 
 
+# Breadth expansion (M013) — extra original/CC0 lines appended to thinner pools.
+_EXTRA: dict[str, dict[str, list[dict]]] = {
+    "ball_run_2": {
+        "opener": [
+            {"text": "Two more, well run.", "tags": ["technical"]},
+            {"text": "Pushed into the gap, back for the second.", "tags": ["casual"]},
+            {"text": "Good running between the wickets — two.", "tags": ["technical"]},
+        ],
+        "analysis": [{"text": "They're turning ones into twos — pressure on the field.", "tags": ["serious"]}],
+    },
+    "ball_run_3": {
+        "opener": [
+            {"text": "Three! Into the deep and they scamper back.", "tags": ["casual"]},
+            {"text": "Driven hard, three to the rope-rider.", "tags": ["technical"]},
+        ],
+        "quip": [{"text": "Three is the new four if you run hard enough.", "tags": ["hilarious", "dry"]}],
+    },
+    "ball_run_5": {
+        "opener": [
+            {"text": "Five — boundary overthrows tagged on.", "tags": ["casual"]},
+            {"text": "Misfield! They cash in for five.", "tags": ["technical"]},
+        ],
+    },
+    "milestone_100": {
+        "opener": [
+            {"text": "A hundred! Bat aloft, helmet off — take it in.", "tags": ["theatrical", "extrovert"]},
+            {"text": "Three figures, and richly deserved.", "tags": ["serious"]},
+        ],
+    },
+    "partnership_50": {
+        "opener": [
+            {"text": "Fifty for the stand and the momentum has shifted.", "tags": ["serious"]},
+            {"text": "They've dug in together — half-century partnership.", "tags": ["technical"]},
+        ],
+    },
+    "hat_trick": {
+        "opener": [{"text": "THREE IN THREE! File this one in the memory bank.", "tags": ["theatrical"]}],
+    },
+    "collapse": {
+        "opener": [{"text": "One brings two, two brings three — it's unravelling.", "tags": ["serious"]}],
+    },
+    "maiden": {
+        "opener": [{"text": "Maiden over. Dot, dot, dot — relentless.", "tags": ["technical"]}],
+    },
+    "last_ball_finish": {
+        "opener": [{"text": "Last delivery, and they nick it! Absolute scenes.", "tags": ["theatrical", "extrovert"]}],
+    },
+    "wicket_caught": {
+        "opener": [{"text": "Held! Safe hands, and the batter trudges off.", "tags": ["serious"]}],
+    },
+    "over_start": {
+        "opener": [{"text": "Fresh over, fresh plans. Here we go again.", "tags": ["casual"]}],
+    },
+    "innings_end": {
+        "opener": [{"text": "And that's the innings — a total to bowl at.", "tags": ["serious"]}],
+    },
+    "match_end": {
+        "opener": [{"text": "Stumps. What a contest that turned out to be.", "tags": ["serious"]}],
+    },
+}
+for _sit, _turns in _EXTRA.items():
+    _bucket = LINES.setdefault(_sit, {})
+    for _turn, _lines in _turns.items():
+        _bucket.setdefault(_turn, []).extend(_lines)
+
+
 # Event kind → commentary situation key, in descending priority. Used to pick the
 # single most newsworthy accent line when the event detector flags big moments.
 _EVENT_SITUATION_PRIORITY: list[tuple[str, str, str]] = [

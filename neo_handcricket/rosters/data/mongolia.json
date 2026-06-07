@@ -5,7 +5,7 @@
   "players": [
     {
       "id": 1,
-      "name": "Bayasgalan Khorloo",
+      "name": "Batbayar Otgon",
       "role": "captain",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -14,7 +14,7 @@
     },
     {
       "id": 2,
-      "name": "Ganzorig Yundenbat",
+      "name": "Temujin Bold",
       "role": "vice-captain",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -23,7 +23,7 @@
     },
     {
       "id": 3,
-      "name": "Bayar Buyantogtokh",
+      "name": "Naranbaatar Suren",
       "role": "keeper",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -32,7 +32,7 @@
     },
     {
       "id": 4,
-      "name": "Enkhbat Munkhdalai",
+      "name": "Ganzorig Munkh",
       "role": "keeper",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -41,7 +41,7 @@
     },
     {
       "id": 5,
-      "name": "Saikhanbileg Tserendorj",
+      "name": "Chuluun Erdene",
       "role": "keeper-reserve",
       "batting_hand": "LH",
       "bowling_style": null,
@@ -50,7 +50,7 @@
     },
     {
       "id": 6,
-      "name": "Ganbat Enkhjargal",
+      "name": "Tömörbaatar Dorj",
       "role": "batsman",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -59,7 +59,7 @@
     },
     {
       "id": 7,
-      "name": "Dorj Davaadorj",
+      "name": "Altan Khaltar",
       "role": "batsman",
       "batting_hand": "LH",
       "bowling_style": null,
@@ -68,7 +68,7 @@
     },
     {
       "id": 8,
-      "name": "Bayar Davaadorj",
+      "name": "Sükhbaatar Nyam",
       "role": "batsman",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -77,7 +77,7 @@
     },
     {
       "id": 9,
-      "name": "Khishig Naranbat",
+      "name": "Bataar Oyun",
       "role": "batsman",
       "batting_hand": "LH",
       "bowling_style": null,
@@ -86,7 +86,7 @@
     },
     {
       "id": 10,
-      "name": "Otgonbayar Lkhagvasuren",
+      "name": "Enkhjargal Bat",
       "role": "batsman",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -95,7 +95,7 @@
     },
     {
       "id": 11,
-      "name": "Saikhanbileg Dolgor",
+      "name": "Gantulga Sodnom",
       "role": "batsman",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -104,7 +104,7 @@
     },
     {
       "id": 12,
-      "name": "Enkhbat Tsogtbaatar",
+      "name": "Khünbish Tseren",
       "role": "batsman",
       "batting_hand": "LH",
       "bowling_style": null,
@@ -113,7 +113,7 @@
     },
     {
       "id": 13,
-      "name": "Munkhsaikhan Erdenechimeg",
+      "name": "Möngke Jargal",
       "role": "batsman",
       "batting_hand": "RH",
       "bowling_style": null,
@@ -122,7 +122,7 @@
     },
     {
       "id": 14,
-      "name": "Khishig Munkhdalai",
+      "name": "Baatarsaikhan Gerel",
       "role": "batsman",
       "batting_hand": "LH",
       "bowling_style": null,
@@ -131,7 +131,7 @@
     },
     {
       "id": 15,
-      "name": "Dorj Munkhbayar",
+      "name": "Tüvshin Bayar",
       "role": "all-rounder",
       "batting_hand": "RH",
       "bowling_style": "RA pace",
@@ -140,7 +140,7 @@
     },
     {
       "id": 16,
-      "name": "Saikhanbileg Tumendelger",
+      "name": "Davaajav Ölzii",
       "role": "all-rounder",
       "batting_hand": "LH",
       "bowling_style": "LA pace",
@@ -149,7 +149,7 @@
     },
     {
       "id": 17,
-      "name": "Otgonbayar Chimedtseren",
+      "name": "Nergüi Choijil",
       "role": "all-rounder",
       "batting_hand": "RH",
       "bowling_style": "RA off-spin",
@@ -158,7 +158,7 @@
     },
     {
       "id": 18,
-      "name": "Otgonbayar Davaadorj",
+      "name": "Sodbileg Amar",
       "role": "all-rounder",
       "batting_hand": "LH",
       "bowling_style": "RA leg-spin",
@@ -167,7 +167,7 @@
     },
     {
       "id": 19,
-      "name": "Davaa Davaadorj",
+      "name": "Ariunbold Lkhagva",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA pace",
@@ -176,7 +176,7 @@
     },
     {
       "id": 20,
-      "name": "Buyant Batbayar",
+      "name": "Chinbat Ganbold",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "LA pace",
@@ -185,7 +185,7 @@
     },
     {
       "id": 21,
-      "name": "Khishig Enkhjargal",
+      "name": "Tengis Borjigin",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA swing",
@@ -194,7 +194,7 @@
     },
     {
       "id": 22,
-      "name": "Dorj Lkhagvasuren",
+      "name": "Khorloo Damba",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA pace",
@@ -203,7 +203,7 @@
     },
     {
       "id": 23,
-      "name": "Munkhjargal Dashdorj",
+      "name": "Otgonbayar Tömör",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA pace",
@@ -212,7 +212,7 @@
     },
     {
       "id": 24,
-      "name": "Ganbat Bayanzul",
+      "name": "Munkhbat Sandagdorj",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "LA pace",
@@ -221,7 +221,7 @@
     },
     {
       "id": 25,
-      "name": "Otgonbayar Erdenebileg",
+      "name": "Yesügei Chuluun",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA mystery",
@@ -230,7 +230,7 @@
     },
     {
       "id": 26,
-      "name": "Temuujin Sodbileg",
+      "name": "Bayarmagnai Dash",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA pace",
@@ -239,7 +239,7 @@
     },
     {
       "id": 27,
-      "name": "Bat-Erdene Khorloo",
+      "name": "Ganbaatar Süren",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA off-spin",
@@ -248,7 +248,7 @@
     },
     {
       "id": 28,
-      "name": "Naran Sodbileg",
+      "name": "Khasar Tögöldör",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA leg-spin",
@@ -257,7 +257,7 @@
     },
     {
       "id": 29,
-      "name": "Naran Munkhdalai",
+      "name": "Jochi Narangerel",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "LA off-spin",
@@ -266,7 +266,7 @@
     },
     {
       "id": 30,
-      "name": "Erdene Sukhbat",
+      "name": "Subötai Batu",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA leg-spin",
@@ -275,7 +275,7 @@
     },
     {
       "id": 31,
-      "name": "Enkhbat Batbayar",
+      "name": "Boroghul Tserendorj",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA off-spin",
@@ -284,7 +284,7 @@
     },
     {
       "id": 32,
-      "name": "Chinbat Sukhbat",
+      "name": "Negüder Altangerel",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "LA mystery",
@@ -293,7 +293,7 @@
     },
     {
       "id": 33,
-      "name": "Erdene Enkhjargal",
+      "name": "Dalan Bayasgalan",
       "role": "bowler",
       "batting_hand": null,
       "bowling_style": "RA off-spin",

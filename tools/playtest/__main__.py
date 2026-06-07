@@ -276,6 +276,15 @@ def _realism_invariants(lines: list[str]) -> None:
     check("i18n: unknown locale falls back to en", i18n.t("menu.quit", locale="zz") == i18n.t("menu.quit"))
     check("i18n: unknown key returns the key", i18n.t("nope.key") == "nope.key")
 
+    # --- Content: every commentary category has lines; curated rosters load (M013) ---
+    from neo_handcricket.commentary.lines import LINES as _LINES
+
+    _empty = [s for s, turns in _LINES.items() if not any(turns.get(t) for t in ("opener", "analysis", "quip"))]
+    check("content: every commentary category has lines", not _empty, f"empty={_empty}")
+    for _slug in ("iceland", "mongolia"):
+        c = loader.load_country(_slug)
+        check(f"content: {_slug} roster loads + selects", len(selector.select_xi(c, PRESETS["T20"]).playing_xi) == 11)
+
 
 def main() -> int:
     ap = argparse.ArgumentParser()
