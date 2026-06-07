@@ -29,6 +29,7 @@ class CommentaryEngine:
     def __init__(self, *, rng: random.Random | None = None) -> None:
         self.rng = rng or random.Random()
         self.log = MatchLog()
+        self._used_lines: set[str] = set()  # raw templates already used this match (variety)
         # The active panel of commentators for this match.
         # Number of commentators is randomized in [2, 3].
         self.panel: list[Commentator] = self._make_panel()
@@ -140,7 +141,7 @@ class CommentaryEngine:
         ball_situations = {
             "ball_dot", "ball_run_1", "ball_run_2", "ball_run_3", "ball_run_4",
             "ball_run_5", "ball_run_6", "wicket_match", "wicket_bowled",
-            "wicket_lbw", "wide", "no_ball", "dead_ball", "byes", "leg_byes",
+            "wicket_lbw", "wicket_caught", "wide", "no_ball", "dead_ball", "byes", "leg_byes",
         }
         is_ball = situation in ball_situations
         entries: list[CommentaryEntry] = []
@@ -181,7 +182,10 @@ class CommentaryEngine:
                 if not candidates:
                     candidates = [{"text": "...", "tags": []}]
 
-            line = self.rng.choice(candidates)
+            # Prefer a template not yet used this match (variety / no repeats).
+            fresh = [c for c in candidates if c["text"] not in self._used_lines]
+            line = self.rng.choice(fresh or candidates)
+            self._used_lines.add(line["text"])
             text = self._format(line["text"], ctx)
 
             # Callback injection on analysis turn (~12% chance, requires history)

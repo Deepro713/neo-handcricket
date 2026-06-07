@@ -16,6 +16,8 @@ from .bots import fatigue as fatigue_mod
 from .bots import matchstate as matchstate_mod
 from .bots import strategy
 from .bots import tells as tells_mod
+from .commentary import events as events_mod
+from .commentary import lines as lines_mod
 from .commentary.engine import CommentaryEngine
 from .config import (
     COMMENTARY_LINE_GAP_SECONDS,
@@ -573,7 +575,7 @@ def _run_innings(
                     rng=rng,
                 )
 
-            event = inn.record_ball(
+            inn.record_ball(
                 runs=outcome["runs"],
                 extras=outcome["extras"],
                 wicket=outcome["wicket"],
@@ -621,18 +623,14 @@ def _run_innings(
                 situation=situation, ctx=ctx, antarctica_on_field=antarctica_on_field,
             )
 
-            # Milestones (no extra wait — they overlap with the inter-ball gap)
-            striker_card = inn.batter_cards.get(event.striker_id)
-            if striker_card and striker_card.runs >= 50 and (striker_card.runs - outcome["runs"]) < 50:
+            # Big-moment escalation, driven by the pure event detector (M007):
+            # fifties/hundreds, hat-tricks, maidens, last-ball finishes, collapses,
+            # 50-partnerships. Wickets/boundaries are already in the ball conversation.
+            accent = lines_mod.event_situation(events_mod.detect(inn))
+            if accent:
                 _deliver_commentary_paced(
                     console, engine,
-                    situation="milestone_50", ctx=ctx, antarctica_on_field=antarctica_on_field,
-                    min_total_seconds=0.0,
-                )
-            elif striker_card and striker_card.runs >= 100 and (striker_card.runs - outcome["runs"]) < 100:
-                _deliver_commentary_paced(
-                    console, engine,
-                    situation="milestone_100", ctx=ctx, antarctica_on_field=antarctica_on_field,
+                    situation=accent, ctx=ctx, antarctica_on_field=antarctica_on_field,
                     min_total_seconds=0.0,
                 )
 

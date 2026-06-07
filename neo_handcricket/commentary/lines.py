@@ -442,6 +442,92 @@ LINES: dict[str, dict[str, list[dict]]] = {
 }
 
 
+# =========================================================================
+# Big-moment line banks (M007). All original / CC0 — no broadcaster catchphrases.
+# Accent moments fire after the ball conversation when the event detector flags
+# them. `wicket_caught` is a full ball situation; the rest are single-line accents.
+# =========================================================================
+LINES.update({
+    "wicket_caught": {
+        "opener": [
+            {"text": "Caught! Picked out the fielder and {batter} has to go.", "tags": ["serious"]},
+            {"text": "Straight down a throat — that's a wicket!", "tags": ["theatrical"]},
+            {"text": "Up goes the catch, and it sticks. {batter} departs.", "tags": ["casual"]},
+            {"text": "Skied it, and {bowler} has his man.", "tags": ["technical"]},
+        ],
+        "analysis": [
+            {"text": "{batter} couldn't keep it down — the fielder did the rest.", "tags": ["technical"]},
+            {"text": "{bowler} drew the false stroke and it's a soft dismissal.", "tags": ["serious", "technical"]},
+        ],
+        "quip": [
+            {"text": "He hit that one right to the only person who wanted it.", "tags": ["hilarious", "dry"]},
+        ],
+    },
+    "hat_trick": {
+        "opener": [
+            {"text": "HAT-TRICK! Three in a row for {bowler} — extraordinary!", "tags": ["theatrical", "extrovert"]},
+            {"text": "Three wickets, three balls — {bowler} is on fire!", "tags": ["theatrical"]},
+            {"text": "Did that just happen? A hat-trick for {bowler}!", "tags": ["extrovert", "casual"]},
+        ],
+        "analysis": [
+            {"text": "You wait a career for one of those. {bowler} has it today.", "tags": ["serious"]},
+        ],
+    },
+    "maiden": {
+        "opener": [
+            {"text": "A maiden over — not a run off the bat from {bowler}.", "tags": ["technical"]},
+            {"text": "Six dots, nothing given. Tidy from {bowler}.", "tags": ["serious", "technical"]},
+            {"text": "Pressure cranked — that's a maiden.", "tags": ["technical"]},
+        ],
+    },
+    "last_ball_finish": {
+        "opener": [
+            {"text": "They've done it — sealed it right at the death! What a finish!", "tags": ["theatrical", "extrovert"]},
+            {"text": "Down to the wire and over the line! Scenes here!", "tags": ["theatrical"]},
+            {"text": "Off the very last they get there — heart-stopping stuff!", "tags": ["extrovert", "casual"]},
+        ],
+    },
+    "collapse": {
+        "opener": [
+            {"text": "The wheels have come off — wickets tumbling in a heap.", "tags": ["serious", "theatrical"]},
+            {"text": "A genuine collapse unfolding here.", "tags": ["serious"]},
+            {"text": "From steady to chaos in the blink of an eye.", "tags": ["technical"]},
+        ],
+    },
+    "partnership_50": {
+        "opener": [
+            {"text": "Fifty up for the stand — a real partnership building.", "tags": ["technical"]},
+            {"text": "These two have put on fifty together. Steadying the ship.", "tags": ["serious"]},
+        ],
+    },
+})
+
+
+# Event kind → commentary situation key, in descending priority. Used to pick the
+# single most newsworthy accent line when the event detector flags big moments.
+_EVENT_SITUATION_PRIORITY: list[tuple[str, str, str]] = [
+    # (event.kind, event.subtype or "", situation_key)
+    ("last_ball_finish", "", "last_ball_finish"),
+    ("hat_trick", "", "hat_trick"),
+    ("milestone", "hundred", "milestone_100"),
+    ("milestone", "fifty", "milestone_50"),
+    ("collapse", "", "collapse"),
+    ("partnership", "fifty", "partnership_50"),
+    ("maiden", "", "maiden"),
+]
+
+
+def event_situation(events: list) -> str | None:
+    """Pick the highest-priority *accent* situation key from detected events, or
+    None if none of them warrant an extra escalation line (wickets/boundaries are
+    already covered by the ball conversation)."""
+    kinds = {(e.kind, e.subtype) for e in events}
+    for kind, subtype, key in _EVENT_SITUATION_PRIORITY:
+        if (kind, subtype) in kinds:
+            return key
+    return None
+
+
 def situation_for_ball(runs: int, wicket_kind: str | None, extra_kind: str | None) -> str:
     if wicket_kind == "match":
         return "wicket_match"
@@ -449,6 +535,8 @@ def situation_for_ball(runs: int, wicket_kind: str | None, extra_kind: str | Non
         return "wicket_bowled"
     if wicket_kind == "lbw":
         return "wicket_lbw"
+    if wicket_kind == "caught":
+        return "wicket_caught"
     if extra_kind == "wide":
         return "wide"
     if extra_kind == "no-ball":
