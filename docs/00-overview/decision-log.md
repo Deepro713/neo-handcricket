@@ -7,6 +7,24 @@ type: reference
 
 Architecture Decision Records, newest first. One per cluster/significant decision.
 
+## ADR-0012 — M006 cluster `eval`: prove the opponent model works
+**Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/eval` · **Issues:** #32
+
+**Context.** The opponent model (ADR-0010/0011) needed an objective check that it actually beats the
+frequency baseline and doesn't hurt itself against a random player.
+
+**Decision.** New typed module `neo_handcricket/bots/evaluation.py`: scripted batting patterns
+(`uniform`, `favourite`, `wsls`, `sequence`), `simulate_match_rate(pattern, epsilon=…)` (bot bowls to
+match/dismiss; `epsilon=None` = frequency baseline, a float = opponent model), and `evaluate()`
+returning per-pattern model-vs-baseline dismissal rates. Deterministic under seed.
+
+**Consequences.** Measured (6 seeds): aggregate model **3.33 > baseline 3.14** on predictable players;
+favourite-number batters dismissed at ~0.24 vs ~0.143 chance; uniform players ~0.14 for both (no
+edge, no self-harm). 5 new unit tests assert the aggregate edge, strong favourite exploitation, and the
+uniform no-edge band. Added 2 playtest invariants (gate now **51 checks**) + a transcript line. Gate
+green (ruff + mypy 35 files + 49 tests + playtest 51/51). Last build cluster of M006; only `tells`
+remains.
+
 ## ADR-0011 — M006 cluster `difficulty`: wire the opponent model behind difficulty
 **Date:** 2026-06-07 · **Status:** accepted · **Cluster:** `m006/difficulty` · **Issues:** #33
 
